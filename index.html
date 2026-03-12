@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台語C1詞彙篩選器</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --panel-bg: #fdfdfd;
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+            
+            /* 禁止選取文字 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* 允許輸入框可以正常選取與輸入 */
+        input, select, textarea {
+            -webkit-user-select: auto;
+            -moz-user-select: auto;
+            -ms-user-select: auto;
+            user-select: auto;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .author-subtitle {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        .btn-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .btn-toggle:hover {
+            background-color: #1a252f;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* 自訂設定視窗 (取代彈出視窗) */
+        .settings-panel {
+            display: none; /* 預設隱藏 */
+            background-color: var(--panel-bg);
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .settings-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #34495e;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        .settings-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+        .settings-btns button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-clear { background-color: var(--danger-color); color: white; margin-right: 10px; }
+        .btn-clear:hover { background-color: #c0392b; }
+        .btn-save { background-color: var(--secondary-color); color: white; }
+        .btn-save:hover { background-color: #2980b9; }
+        .btn-link {
+            display: inline-block;
+            background-color: #f39c12;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .btn-link:hover { background-color: #d68910; }
+
+        /* 主要搜尋區塊 */
+        .search-area {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+            margin-bottom: 20px;
+        }
+        .search-area label {
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .search-area input {
+            border: 2px solid #bdc3c7;
+            padding: 14px;
+            font-size: 18px;
+        }
+        .search-area input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        .btn-submit {
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover { background-color: #219653; }
+        .btn-submit:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        
+        .loading {
+            text-align: center;
+            color: #e67e22;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* 結果顯示區塊 */
+        .result-wrapper {
+            position: relative;
+            margin-top: 30px;
+            display: none;
+        }
+        #result {
+            padding: 50px 25px 25px 20px; /* 將 top padding 增加到 50px，避免覆蓋文字 */
+            background-color: #e8f6f3;
+            border-left: 6px solid #1abc9c;
+            white-space: pre-wrap;
+            font-size: 16px;
+            border-radius: 4px;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ffffff;
+            border: 1px solid #1abc9c;
+            color: #1abc9c;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #1abc9c;
+            color: white;
+        }
+        .error-msg {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="container">
+    <div class="header-actions">
+        <button class="btn-toggle" onclick="toggleSettings()">⚙️ API 系統設定</button>
+    </div>
+
+    <h1>台語C1詞彙篩選器</h1>
+    <p class="author-subtitle">詹宗龍 製作</p>
+    <p class="subtitle">輸入情境，由 AI 從資料庫挑選 5 個精準詞彙並提供詳細補充解析</p>
+
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3>⚙️ API 系統設定</h3>
+        </div>
+        
+        <div class="form-group">
+            <label for="apiKey">Gemini API Key：</label>
+            <input type="password" id="apiKey" placeholder="請輸入 AIzaSy...">
+        </div>
+
+        <div class="form-group">
+            <label for="baseUrl">API 基底 URL (Base URL)：</label>
+            <input type="text" id="baseUrl" placeholder="https://generativelanguage.googleapis.com/v1beta">
+        </div>
+
+        <div class="form-group">
+            <label for="modelSelect">選擇 AI 模型：</label>
+            <select id="modelSelect">
+                <option value="gemini-2.5-flash">gemini-2.5-flash (推薦，最新版)</option>
+                <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+                <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+            </select>
+        </div>
+
+        <div id="settingsStatus" style="display:none; text-align:center; font-weight:bold; margin-bottom:10px; font-size:14px;"></div>
+
+        <div class="settings-footer">
+            <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam/1/%ED%95%9C%EA%B3%84%E6%BC%94%E8%AC%9B%E8%B3%87%E6%96%99%E1%80%80%E1%80%94%E1%80%9E%E1%80%90%E1%80%81%E1%80%80/1150129api-key-%E7%94%B3%E8%AB%8B%E6%94%BB%E7%95%A5" target="_blank" class="btn-link">💡 免費申請API</a>
+            <div class="settings-btns">
+                <button class="btn-clear" onclick="clearSettings()">清除設定</button>
+                <button class="btn-save" onclick="saveSettings()">儲存並收合</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-area">
+        <div class="form-group" style="margin-bottom:0;">
+            <label for="keyword">🔍 請輸入情境關鍵詞（支援 Enter 鍵直接送出）：</label>
+            <input type="text" id="keyword" placeholder="例如：虛有其表、生氣、吝嗇、胡說八道...">
+        </div>
+    </div>
+
+    <button id="submitBtn" class="btn-submit" onclick="generateContent()">開始篩選台語詞彙</button>
+    <div id="loading" class="loading">⏳ AI 正在研讀台語資料庫並進行分析，請稍候...</div>
+
+    <div class="result-wrapper" id="resultWrapper">
+        <button id="copyBtn" class="copy-btn" onclick="copyResult()">📋 複製</button>
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+    // =========================================================================
+    // ↓↓↓ 請在此處貼上您的台語詞彙資料庫 ↓↓↓
+    // =========================================================================
+    const documentText = `
+
+𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
+(C1 start)
+1.	a-lú-mih(成大)；輕銀 khin-gîn/khin-gûn(教典。鋁。金屬元素之一。其色銀白，質輕不鏽，富延展性，傳熱及導電性極佳。可加工製成電線、鋁箔、日常用器皿等)
+2.	a-sa-puh-luh(成大)；阿沙不魯 a-sa-puh-luh(教典)：形容人或事物粗俗、不入流。例：你莫佇遐做一寡仔阿沙不魯的代誌。Lí mài tī hia tsò tsi̍t-kuá-á a-sa-puh-luh ê tāi-tsì. (你少在那裡做一些不入流的事情)
+3.	阿舍 a-sià：公子哥兒、紈褲子弟、紈褲子弟。富貴人家的子弟，浮華而不知人間疾苦
+4.	ánn，ánn(哄)小妹去睏(成大)；匼ánn，匼日頭(遮太陽)；囡仔匼予睏；匼孤爿(偏袒)(盧廣誠)
+5.	哀悲 ai-pi(悲哀)
+6.	暗昏àm-hun(黃昏)
+7.	涵空 âm-khang(涵洞)、涵空龜 âm-khang-ku(井底之蛙)
+8.	頷巾 ām-kin/ām-kun(圍巾)
+9.	頷胿 ām-kui(脖子的前面部分)
+10.	安搭 an-tah：1.安頓。例：我才搬來，猶未安搭好勢。Guá tsiah puann--lâi, iáu bē an-tah hó-sè.
+(我才剛搬來，還沒安頓好) 2.安撫。例：暫且共伊安搭一下，賰的後擺才閣講。Tsiām-tshiánn kā i
+an-tah--tsi̍t-ē, tshun--ê āu-pái tsiah-koh kóng. (暫時安撫他一下，其餘的以後再說)
+11.	阿娘 a-niâ(母親)
+12.	尪仔頭 ang-á-thâu：1.玩偶的頭。2.面孔、五官長相。例：尪仔頭袂䆀。Ang-á-thâu bē bái. (五官長相不錯) 同：尪仔面 ang-á-bīn	3.瞳孔。
+13.	尪姨 ang-î：靈媒、巫婆。能通鬼神，以替人祈福消災、占卜等為職業的女子。例：牽尪姨，順話尾。Khan-ang-î, sūn uē-bué. (靈媒常要抓住對方的心意，揣摩對方的意思，讓自己說的話與對方配合。比喻揣摩情況來決定說話內容)；尪姨順話尾，假童害眾人
+14.	甕肚 àng-tōo：1.形容人自私、小器，隱瞞祕密或好處不肯告訴別人。例：伊彼个人誠甕肚，有好空的攏毋共人講。I hit-ê lâng tsiânn àng-tōo, ū hó-khang--ê lóng m̄ kā lâng kóng. (他那個人很自私小器，有好處都不告訴別人) 2.陰險、陰毒。例：伊真甕肚，我真驚會去予伊害著。I tsin àng- tōo, guá tsin kiann ē khì hōo i hāi--tio̍h. (他很陰險，我很怕被他給陷害了)
+15.	紅霓 âng-gê(成大)；紅牙 âng-gê(教典)：紅潤。豐滿而帶有紅色的光澤。本詞目常重疊使用。例： 伊的面色紅牙紅牙，看著真勇健。I ê bīn-sik âng-gê-âng-gê, khuànn tio̍h tsin ióng-kiānn. (他的臉色紅潤紅潤，看起來很健康)
+16.	紅柑 âng-kam(成大)；紅魽 âng-kam(教典)：魚類。為新興養殖魚種，體長可達一百五十公分，肉質堅實鮮美，極富油脂，為各類生魚片中之極品
+17.	ang-keh-toh(成大)；尪架桌 ang-kè-toh(教典。祭桌。擺設祭品以祭祀神明、供奉祖先的桌子)
+18.	拗蠻áu-bân(野蠻、蠻橫無理。個性固執而不通情理的人。例：伊就是傷拗蠻才會遐顧人怨)
+19.	漚àu，漚貨àu huè/àu hè(爛貨。壞的東西或不好的東西。也用來罵人)
+20.	漚古àu-kóo：1.腐朽破舊，毫無價值。例：這古董予你看做漚古物！Tse kóo-tóng hōo lí khuànn- tsò àu-kóo mi̍h! (這古董竟被你看做是破爛東西！) 2.形容拙劣、差勁，令人嫌惡的人、事、物。例：你毋通做彼種漚古代。Lí m̄-thang tsò hit tsióng àu-kóo tāi.(你不要做那種下三濫的事)
+21.	漚屎 àu-sái(成大。低劣)；漚屎步àu-sái-pōo(教典。惡劣手段、方法或計謀。例：漚屎步盡展)
+22.	bái-tsâi(成大)；䆀才 bái-tsâi(教典)：1.難看。例：你坐按呢有夠䆀才。Lí tsē án-ne ū-kàu bái-tsâi.
+(你坐這樣夠難看的) 2.事情不好或情況不妙。例：真䆀才 tsin bái-tsâi(情況不妙)
+ 
+23.	目墘 ba̍k-kînn(眼眶)
+24.	目光 ba̍k-kng(眼神)
+25.	萬物 bān-mi̍h(成大)；萬物 bān-bu̍t(教典。宇宙間的一切物類)
+26.	萬千 bān-tshian(數量很多)
+27.	貿頭 ba̍uh-thâu(成大)；貿頭 bāu-thâu(教典。包商)
+28.	bē-tshun-tshia(成大)；袂伸捙 bē-tshun-tshia/buē-tshun-tshia(教典)：通常指經過言詞勸說之後，仍無法改變對方的態度或想法。例：佮伊講話，見講嘛講袂伸捙。Kah i kóng-uē, kiàn kóng mā kóng bē-tshun-tshia. (跟他說話，每次都有理說不清)
+29.	米絞 bí-ká(碾米機；碾米廠)
+30.	面積 bīn-tsik(地面、物體表面或平面圖形的大小)
+31.	面巾 bīn-kin/bīn-ku(毛巾。盥洗時用來擦拭手臉的布)
+32.	面探 bīn-thàm(察言觀色；當面問清楚)
+33.	猛虎 bíng-hóo(猛勇的虎)
+34.	明瞭 bîng-liâu(明白了解)
+35.	明治天皇 Bîng-tī thian-hông
+36.	明朝 Bîng-tiâu(朝代名)
+37.	命題 bīng-tê(成大)；命題 bīng-tê/bīng-tuê(教典。出題目)
+38.	廟口 biō-káu(寺廟的前面)
+39.	母舅 bú-kū：稱謂。母親的兄弟。俗稱「阿舅」(a-kū)
+40.	無某無猴 bô-bóo-bô-kâu：單身、沒有家累。指一個人沒有妻子兒女。例：無某無猴，穿衫破肩胛頭。Bô-bóo-bô-kâu, tshīng sann phuà king-kah-thâu. (沒有妻子，衣服破了也沒人補。是單身漢自我調侃的俏皮話)
+41.	無解 bô-kái(沒有解答)
+42.	無量 bô-liōng：小氣、沒度量，吝嗇，不大方。例：伊彼个人真無量，攏毋肯共人鬥相共。I hit ê lâng tsin bô-liōng, lóng m̄-khíng kā lâng tàu-sann-kāng. (他那個人很沒度量，都不肯幫別人的忙)
+43.	莫 bo̍k，莫非 bo̍k-hui(難道。加強語氣的反問詞。例：莫非代誌是伊做的，無，伊哪會攏無出面？)
+44.	莫怪 bo̍k-kuài(難怪、怪不得。例：原來是欲佮查某囡仔去看電影，莫怪伊喙笑目笑)
+45.	牧 bo̍k，牧師 bo̍k-su(基督新教的傳教士稱為牧師，取牧者與教師二義)、牧場 bo̍k-tiûnn(牧養牛、羊的場所)
+46.	bo̍k-bo̍k-siû(成大)；沐沐泅 bo̍k-bo̍k-siû(教典)：1.在水中掙扎，載沉載浮的游。例：我看著有人佇水底沐沐泅。Guá khuànn-tio̍h ū-lâng tī tsuí-té bo̍k-bo̍k-siû. (我看到有人在水中掙扎浮沉) 2.比喻身處困境，求助無門。例：伊做伊走，放我佇遮沐沐泅。I tsò i tsáu, pàng guá tī tsia bo̍k-bo̍k- siû. (他走他的，丟我在這求助無門)
+47.	雺 bông：大霧、霧氣。例：山雺 suann-bông(山上的霧氣)、雺霧 bông-bū(霧氣)
+48.	亡魂 bông-hûn：死者的靈魂。例：牽亡魂 khan-bông-hûn(牽引亡魂、通靈。是傳統喪禮的一部分)
+49.	墓壙 bōng-khòng：墓穴。埋葬棺木的洞穴。例：痟狗舂墓壙。Siáu-káu tsing bōng-khòng. (瘋狗爭著要進墓穴吃屍體。比喻爭先恐後)
+50.	母舅公 bú-kū-kong：舅公。稱謂。奶奶或是外婆的兄弟。例：天頂天公，地下母舅公。Thinn-tíng thinn-kong, tē-ē bú-kū-kong. (天上天公最大，人間母舅公最大。傳統上對母舅公都十分尊敬，常做家庭糾紛的公親或見證人)
+51.	武市 bú-tshī(從事外送、大宗買賣，主動開發客源的商行) vs 文市 bûn-tshī(零售商行)
+52.	buā-tsháu(成大)；茉草 bua̍h-tsháu(教典。銳葉小槐花。木本植物。長一到兩公尺，葉子互生，三出
+ 
+複葉，葉片披針形，花黃色或綠白色，產在臺灣中北部的山野。主要治療吐血、肝病、婦女病、腹痛、燙傷潰爛等。民間也作為避邪草。浸泡在熱水後，擦拭手腳或全身，以求消災去厄)
+53.	滿清 buán-tshing(成大)；滿清 Buán-tshing(教典。清朝)
+54.	尾氣 bué-khuì(後勁，成大)；尾氣 bué-khuì/bé-khuì(教典)
+55.	文人 bûn-jîn(成大)；文人 bûn-jîn/bûn-lîn(教典。讀書人或從事文學的人)
+56.	文書 bûn-su(統稱公文、契約等文件)
+57.	文市 bûn-tshī(零售商行)
+58.	下日 ē-ji̍t/ē-li̍t(改天)
+59.	牙 gâ：螺絲紋。例：這螺絲是正 gâ 抑是倒 gâ
+60.	眼前 gán-tsiân/gán-tsîng
+61.	gé-sé(諷刺；譏笑)
+62.	gè(成大)；嚙 gè，嚙甘蔗 gè kam-tsià(啃甘蔗，教典)
+63.	牙 gê，牙槽 gê-tsô：齒槽。包圍牙根，使牙根嵌入的凸凹腔。例：鐵齒銅牙槽 thih-khí tâng gê-
+tsô(比喻頑固嘴硬的人)。
+64.	gê-siâu(不爽，成大)；㤉潲 gê-siâu(教典。表示討厭的粗俗用語。例：我誠㤉潲伊彼款做代誌的態度)
+65.	語 gí(成大)；語言 gí-giân/gú-giân(教典。人類用嘴說出來的話，由語音、語彙和語法所組成，是表達情意、傳遞思想的重要工具)
+66.	語義 gí-gī(成大)；語義 gí-gī/gú-gī(教典。語言內字組與符號之間的關係)
+67.	語音 gí-im(成大)；語音 gí-im/gú-im(教典。字在口語中所念的音)
+68.	gī-niū(成大。消遣)；做議量 tsò-gī-niū/tsuè-gī-niū(教典。消遣、排遣。排解愁悶、消磨時間。例： 一陣老大人佇公園仔內面開講、行棋做議量)
+69.	gia̍h 旗軍仔 gia̍h-kî-kun-á(成大)；攑旗軍仔 gia̍h-kî-kun-á(教典)：本指大官出巡時舉旗的小兵，引申為隨聲附和的小人物，或舞台上跑龍套的小角色。例：大腳數共攑旗軍仔借錢。Tuā kioh-siàu kā gia̍h-kî-kun-á tsioh-tsînn. (大角色跟小角色借錢。俗語，比喻擅於賺錢的人不如懂得節儉的人)
+70.	giám-ngē(成大)；儼硬 giám-ngē/giám-ngī(教典)：1.堅強。例：弓蕉去予風颱掃倒了了，咱著較儼硬咧，重來。King-tsio khì hōo hong-thai sàu-tó liáu-liáu, lán tio̍h khah giám-ngē--leh, tîng-lâi.
+(香蕉全被颱風吹倒了，我們要堅強一點，重新來過)	2.硬朗。例：我老罔老，跤手猶真儼硬。Guá lāu bóng lāu, kha-tshiú iáu tsin giám-ngē. (我雖然年紀大了些，手腳還很硬朗)
+71.	閻君 giâm-kun(成大)；閻君 Giâm-kun(教典。閻羅、閻羅王。地獄中的鬼王，在佛經中是地獄的審判者，掌管人間的生死、壽命，及獎善罰惡諸事)
+72.	giat-láu(滾蛋；淘汰)
+73.	砛簷 gîm-tsînn(指舊式房屋屋簷下的臺階處)
+74.	扲 gīm(成大)；扲 gīm 又唸作 gîm：把東西緊緊地握在手中。例：伊共錢扲牢牢 gīm-tiâu-tiâu(教典)
+75.	gín-á-phí(成大)；囡仔疕 gín-á-phí(教典)：小毛頭。指小孩，但含有貶意。例：一个囡仔疕，閣足
+𠢕變鬼變怪。Tsi̍t ê gín-á-phí, koh tsiok gâu pìnn-kuí-pìnn-kuài. (一個小毛頭，反倒很會搞鬼)
+76.	gín-á-tioh(天真浪漫)
+77.	凝心 gîng-sim：抑鬱、鬱結。因為心煩而不開朗。例：這件代誌予伊足凝心的。Tsit kiānn tāi-tsì hōo i tsiok gîng-sim--ê. (這件事情讓他很抑鬱)
+78.	gió-toh(上等，成大)；上等 siōng-tíng(教典)
+79.	戇戇仔 gōng-gōng-á(笨笨的、傻傻地)
+80.	午時水 gōo-sî-tsuí(指端午節的中午由井裡打上來的水，據說飲用此水有益身體)
+ 
+81.	gû-pi(成大)；牛螕 gû-pi(教典)：1.昆蟲名。體形為長橢圓形。胸腹部有花紋，夏季常出現於水邊。會吸食牛、馬血液，對牛、馬家畜為害甚大。2.形容吝嗇的人，就像牛螕吸血一樣只有進沒有出。例：伊敢若牛螕咧，欲叫伊出錢是無可能的代誌。I kánn-ná gû-pi--leh, beh kiò i tshut tsînn sī bô khó-lîng ê tāi-tsì. (他就像牛螕一樣，要叫他出錢是不可能的事情)
+82.	危機 guî-ki
+83.	銀行 gûn-hâng/gîn-hâng(成大)；銀行 gîn-hâng/gûn-hâng(教典)
+84.	銀票 gûn-phiò/gîn-phiò(成大)；銀票 gîn-phiò/gûn-phiò(教典。鈔票。也就是紙幣)
+85.	瑕疵 hâ-tsû(成大)；瑕疵 hâ-tshû(教典)
+86.	hânn(懸而未決)；懸而未決 hiân--jî-bē-kuat
+87.	hannh(表示要對話人重述，成大)；唅--hannh(教典。表示驚訝的反問。例：唅？你講啥？Hannh? L
+í kóng siánn?)
+88.	竹箬 tik-ha̍h(竹籜，包裹於竹子外部會脫落的硬葉)、粽箬 tsàng-ha̍h(粽笚、粽籜)、蔗箬 tsià-
+ha̍h(包覆在甘蔗莖外的硬葉)
+89.	海海 hái-hái：形容諸般事務並沒有特別值得期待的地方，一切只是普普通通而已。例：人生海海 jîn-sing hái-hái(人生也不過就是如此而已)。
+90.	hái-iah(成大)；hài-ià(計程車)(教典)
+91.	hái-kat-á(瀏海，成大)；hái-kat-lá(西裝頭，教典)
+92.	孩兒 hâi-jî(成大)；孩兒 hâi-jî/hâi-lî(孩子)
+93.	哼哼叫 hainn-hainn-kiò：痛苦的呻吟聲；不滿的抱怨聲。例：你莫佇遐哼哼叫，我聽甲足煩呢！Lí mài tī hia hainn-hainn-kiò, guá thiann kah tsiok huân--neh! (你不要在那邊哼哼叫，我聽得煩死了！)
+94.	hak(成大)；蓄厝 hak-tshù(教典。購置房子。例：𪜶兩翁仔某這馬想欲蓄厝)、蓄田園 hak tshân-
+hn̂g(教典。購置田產)
+95.	漢朝 Hàn-tiâu(朝代名)
+96.	hân-san(成大)；寒酸 hân-suan 又唸作 hân-san(教典)：畏縮、不大方，害怕花費導致過於簡陋簡樸而不體面。例：無彩伊家財萬貫，煞顛倒寒酸，一箍銀都毋肯寄付。Bô-tshái i ka-tsâi bān-kuàn, suah tian-tò hân-suan, tsi̍t khoo gîn to m̄ khíng kià-hù. (徒然擁有他家財萬貫，竟反倒寒酸，一塊錢都不肯捐獻)
+97.	孝男 hàu-lâm(孝子。為父母親服喪的兒子)、孝男神 hàu-lâm-sîn(愛哭鬼)、孝男面 hàu-lâm-bīn(哭喪著臉。帶有貶意的說法。例：孝男面，無人緣。Hàu-lâm-bīn, bô-lâng-iân.)
+98.	夥計 hé-kì(成大)；夥計 hué-kì/hé-kì(教典)：1.受人僱用，替人做事的人。2.姘婦。例：鬥夥計 tàu- hué-kì(已婚男人包養情婦)。
+99.	下落 hē-lo̍h：去向、去處。例：下落不明 hē-lo̍h put bîng(不知去向)
+100.	魚塭 hî-ùn(成大)；魚塭 hî-ùn/hû-ùn(在海邊平地上，挖掘出來引水養殖魚類的池塘)
+
+1.	hiam-lua̍h-lua̍h(成大)；薟辣辣 hiam-lua̍h-lua̍h(教典。形容很辣)
+2.	hiàm(成大)；喊 hiàm：1.喊、叫。例：伊佇內底，你共伊喊一下。I tī lāi-té, lí kā i hiàm--tsi̍t-ē.
+(他在裡面，你喊他一聲。) 2.出聲驅趕。例：你去共彼隻鴨仔喊予伊走。Lí khì kā hit tsiah ah-á hiàm hōo i tsáu. (你去把那隻鴨子趕走。) 3.召喚。例：喊警察來 hiàm kíng-tshat lâi(叫警察來)、喊車 hiàm tshia(叫車過來)。4.叫做、稱做。例：你喊啥物名？Lí hiàm siánn-mih miâ? (你叫什麼名字？) 5.開口叫人、打招呼。例：阿伯來，你有喊無？A-peh lâi, lí ū hiàm--bô? (伯父來，你開口叫他了沒？)
+3.	響亮 hiáng-liāng(1. 聲音宏亮。2. 具知名度)
+ 
+4.	hiat(成大)；㧒hiat，擲㧒捔 tàn-hiat-ka̍k(教典。丟掉。例：門跤口彼袋糞埽順紲提出去擲㧒捔)
+5.	穴 hia̍t，點穴 tiám-hia̍t：1.地理師堪定的墓穴位置。2.指拳術師用手指點人身上的穴位，使其麻木。
+6.	僥 hiau：1.原本是平整的物體因外力或放久了而變彎。例：枋仔僥去矣。Pang-á hiau--khì--ah. (木板變彎了) 2.翻動、搜尋。例：僥塗 hiau thôo(翻動土壤)、規个屜仔僥透透。Kui ê thuah-á hiau- thàu-thàu. (整個抽屜翻透了) 3.背約、毀約。例：咱毋通僥人。Lán m̄-thang hiau--lâng. (我們不可以背約、失信於人)
+7.	僥心 hiau-sim：變心。改變原來對某人的感情與心意。例：伊已經僥心愛別人矣。I í-king hiau-
+sim ài pa̍t-lâng--ah. (他已經變心愛別人了)
+8.	僥倖 hiau-hīng：1.表可憐、惋惜、遺憾。例：真僥倖，嫁彼款的翁。Tsin hiau-hīng, kè hit khuán ê ang. (真可憐，嫁給那種丈夫) 2.行事不義，有負其他人。例：你做這種僥倖代，以後會袂好死。Lí tsò tsit tsióng hiau-hīng tāi, í-āu ē bē hó-sí. (你做這種不義之事，以後會不得好死)
+9.	梟 hiau，梟雄 hiau-hiông(強悍兇狠狡詐的領袖人物)
+10.	hin(成大。那裡頭。例：相片 hin 內底有我少年時的紀持)
+11.	興 hing(興盛)
+12.	興啼 hìng-thī(成大)；喋詳 thi̍h-siông(教典。多話、枝枝節節，雜七雜八的言語，且內容多是無關緊要的閒扯淡)
+13.	形威 hîng-ui(威風；威嚴。成大)
+14.	貺 hīng：逢喜事主人送親友禮物宣告喜訊。例：貺紅卵 hīng âng nn̄g(送紅蛋)、貺油飯 hīng iû-
+pn̄g(送油飯)。
+15.	hit-tia̍p(那時。成大)；彼當陣 hit-tang-tsūn(那時、那陣子。常合音為「向陣」hiàng-tsūn)、
+彼搭 hit-tah(教典。處、那裡。離說話者比較遠的地方。例：咱來去踅彼搭的夜市仔，好無？)
+16.	好代 hó-tāi：1.好事、善行事。例：做好代才會出好囝孫。Tsò hó-tāi tsiah ē tshut hó kiánn-sun. (做善事才會有好的後代子孫)2.好消息。例：這是好代，趕緊講予眾人知。Tse sī hó-tāi, kuánn-kín kóng hōo tsìng-lâng tsai. (這是好消息事，趕快說給大家知道)
+17.	何方 hô-hong；何人 hô-jîn/hô-lîn；何況 hô-hóng：用於比較之詞。常會對所比較的事物，有進一步的推論。例：這台車大人都騎袂行矣，何況是一个囡仔。Tsit tâi tshia tuā-lâng to khiâ bē kiânn--ah, hô-hóng sī tsi̍t ê gín-á.(這輛車大人都騎不動了，何況是個小孩)；何在 hô-tsāi；何處hô-tshù(在那裡)
+18.	號頭 hō-thâu：1.記號、標誌。公開或祕密的記號。例：公開或祕密的記號。例：蔗尾拍結做號頭，千萬毋通敨。Tsià-bué phah-kat tsò hō-thâu, tshian-bān m̄-thang tháu. (甘蔗尾梢打結當暗號， 千萬不要解開) 2.商標。例：買物件著愛認號頭。Bé mi̍h-kiānn tio̍h-ài jīn hō-thâu. (買東西需要辨識商標) 3.號角、喇叭。例：若欲聚集會眾，恁著歕號頭，總是毋通傷大聲。Nā beh tsū-tsi̍p huē-
+tsiòng, lín tio̍h pûn hō-thâu, tsóng--sī m̄-thang siunn tuā-siann. (招聚會眾的時候，你們要吹號，卻不要吹得太大聲)
+19.	好玄 hònn-hiân(好奇)
+20.	復 ho̍k，恢復 khue-ho̍k，俗唸作 hue-ho̍k
+21.	放送頭 hòng-sàng-thâu：1.本指廣播電臺的放送亭、廣播站，後多指擴音器。例：廟埕咧做戲，放送頭的聲音傳甲足遠。Biō-tiânn teh tsò-hì, hòng-sàng-thâu ê siann-im thuân kah tsiok hn̄g. (廟口在演戲，擴音器的聲音傳得很遠) 2.引申指愛搬弄是非的人、大嘴巴。例：這種代誌，你毋通予彼个放送頭知影，若無，規庄仔內的人就隨攏知矣！Tsit-tsióng tāi-tsì, lí m̄-thang hōo hit ê hòng- sàng-thâu tsai-iánn, nā-bô, kui-tsng-á-lāi ê lâng tō suî lóng tsai--ah!(這種事情，你不要讓那個大嘴巴知道，要不然，全村子的人就馬上都知道了)
+ 
+22.	發癀 huat-hông(發炎。傷口因感染而產生發紅、腫脹或疼痛等症狀)
+23.	奉祀 hōng-sū(供奉祭祀)
+24.	唬 hóo，唬人 hóo--lâng(騙人、哄人)、唬秤頭 hóo-tshìn-thâu(偷斤兩。指做生意偷斤減兩，占顧客便宜。例：有的生理人做生理會唬秤頭，所以買物件愛細膩)
+25.	戽 hòo：1.把水從水池或井中引上來並潑灑。例：共水戽予焦。Kā tsuí hòo hōo ta. (把水汲乾)； 戽水 hòo-tsuí(潑水) 2.把東西丟出去、把人轟出去。例：伊去予人戽出來。I khì hōo lâng hòo-- tshut-lâi. (他被人轟出來) 3.事情隨便做一做。須重疊使用。例：伊共代誌凊彩戽戽咧就準拄好
+矣。
+I kā tāi-tsì tshìn-tshái hòo-hòo--leh tō tsún-tú-hó--ah. (他把事情隨便做一做就算了) 4.形容人的下巴突出，像戽斗一樣。例：伊的喙下斗較戽。I ê tshuì-ē-táu khah hòo. (他的下巴比較突出)
+26.	hôo-liù-liù(胡說八道，成大)；糊瘰瘰 hôo-luì-luì(教典。形容說得天花亂墜、誇大不實)
+27.	滬尾 Hōo-bué(成大)；滬尾 Hōo-bué/Hōo-bé(教典。新北市淡水)
+28.	戶戶 hōo-hōo(成大)；家家戶戶 ke-ke-hōo-hōo(教典。每家每戶)
+29.	hu-loh(洗澡)(成大)
+30.	富裕 hù-jū(成大)；富裕 hù-jū/hù-lū(教典。錢財充足)
+31.	婦人 hū-jîn(成大)；婦人 hū-jîn/hū-lîn(教典。成年女子，多指已婚的女性)
+32.	huānn-tiānn(打定)(成大)；扞 huānn，扞盤 huānn-puânn(操盤、掌管。例：所有的代誌攏是伊咧扞盤，佮我無底代)、扞鼎灶 huānn-tiánn-tsàu(掌灶、掌廚。例：阮兜是阮阿爸咧扞鼎灶)
+33.	橫行 huâinn-hîng(不循正道而行)
+34.	番社 huan-siā(原住民的部落)
+35.	huan-tshia(醒悟，成大)；袂翻捙 bē-huan-tshia/buē-huan-tshia (教典。通常指經過言詞勸說之後，仍無法改變對方的態度或想法)
+36.	反面 huán-bīn(突變、翻臉)
+37.	反亂 huán-luān(叛亂、造反)
+38.	犯嫌 huān-hiâm(犯忌、犯疑、受人詬病、嫌疑)
+39.	發酵 huat-kànn(成大)；發酵 huat-kànn 又唸作 huat-kà(教典。醣類被菌類或細菌在無氧情況下代謝後，變成另一種有機物，經常生成酒精，這種作用稱為「發酵」，或單稱「發 huat」)
+40.	花蓮港 Hue-liân-káng(成大)；花蓮港 Hua-liân-káng、Hua-lian-káng/Hue-lian-káng(教典)
+41.	火灰 hué-hu(成大)；火烌 hué-hu/hé-hu(教典。灰燼。指物體燃燒後所餘留的屑末)
+42.	伙計 hué-kì(情婦，成大)；鬥夥計 tàu-hué-kì/tàu-hé-kì(勾搭姘頭，教典)
+43.	歲頭 huè-thâu(成大)；歲頭 huè-thâu/hè-thâu(教典。歲數、年齡。指年齡的大小)
+44.	huê(接觸並拖過；擦撞，成大)；	手機仔 huê tshiú-ki-á(教典。滑手機)
+45.	回轉 huê-tńg(成大)；回轉 huê-tńg/hê-tńg(教典。回去、回轉、返回)
+46.	會齊 huē-tsê(同心同力、集合)
+47.	毀 huí：(破壞、毀滅。例：毀滅 huí-bia̍t、毀了了 huí-liáu-liáu)
+48.	費神 huì-sîn：花費精神。有時也當做麻煩別人，或感謝他人幫忙的客套話。例：我家己想辦法， 毋免你費神。Guá ka-kī siūnn pān-huat, m̄-bián lí huì-sîn. (我自己想辦法，不用你花費精神)
+49.	紛紛 hun-hun(接連不斷的樣子)、紛擾 hun-jiáu/hun-liáu(混亂、凌亂)、糾紛 kiù-hun(有爭執的事情)
+50.	薰盤 hun-puânn(菸灰缸)
+51.	魂魄 hûn-phik(附於人體的精神靈氣)
+52.	混凝塗 hūn-gîng-thôo(成大。水泥)
+53.	衣 i，便衣 piān-i(平時所穿的衣服)、我身騎白馬走三關，改換素衣回中原
+54.	以色列 I-sik-lia̍t
+ 
+55.	義大利 I-tāi-lī
+56.	唯一 î-it(成大)；唯一 uî-it(教典。獨一無二)
+57.	維持 î-tshî(成大)；維持 î-tshî/uî-tshî(教典。維護保持)
+58.	ia̍h(也，成大)；抑 ia̍h 又唸作 iah、a̍h、ah；也 iā(教典)
+59.	演變 ián-piàn(事物在時間流逝的過程中所產生的變化)
+60.	要害 iàu-hāi
+61.	允人ín--lâng(成大)；允人ín--lâng/ún--lâng(教典。答應別人)、允頭路ín-thâu-lōo(教典。找工作)、允准ín-tsún/ún-tsún(教典。允許、准許)
+62.	往擺íng-pái：以前、早先。例：往擺伊足無愛來阮兜。Íng-pái i tsiok bô ài lâi guán tau. (以前他很不喜歡來我家)
+63.	養殖 ióng-si̍t(飼養、繁殖水產動植物)
+64.	融合 iông-ha̍p(融化匯合)
+65.	容允 iông-ún(成大)；容允 iông-ín/iông-ún(教典)：允許。容許、許可。例：就我所知，伊無可能容允你烏白來。Tsiū guá sóo tsai, i bô khó-lîng iông-ín lí oo-pe̍h lâi. (就我所知，他不可能容許你亂來)
+66.	一粒一 it-lia̍p-it：1.最好的、第一流的。例：這擺欲替伊開刀的醫生攏是一粒一的。Tsit pái beh thè i khui-to ê i-sing lóng sī it-lia̍p-it--ê. (這次為她開刀的醫生都是最好的) 2.最投契的。例：阿英佮我是一粒一的好朋友。A-ing kah guá sī it-lia̍p-it ê hó-pîng-iú. (阿英和我是最要好的朋友)
+67.	一盡 it-tsīn(悉數)
+68.	iu-iu-á(成大。微微、隱隱)；幽幽仔疼 iu-iu-á-thiànn(教典。隱隱作痛。例：我的腹肚幽幽仔疼)
+69.	幼膩 iù-jī(細嫩，成大)；幼膩 iù-jī/iù-lī(教典。細嫩、細膩)
+70.	油洗洗 iû-sé-sé(成大)；油洗洗 iû-sé-sé/iû-sué-sué(教典)：形容人油水很多，即外快很多的意思。例：伊趁甲油洗洗。I thàn kah iû-sé-sé. (他賺得很多)
+71.	樣相 iūnn-siùnn(模樣；姿態)
+72.	而已 jî-í(成大)；而已 jî-í/lî-í(教典。表示限制或讓步，相當於口語的「罷了」)
+73.	jî-ká-ká(混亂不堪，成大)；挐絞絞 jû-ká-ká/lû-ká-ká(教典。形容很亂)
+74.	jî-tsháng-tsháng(成大)；挐氅氅 jû-tsháng-tsháng/lû-tsháng-tsháng(教典。形容非常雜亂，毫無條理。例：規間厝舞甲挐氅氅)
+75.	二二八 jī-jī-pat(成大)；二二八 Jī-jī-pat/Lī-lī-pat(教典。臺灣近代史上影響深遠的歷史事件。起因於一件圓環緝煙意外事件，而引發全島抗爭行動)
+76.	jiàn-bà(夾克)
+77.	熱化 jia̍t-huà(成大)；熱化 jia̍t-huà/lia̍t-huà(教典)
+78.	如此 jû-tshú(成大)；如此如此 jû-tshú-jû-tshú/lû-tshú-lû-tshú(教典。1.不過爾爾。不過就是這樣而已。例：不過是如此如此爾爾。2.如此云云，表示就是這樣。例：代誌就是如此如此)
+79.	ka-ia̍h(成大)；交易 ka-ia̍h(教典)：指生意興隆的樣子。例：這間店的生理真交易。Tsit king tiàm ê
+sing-lí tsin ka-ia̍h. (這間店的生意很興隆)
+80.	茄苳 ka-tang(木本植物。一種半落葉性的喬木，枝幹直立，枝葉開展且茂密，樹皮呈赤褐色，幹面則呈現鱗狀剝落。是臺灣鄉間常見的樹種)
+81.	家童 ka-tông(童僕)
+82.	家財 ka-tsâi(成大)；家財萬貫 ka-tsâi bān-kuàn(教典)
+83.	虼蚤 ka-tsáu(跳蚤)
+84.	教學 kà-ha̍k(成大)；教學 kàu-ha̍k、教學 kà-o̍h(教典。教師將知識、技能傳授給學生)
+85.	咬喙 kā-tshuì：指吃了尚未成熟的水果，例如香蕉或是柿子，嘴裡有一種澀澀的感覺。例：柿仔若
+ 
+猶未熟，食著會咬喙。
+86.	kânn(成大)；含 kânn (教典)：1.兼有、包含、連帶。例：這味有含佇內底。Tsit bī ū kânn tī lāi- té. (這個成分包含在裡面)；痰含血 thâm kânn hueh(痰中帶血)。2.帶著、帶在身邊。例：一个死翁的查某人閣含兩个囡仔，日子無好過。Tsi̍t ê sí ang ê tsa-bóo-lâng koh kânn nn̄g ê gín-á, ji̍t-tsí bô hó kuè. (一個老公去世的女子還帶兩個小孩，日子不好過)
+87.	kâi 量詞(成大)，一 kâi 遮大 kâi
+88.	角銀 kak-gîn(成大。銅板、錢幣)；銀角仔 gîn-kak-á/gûn-kak-á(教典。銅板。銅製的錢幣。今多泛稱硬幣)
+89.	工藝 kang-gē：消遣。例：無聊的時陣，就來變工藝。Bô-liâu ê sî-tsūn, tō lâi pìnn kang-gē. (無聊的時候就找些消遣來做)
+90.	交界 kau-kài(交界、分界線)
+91.	交繃 kau-penn/kau-pinn：1.愛挑剔、計較，喜歡唱反調，讓人感到為難。例：伊真交繃，正經叫伊主意伊閣毋敢。I tsin kau-penn, tsìng-king kiò i tsú-ì i koh m̄ kánn. (他很愛挑剔、唱反調，當真要他做主他又不敢) 2.因為不滿而與人發生糾紛。例：頂日仔阮捌得失伊，伊毋才定定來咧交繃。Tíng-ji̍t-á guán bat tik-sit--i, i m̄-tsiah tiānn-tiānn lâi teh kau-penn. (前些日子我們曾經得罪他，因此他才常常來找麻煩。)；起交繃 khí kau-penn(起糾紛、因不滿而抗拒)。
+92.	交仗 kau-tiāng 又唸作 kau-tiōng：託付。例：你定定散散，阿爸的代誌欲按怎交仗予你。Lí tiānn- tiānn suànn-suànn, a-pah ê tāi-tsì beh án-tsuánn kau-tiōng hōo lí. (你常常迷迷糊糊，父親的事情要如何託付給你)
+93.	交纏 kau-tînn：1.指人死後陰魂糾纏不清。也指人際關係、疾病事物等糾纏煩擾不休。例：死都死囉！毋通閣來交纏。Sí to sí--looh! M̄-thang koh lâi kau-tînn. (死都死了，不要再來糾纏)；查某人做月內的時，若無細膩著著月內風，是會交纏一世人喔！Tsa-bóo-lâng tsò-gue̍h-lāi ê sî, nā bô sè- jī tio̍h-tio̍h gue̍h-lāi-hong, sī ē kau-tînn tsi̍t-sì-lâng--ooh! (女人坐月子的時候，要是不小心患上月子病，是會糾纏一輩子喔！) 2.事情錯綜複雜。例：代誌誠交纏。Tāi-tsì tsiânn kau-tînn. (事情很複雜)
+94.	垢 káu，臭油垢 tshàu-iû-káu(積久發臭難以清潔的油汙。例：你的枕頭囊臭油垢味誠重)
+95.	到極 kàu-ki̍k(非常、至極)
+96.	較勁 kàu-kìng(比較本領或能力的高下)
+97.	厚話屎 kāu-uē-sái：廢話太多。例：講話毋通傷厚話屎。Kóng-uē m̄-thang siunn kāu-uē-sái. (講話不可以太多廢話)
+98.	枷 kê，跤枷 kha-kê(腳鐐。一種用來防止人脫逃而拘束其雙腳的戒具)、夯枷 giâ-kê(自找麻煩。把沈重的負擔攬在身上，引申為自找麻煩)
+99.	扴味 ke̍h-bī：因為摻合不同食材，造成味道彼此不相合。例：用雞湯來煮魚敢會扴味？Īng ke-
+thng lâi tsú hî kám ē ke̍h-bī? (用雞湯來煮魚會不會味道不合？)
+100.	扴膏 ke̍h-kô(礙手礙腳)
+
+1.	扴拐 ke̍h-kuāinn(彆扭)
+2.	驚場 kiann-tiûnn(怯場)
+3.	京都 kiann-too(京師，首府)；京都 Kiann-too(日本都市名稱)
+4.	行遊 kiânn-iû(遊歷；夢遊)
+5.	行春 kiânn-tshun(走春)
+6.	健欉 kiānn-tsâng(枝繁葉茂)
+7.	見 kiàn，意見ì-kiàn(看法)、罕見 hán-kiàn(少見)
+ 
+8.	激屎 kik-sái(倨傲、高傲、擺架子)
+9.	極步 ki̍k-pōo(窮途末路)
+10.	今暗 kim-àm(今晚)
+11.	今後 kim-āu(從今以後)
+12.	今世 kim-sè(現代、當代)
+13.	今日 kin-ji̍t/kim-ji̍t(成大)；今仔日 kin-á-ji̍t/kin-á-li̍t(教典。今天)
+14.	肩頭 king-thâu(肩膀)
+15.	窮 kîng，人窮志不窮 Jîn kîng tsì put kîng. (人雖貧窮，卻志向高遠)
+16.	救主 kiù-tsú(成大)；救世主 kiù-sè-tsú(教典)：1.比喻拯救他人脫離困境的人。2.在基督教中，指的是耶穌
+17.	閣 kok，閣下 kok-hā(稱呼大官、書面語尊稱他人)
+18.	各馝 kok-pih：孤僻、滑稽。形容一個人的性情、脾氣特別古怪、乖戾，或指稱人的個性滑稽、詼諧。例：伊彼个人真各馝。I hit ê lâng tsin kok-pih. (他那個人很孤僻)
+19.	剛 kong，金剛石 kim-kong-tsio̍h(鑽石)
+20.	公工 kong-kang(共同聘僱的工人)
+21.	公開 kong-khui(平均分攤)、公開 kong-khai(公開)
+22.	公堂 kong-tn̂g(法庭)
+23.	孤𣮈koo-khu̍t：1.無父無母無兄弟姊妹、親戚的光棍。例：孤𣮈絕種 koo-khu̍t-tse̍h-tsíng(孤獨一人絕子又絕孫。咒詛罵人的話) 2.孤僻。不喜歡交際。例：孤𣮈人 koo-khu̍t lâng(不喜歡交際的人)
+24.	過謙 kòo-khiam：過於謙虛。例：阿榮伯上過謙，對人有夠客氣。A-îng-peh siōng kòo-khiam, tuì- lâng ū-kàu kheh-khì. (阿榮伯最為謙虛，對人很客氣)
+25.	龜祟 ku-sui：不乾脆。例：伊做人真龜祟。I tsò-lâng tsin ku-sui. (他做人很不乾脆)
+26.	舉行 kú-hîng(成大)；舉行 kí-hîng/kú-hîng(教典。舉辦某種活動)
+27.	據在 kù-tsāi(成大)；據在 kì-tsāi/kù-tsāi(教典)：任由、任憑。隨意而為，不受拘束。例：這件代誌欲按怎做據在你。Tsit kiānn tāi-tsì beh án-tsuánn tsò kì-tsāi--lí. (這件事情要怎樣處理任由你決定)
+28.	舊約 kū-iok(舊約聖經)
+29.	掛礙 kuà-gāi：掛心、牽掛。例：你共心內的掛礙講出來逐家參考看覓。Lí kā sim-lāi ê kuà-gāi kóng--tshut-lâi ta̍k-ke tsham-khó khuànn-māi. (你把心裡面的牽掛講出來給大家參考一下)；佛經寫罣礙。
+30.	掛吊 kuà-tiàu、割吊 kuah-tiàu(思念；戀慕；愛戀；想念；惦記)
+31.	官人 kuann-lâng(成大。官吏的老婆對她老公的稱號)、官人 kuann--lâng(官吏)(台日)
+32.	捾水 kuānn tsuí：1.用水桶提水。例：較早攏愛捾水洗身軀。Khah-tsá lóng ài kuānn tsuí sé-sin- khu. (以前的人要洗澡都必須先燒開水再提水到浴室才能洗。) 2.水腫。因液體在身體的細胞組織中發生異常的積聚現象，而引起全身或局部的腫脹症狀。
+33.	割引 kuah-ín(打折)
+34.	關廟 Kuan-biō(臺南市行政區)
+35.	管轄 kuán-hat(管理統轄)
+36.	縣官 kuān-kuann(縣官)
+37.	決意 kuat-ì(決心)
+38.	決斷 kuat-tuàn(1.決定；2.斷然)
+39.	會計 kuè-kè，俗唸作 huē-kè：1.管理財務帳目和出納事宜。2.管理財務帳目和出納職務的人員
+40.	橛 kue̍h：用來計算橫截後物品的段數。例：一橛甘蔗 tsi̍t kue̍h kam-tsià(一截甘蔗)、一尾魚仔切做兩橛 Tsi̍t bué hî-á tshiat tsò nn̄g kue̍h. (一條魚切成兩段)
+ 
+41.	幾仔 kuí-á；幾若 kuí-nā(許多)
+42.	貴氣 kuì-khì：1.高貴的氣質。2.指因為價值高，而會被特別珍惜。例：天然的璇石無濟又閣歹
+挖，所以真貴氣。Thian-jiân ê suān-tsio̍h bô tsē iū-koh pháinn óo, sóo-í tsin kuì-khì. (天然的鑽石不多又難開採，所以很珍貴)3.形容難以養成的人，或難以繁殖有成的其他動植物。例：這款蘭花真貴氣，無好種。Tsit khuán lân-hue tsin kuì-khì, bô hó tsìng. (這種蘭花帶貴氣，很不容易培育)
+43.	君皇 kun-hông(君皇)
+44.	滾絞 kún-ká：翻騰、掙扎、滾動、扭絞。例：我的腹肚疼甲若像咧滾絞。Guá ê pak-tóo thiànn kah ná-tshiūnn teh kún-ká. (我的肚子痛到好像腸子在攪動的樣子)
+45.	滾躘 kún-liòng(掙扎、亂滾亂踢)
+46.	尻川 kha-tshng/kha-tshuinn(屁股)
+47.	kháinn(成大)；敱 kháinn(教典)。彎著指頭，用關節叩、打、敲等。例：對伊的頭殼敱落去。Uì i ê thâu-khak kháinn--lo̍h-khì. (從他的腦袋敲下去)
+48.	牽挽 khan-bán：互牽互挽，比喻能持久、有耐力。例：你莫看伊瘦，伊瘦罔瘦，猶閣誠有牽挽。Lí mài khuànn i sán, i sán bóng sán, iáu-koh tsiânn ū khan-bán. (你不要看他瘦小，他瘦雖瘦， 還是很有耐力的)
+49.	牽礙 khan-gāi(成大)；礙 gāi 又唸作 ngāi(教典。妨害、阻礙)
+50.	牽絲 khan-si(拉長絲。本指蜘蛛結網拉絲，後也用來指起司、麥芽糖等食物拉出細絲)
+51.	牽成 khan-tsiânn(成大)；牽成 khan-sîng(教典)：栽培、提拔。例：伊猶閣少年，向望你共伊牽成。
+I iáu-koh siàu-liân, ǹg-bāng lí kā i khan-sîng. (他還年輕，希望你能多多提拔他)
+52.	稽考 khe-khó：1.考究、研究。例：臺語的漢字真僫稽考。Tâi-gí ê Hàn-jī tsin oh khe-khó. (臺語的漢字很難稽考)(近義詞：究勘 kiù-khàm) 2.查究、計較。例：家己管教好，毋驚別人來稽考。Ka-kī kuán-kà hó, m̄-kiann pa̍t-lâng lâi khe-khó. (自己管教得好，就不怕別人來查究)；伊有共咱坐毋著就好，過去的代誌莫閣稽考矣。I ū kā lán tshē-m̄-tio̍h tō hó, kuè-khì ê tāi-tsì mài koh khe-khó--ah. (他跟咱們道歉過就好，過去的事別再計較了)(近義詞:窮究 khîng-kiù)
+53.	啟稟 khé-pín(啟奏，稟告)
+54.	啟奏 khé-tsàu(向君王進言或稟告)
+55.	挈 khe̍h：拿取，獲得。例：挈物件 khe̍h mi̍h-kiānn(拿東西)、挈批的 khe̍h phue--ê(郵差)
+56.	起先 khí-sing(開始)；頭起先 thâu-khí-sing(起初、剛開始)
+57.	徛算 khiā-sǹg：可以算作。就算作……、就當作……。例：替伊買的物件若無提錢來，就徛算是送伊的。Thè i bé ê mi̍h-kiānn nā bô the̍h tsînn lâi, tō khiā-sǹg sī sàng--i--ê. (替他買的東西若沒有拿錢來，就當做是送給他的)；徛算講 khiā-sǹg-kóng:就好像說、也就是說。
+58.	譴損 khiàn-sńg：1.忌諱。例：有的人誠厚譴損，做啥物代誌攏著閣看日。Ū-ê lâng tsiânn kāu- khiàn-sńg, tsò siánn-mih tāi-tsì lóng tio̍h koh khuànn-ji̍t. (有的人有很多禁忌，無論做什麼事情都還得擇日) 2.做法術以躲避災禍，趨吉避凶。例：做譴損 tsò khiàn-sńg(迷信禁忌以巫術做蠱來趨吉避凶)
+59.	厚譴損 kāu-khiàn-sńg：迷信、忌諱。例：伊這个人足厚譴損，逐項代誌攏著看日 I tsit ê lâng
+tsiok kāu-khiàn-sńg, ta̍k-hāng tāi-tsì lóng tio̍h khuànn-ji̍t. (他這個人很迷信，做每件事都得看日子)
+60.	khiàn(抬頭，成大)；頏 khiàn，頭頏頏(抬頭)、頏天(做事漫不經心)
+61.	勥 khiàng：精明能幹、能力很行、很強的樣子。多用於形容女性，現今表示有點過分的能幹。例：伊真勥，逐家攏真呵咾。I tsin khiàng, ta̍k-ke lóng tsin o-ló. (她很能幹，大家都很稱讚她)
+62.	勥跤 khiàng-kha：形容一個人精明能幹，一般用在形容女人，有貶義。例：阿嬌	大漢新婦誠勥跤。A-kiau in tuā-hàn sin-pū tsiânn khiàng-kha. (阿嬌她大媳婦很精明能幹)
+ 
+63.	擒家 khînn-ke(成大)；拑家 khînn-ke(教典)：操持家務。例：伊真𠢕拑家。I tsin gâu khînn-ke. (她很會理家)
+64.	欽差 khim-tshe(使節，由皇帝特命出外辦理重大事務的官員)
+65.	khîng(成大)；窮 khîng：。教典。清理、整理。例：共你的物件窮窮咧。Kā lí ê mi̍h-kiānn khîng- khîng--leh. (把你的東西整理一下。)；窮菜尾 khîng tshài-bué(把剩菜清完)。
+66.	抾 khioh(撿拾)，抾囡仔 khioh-gín-á(1.接生。幫助產婦分娩，使胎兒安全出生。例：阮阿母較早專門咧共人抾囡仔 2.生育。生育嬰兒。例：	老母舊年才抾囡仔爾爾)
+67.	khioh-si̍p(成大)；抾拾 khioh-si̍p(教典)：節省、節儉。例：阿珠人真抾拾，袂烏白開錢
+68.	乞求 khit-kiû(懇求、請求)
+69.	khit-tsih(小氣，成大)
+70.	洘流 khó-lâu：退潮。例：洘流頭 khó-lâu thâu(開始退潮的時候)、洘流尾 khó-lâu bué(退完潮的時候)。
+71.	洘秫秫 khó-tsu̍t-tsu̍t：形容路人行人非常多，既不方便穿越，也不容易前進。例：過年時仔，街仔路人洘秫秫。Kuè-nî-sî-á, ke-á-lōo lâng khó-tsu̍t-tsu̍t. (過年的時候，路上的人潮非常多)
+72.	可 khónn(鹿港偏泉腔，成大)，可惡；可 khó又唸作 khónn，可以 khó-í、可見 khó-kiàn、可能 kh
+ó-lîng(教典。或許、也許)
+73.	khong-khám(成大)；悾歁 khong-khám(教典)：罵人呆傻、愚笨。例：你真正有夠悾歁。Lí tsin- tsiànn ū-kàu khong-khám. (你真的很笨)
+74.	苦力 khóo-lo̍h(成大)；苦力 ku-lí(教典。從事粗工的搬運工人。借自英語 coolie)
+75.	箍絡 khoo-lo̍h(教典。奴才。以前的人在搬運物品的時候需要使用繩子來綑綁，這種繩子稱為「箍絡索」，所以「箍絡」被引申有「搬運工」的意思，而後才再被引申成「奴才」的意思)
+76.	苦楚 khóo-tshóo(虐待；苦毒；苛責)
+77.	khu-lá-tsì/khuh-lá-tsì(來自日語，離合器)
+78.	掛意 kuà-ì：掛念、介意。心中有繫念，將不愉快或憂慮之事存於心中，而不能釋懷。例：你毋通掛意，我會趕緊轉來。Lí m̄-thang kuà-ì, guá ē kuánn-kín tńg--lâi. (你不要掛念，我會趕快回來)
+79.	寬寬仔 khuann-khuann-á：慢慢地。例：你寬寬仔來就好。Lí khuann-khuann-á lâi tō hó. (你慢慢來就好)
+80.	寬寬仔是 khuann-khuann-á-sī：慢慢來。叫人不要著急。例：寬寬仔是就好，毋免趕。Khuann- khuann-á-sī tō hó, m̄-bián kuánn. (慢慢來就好，不用趕)
+81.	看現現 khuànn-hiān-hiān：看透。形容人把事物看得一清二楚。例：我做的代誌逐家看現現，毋驚人講閒仔話。Guá tsò ê tāi-tsì ta̍k-ke khuànn-hiān-hiān, m̄-kiann lâng kóng îng-á-uē. (我做事情大家都看得一清二楚，不怕人家說閒話)
+82.	看出出 khuànn-tshut-tshut：看穿、看透。識破別人的舉止、行動。例：我早就共你看出出矣。Guá tsá tō kā lí khuànn-tshut-tshut--ah. (我早就看穿你了)
+83.	開仔 khui-á(成大)；酒開仔 tsiú-khui-á(教典。開瓶器。使用於玻璃瓶裝的酒或飲料)
+84.	拉天 la-thian(聊天；不知惜福)
+85.	la-lûn(成大)；拉圇仔燒 lâ-lûn-á-sio(教典。溫溫的。微溫而不熱)
+86.	內頭 lāi-thâu、內底 lāi-té/lāi-tué(裏面)
+87.	la̍k-la̍k-tshuah(成大)；慄慄掣 la̍k-la̍k-tshuah(教典)：因恐懼而身體發顫。例：伊去予蛇驚甲慄慄掣。I khì hōo tsuâ kiann kah la̍k-la̍k-tshuah. (她被蛇嚇得發抖)
+88.	lám-sin(成大)；荏身 lám-sin(教典)：身體虛弱。例：伊真荏身，磕袂著就破病。I tsin lám-sin, kha̍p-bē-tio̍h tō phuà-pēnn. (他身體很虛弱，動不動就生病)
+89.	湳仔地 làm-á-tē(溼地、沼澤地，也通稱含水份較多的土地)、湳塗 làm-thôo(爛泥、泥濘的土)、牽
+ 
+龜落湳 khan-ku-lo̍h-làm(引誘烏龜陷入泥沼之中，比喻用騙術引誘別人落入圈套，以謀取利益；或是帶壞人家。例：伊想欲牽龜落湳，你莫予伊騙去)
+90.	lâm-á-khòng(預拌混凝塗)
+91.	懶屍 lán-si：1.懶洋洋。倦怠、無精打采的樣子。例：伊這站仔誠懶屍，啥物代誌攏無欲做。I tsit-
+tsām-á tsiânn lán-si, siánn-mih tāi-tsì lóng bô beh tsò. (他這陣子總是懶洋洋，什麼事情都不想做)
+2.懶惰。例：彼个人真懶屍，欲食毋振動。Hit ê lâng tsin lán-si, beh tsia̍h m̄ tín-tāng. (那個人很懶，好吃懶做)
+92.	人蛇 lâng-tsuâ(走私人口的人)
+93.	弄風 lāng-hong：1.使吹乾。例：你的頭毛澹澹，去弄風弄弄咧，較快焦。Lí ê thâu-mn̂g tâm-tâm, khì lāng-hong lāng-lāng--leh, khah khuài ta. (你的頭髮溼溼的，去吹一吹風，會比較快乾)	2.吹風。例：身軀洗了隨出去弄風會去寒著。Sin-khu sé-liáu suî tshut-khì lāng-hong ē khì kuânn--tio̍h.
+(洗完澡馬上出去吹風會感冒)
+94.	弄鐃 lāng-lâu：僧道人士在儀式後所進行耍弄鐃鈸等的特技表演，多見於辦完喪事之後
+95.	弄獅頭 lāng-sai-hâu(操控舞獅，成大)；弄獅 lāng-sai(教典)
+96.	落下頦 làu-ē-hâi：1.下巴脫臼。2.引申為笑話說得很精彩，讓人笑得下巴都要掉了。例：笑甲落下頦 tshiò kah làu-ē-hâi(笑得下巴快掉了)。3.指人在撒謊。例：我聽你咧落下頦，錢明明就是你提的，閣諍無。Guá thiann lí teh làu-ē-hâi, tsînn bîng-bîng tō sī lí the̍h--ê, koh tsènn bô. (我聽你在撒謊，錢明明就是你拿的，還辯說沒有)
+97.	禮物 lé-mi̍h(成大)；禮物 lé-bu̍t(教典。餽贈的物品)
+98.	掠外 lia̍h-guā(以外)；一掠外長 tsi̍t-lia̍h guā tn̂g(一掌長)
+99.	掠做 lia̍h-tsò(成大)；掠做 lia̍h-tsò/lia̍h-tsuè(教典)：當做、以為。例：我掠做無人知影彼件代誌。Guá lia̍h-tsò bô-lâng tsai-iánn hit kiānn tāi-tsì. (我還以為沒人知道那件事情)
+100.	斂 liám(減少；節省)，斂秤斤 liám-tshìn-kin(偷斤兩，成大)；唬秤頭 hóo-tshìn-thâu(教典。偷斤兩。指做生意偷斤減兩，占顧客便宜。例：有的生理人做生理會唬秤頭，所以買物件愛細膩)、食秤頭 tsia̍h-tshìn-thâu(教典。偷斤減兩。賣東西時，以少報多，欺騙顧客)
+
+1.	念頭 liām-thâu(心中的想法、打算)、念經 liām-king、念咒 liām-tsiù、念珠 liām-tsu
+2.	唸咒 liām-tsiù(念咒語)、暗唸 àm-liām、唸謠 liām-iâu、唸歌 liām-kua、雜唸 tsa̍p-liām
+3.	輦轎 lián-kiō(神轎。放有神像或神符的轎子，通常由四個人來抬，而且抬的人會上下左右地搖晃，或者橫衝直撞，在傳統民間信仰中多用以問神扶乩)
+4.	連回 liân-huê：四處丟人現眼。有時用來問對方去了何處，是一種取笑戲謔的用法。例：你是閣走去佗位連回？Lí sī koh tsáu khì tó-uī liân-huê? (你又跑到哪裡去丟人現眼？)
+5.	攝 liap：打摺、摺疊。例：裙攝襇 kûn liap-kíng(將裙子打摺子)、紙攝痕 tsuá liap hûn(紙摺紋
+痕)；上卌袂攝 tsiūnn-siap-bē-liap/tsiūnn-siap-buē-liap:卌為四十的意思，上卌表示人到中年的意思。這句話表示人到中年萬事休，生理機能走下坡，心理也逐漸失去青年時期意氣風發的理想。
+6.	攝襇 liap-kíng：1.打摺。一種製作衣服的方式，先在布料上疊層，再加以縫紉。2.長皺紋。例：面皮開始咧攝襇矣。Bīn-phuê khai-sí teh liap-kíng--ah. (臉上開始出現皺紋了)
+7.	聊聊仔 liâu-liâu-á(慢慢地、謹慎小心地。例：燒茶聊聊仔啉)
+8.	料小 liāu-siáu：1.不牢靠、不結實、單薄。例：你做這个架仔傷料小，物件囥濟囥重就會崩去。Lí tsò tsit-ê kè-á siunn liāu-siáu, mi̍h-kiānn khǹg-tsē khǹg-tāng tō ē pang--khì. (你做這個架子過於單薄，東西一放多或一放重就會垮掉) 2.不起眼、不大方。例：送彼做禮物傷料小，恐驚無夠看。Sàng he tsò lé-bu̍t siunn liāu-siáu, khióng-kiann bô-kàu-khuànn. (送那個當禮物太不起眼，恐怕不夠看)
+ 
+9.	淋漓 lîm-lî
+10.	凌辱 lîng-jio̍k(成大)；凌辱 lîng-jio̍k/lîng-lio̍k(教典)；凌勒 lîng-lik 又唸作 lîng-li̍k(凌虐)、
+凌治 lîng-tī(欺負、作弄)、凌遲 lîng-tî(一種古代的酷刑。行刑方法不一，但求使被殺之人痛苦地慢慢死去。有的先斬斷手足，有的以刀剮全身再砍頭)
+11.	兩方 lióng-hong(雙方)
+12.	兩光 lióng-kong：1.形容人精神渙散，漫不經心。例：伊這个人兩光兩光。I tsit ê lâng lióng- kong-lióng-kong. (他這個人很散漫) 2.形容東西品質不好。例：毋通買彼種兩光的產品。
+M̄-thang bé hit tsióng lióng-kong ê sán-phín. (不要買那種品質不好的產品)
+13.	量其約 liōng-kî-iok(大概、大約。例：你量其約報一个價予我)
+14.	量早 liōng-tsá(成大)；冗早 liōng-tsá(教典)：趁早、及早、提早。例：這種代誌你毋著冗早講，這馬欲反悔已經袂赴矣。Tsit tsióng tāi-tsì lí m̄-tio̍h liōng-tsá kóng, tsit-má beh huán-hué í-king bē- hù--ah. (這種事你應該要趁早講，現在要反悔已經來不及了)
+15.	立志 li̍p-tsì(立定志願。例：男兒立志出鄉關。Lâm-jî li̍p-tsì tshut hiong-kuan.)
+16.	立狀 li̍p-tsn̄g(立書狀)
+17.	溜溜 liu-liu(到處亂跑。例：四界溜溜去)；直溜溜 ti̍t-liu-liu；溜溜瞅瞅，食兩蕊目睭。Liu-liu- tshiu-tshiu, tsia̍h nn̄g luí ba̍k-tsiu.(比喻人要會察顏觀色，眼觀四面，耳聽八方)
+18.	扭搦 liú-lak(成大)；扭搦 liú-la̍k(教典)：處理、掌管。負面的用法較為常用。例：伊彼个人誠歹扭搦，你家己愛有心理準備。I hit ê lâng tsiânn pháinn liú-la̍k, lí ka-kī ài ū sim-lí tsún-pī. (他那個人很難搞，你自己要有心理準備)
+19.	liù-liù，家伙輸甲光 liù-liù(成大)；遛疕仔 liù-phí-á(1.小鬼、小鬼頭。對小孩不客氣的稱呼。2. 傷口的瘡痂脫落)、遛皮 liù-phuê/liù-phê(脫皮、破皮。皮膚脫離掉落)
+20.	lo(索求成大)；叨 lo 又唸作 tho，叨錢 lo tsînn(纏著要錢，教典)
+21.	身勞 骹的 lò-kha--ê(成大)；躼跤 lò-kha(教典。長腿，形容人長得很高)
+22.	長躼埽 tn̂g-lò-sò(形容物體很長、很高的樣子)、躼躼長 lò-lò-tn̂g(形容很長)
+23.	落尾 lo̍h-bué(成大)；落尾 lo̍h-bué/lo̍h-bé(教典。後來、最後。例：落尾我就去高雄讀冊)
+24.	lok-koh-sok-koh(雜七雜八，成大)；漉哥束哥 lo̍k-koh-sok-koh(教典)
+25.	lòng-khòng(空曠，成大)；闊閬閬 khuah-lòng-lòng(非常寬闊)、闊莽莽 khuah-bóng-bóng(形容非常遼闊，一望無垠。例：一片闊莽莽的草埔)；閬曠 lòng-khòng(寬闊、寬大)
+26.	農夫 lông-hu(種植農作物的人)
+27.	狼狽 lông-puē(成大)；狼狽 lông-puē 又唸作 liông-puē(教典)：落魄。形容人窮困潦倒不得志。例：你是按怎遮爾狼狽？Lí sī-án-tsuánn tsiah-nī lông-puē? (你為何如此地落魄？)
+28.	lōng-liu-lian(遊手好閒，成大)；浪溜嗹 lōng-liu-lian(教典)
+29.	路沖 lōo-tshiong(房屋正前方有道路直來，據云在風水上屬大凶的格局)
+30.	女婢 lú-pī(女佣人)
+31.	戀夢 luân-bāng(戀夢)
+32.	累 luī，連累 liân-luī(因事互相拖累。例：你毋通連累我)、拖累 thua-luī(連累、牽累。例：伊逐擺做代誌，攏會去拖累著別人)
+33.	縋 luī：用繩子將東西垂降。例：共旗仔縋落來。Kā kî-á luī--lo̍h-lâi. (把旗子降下來)
+34.	崙 lūn，沙崙 sua-lūn(沙丘)、浮崙 phû-lūn(沙洲。江海河流中由泥沙淤積而成的陸地)
+35.	毋甘 m̄-kam tiuh tiuh(成大)；毋甘搐搐 m̄-kam tiuh tiuh(教典)
+36.	m̄-sái(不行，成大)；毋使 m̄-sái
+37.	m̄-tānn(不只，成大)；毋但 m̄-nā 又唸作 m̄-niā：教典。1.不只、不但。例：我看伊做的歹代誌毋但按呢爾爾。Guá khuànn i tsò ê pháinn tāi-tsì m̄-nā án-ne niā-niā. (我看他做的壞事不只這樣而
+ 
+已) 2.不只。表示前一句話的語意尚未完結，還有承接下面的語意。例：伊毋但寄付錢，閣去做義工。I m̄-nā kià-hù tsînn, koh khì tsò gī-kang. (他不只捐錢，還去當義工)
+38.	猛 mé：1.行動迅速。例：跤手較猛咧，無會做袂赴。Kha-tshiú khah mé--leh, bô ē tsò bē-hù. (你動作快一點，否則會來不及) 2.旺盛而強烈的樣子。例：日頭遮爾猛，天氣有夠熱。Ji̍t-thâu tsiah- nī mé, thinn-khì ū-kàu jua̍h. (太陽這麼大，天氣很熱。)；猛火 mé-hué/mé-hé(烈火)
+39.	mé-tshénn(成大)；猛醒 mé-tshénn/mé-tshínn(教典)：1.警醒，指人提高警覺之意。例：你下暗睏的時愛較猛醒咧。Lí e-àm khùn ê sî ài khah mé-tshénn--leh. (你今晚睡覺的時候要提高警覺)
+2.形容人手腳敏捷、工作勤奮。例：伊跤手真猛醒。I kha-tshiú tsin mé-tshénn. (他手腳真敏捷)
+40.	暝時 mê-sî(成大)；暝時 mê--sî/mî--sî(教典)：夜晚。夜裡，晚上
+41.	棉糖 mî-thn̂g、棉仔糖 mî-á-thn̂g(棉花糖)
+42.	門鏲 mn̂g-khian(成大)；門圈 mn̂g-khian(教典。門環。舊式大門上所安置像鈸的東西，有環，方便拉開或關。一般在叫門時，也會用環敲門，藉著發出聲響，讓住戶知道有客人來訪)
+43.	魔幻 môo-huàn(魔術所形成的虛幻效果)
+44.	膜 mo̍oh，腦膜炎 náu-mo̍oh-iām(流行性腦脊髓膜炎的通稱)、竹膜 tik-mo̍oh(竹子的內膜，專門用來黏貼在笛子的膜孔上，讓笛子的音色嘹亮)
+45.	mooh-piah-kuí(成大)；𢯾壁鬼 mooh-piah-kuí(教典)：指人像是緊靠牆壁行走的鬼，突然出現，使人嚇一跳。例：伊徛佇遐無聲無說，袂輸𢯾壁鬼咧。I khiā tī hia bô-siann-bô-sueh, bē-su mooh-piah- kuí--leh. (他站在那裡無聲無息的，好像靠在牆壁上的鬼)
+46.	妹妹 muē-muē(成大)；妹 muē/bē，姊妹 tsí-muē/tsí-bē(教典)
+47.	門 muî(宜蘭偏漳腔)/mn̂g(成大)；挵門 lòng mn̂g(叩門、敲門)、網仔門 bāng-á-mn̂g(紗門)；豪門hô bûn(財多勢大的富豪之家)、肛門 kong-bûn(動物消化道後端的開口。人類肛門位於直腸末端， 由肛管及肛口組成，行使排糞功能)
+48.	問 muī(宜蘭偏漳腔)/mn̄g(成大)；審問 sím-mn̄g、相借問 sio-tsioh-mn̄g(打招呼、寒喧。互相打招呼問候。例：見著人愛相借問，才有禮貌)；疑問 gî-būn、學問 ha̍k-būn (教典)
+49.	蔭 ńg，樹蔭 tshiū-ńg(樹蔭)
+50.	黃梔仔花 n̂g-ki-á-hue(名。茜草科，黃梔子屬。常綠灌木或小喬木，高約三公尺，花瓣六枚，氣味幽香，初開時為白色，花謝時漸轉為乳黃色。春末至夏季為其花期，果實俗稱山梔子，為兩端尖瑞的橢圓形，有六條綾線，可作為黃色染料而得名，亦可入藥)
+51.	黃酸 n̂g-sng：面黃肌瘦。形容人消瘦，營養不良的樣子。例：彼个囡仔黃酸黃酸，敢若飼袂啥會大漢。Hit ê gín-á n̂g-sng-n̂g-sng, kánn-ná tshī bē siánn ē tuā-hàn. (那個小孩面黃肌瘦，好像養不大)
+52.	挾 nge̍h：被其他物品夾在中間。例：我去予電梯門挾佇中央。Guá khì hōo tiān-thui mn̂g nge̍h tī
+tiong-ng. (我被電梯門夾在中間)
+53.	五路 ngóo-lōo9(各路、各處。指東、西、南、北、中五個方向。例：臺北車頭內面五路的人攏有)
+54.	五彩 ngóo-tshái(形容顏色眾多繽紛)；十花五色 tsa̍p-hue-gōo-sik(五花八門、形形色色)
+55.	貓神 niau-sîn(不乾脆；愛標新立異)
+56.	鳥 niáu，飛鳥 hui-niáu、鳥鼠 niáu-tshí/niáu-tshú
+57.	糧 niû，米糧 bí-niû(糧食、食糧。泛指一切的五穀雜糧)、糧草 niû-tsháu(軍中人、馬所吃的糧食與草料。例：糧草不足當然嘛輸)
+58.	娘仔瓜 niû-á-kue(成大)；瓜仔哖 kue-á-nî(教典)：小黃瓜
+59.	娘子 niû-kiánn(成大)；娘囝 niû-kiánn(教典。娘子、妻子。是比較文言的用法，多在戲劇中的使用)
+60.	軁鑽 nǹg-tsǹg：鑽營、善於變通。例：伊真𠢕軁鑽，隨揣著頭路。I tsin gâu nǹg-tsǹg, suî tshuē-
+ 
+tio̍h thâu-lōo. (他很善於鑽營，馬上就找到了工作)
+61.	窩 o，燕窩 iàn-o、塌一窩
+62.	奧國 Ò-kok
+63.	ōm(成大)；茂 ōm：教典。草木繁盛的樣子。例：這欉樹仔葉仔真茂。Tsit tsâng tshiū-á hio̍h-á tsin ōm. (這棵樹木的葉子很茂密)
+64.	王祿仔 ông-lo̍k-á：1.行走江湖，以賣藥、賣藝為生的人。2.形容行為舉止像行走江湖、招搖撞騙的人。
+65.	烏甕串 oo-àng-tshǹg(北方黑鮪、黑鮪。魚類。體型最長約可至三公尺，胸鰭特短，腹白，眼眶小，體側有十數條淡色橫紋帶，在北太平洋海域洄游。因背部黑如墨，體大如甕，故稱為「烏甕串」。為世界上最大的鮪類。肉質鮮美，營養價值高，肚肉更是生魚片中極品。是屏東東港地區的三寶之一)
+66.	烏鬼洞 oo-kuí-tōng(小琉球的景點)
+67.	oo-lóo-bo̍k-tsè(成大)；烏魯木齊 oo-lóo-bo̍k-tsè(教典)：指人不精細分明、過於草率，喜歡胡說八道。例：我聽你咧烏魯木齊，十句無一句實的。Guá thiann lí teh oo-lóo-bo̍k-tsè, tsa̍p kù bô tsi̍t kù si̍t--ê. (我聽你在胡說八道，沒有一句話是真的)
+68.	oo-se(成大)；烏西 oo-se(教典。賄賂、行賄。源自日語)
+69.	òo(語氣詞，噢)
+70.	壺 ôo，一壺酒、痰壺 thâm-ôo、𥴊壺 kám-ôo(大而淺的圓形盛物竹筐)
+71.	芋 ōo，芋莖 ōo-huâinn(芋的莖，可食用)、芋稈 ōo-kuáinn(芋的莖，可食用)
+72.	百百 pah-pah(成大)；百百空 pah-pah-khang(1.比喻問題或者事故很多。2.指瑕疵漏洞很多)、百百款 pah-pah-khuán(教典。許多不同的式樣和種類)
+73.	拜別 pài-pia̍t(告別，辭別)
+74.	北美洲 Pak-bí-tsiu(世界七大洲之一。在亞美利加州的北部，東臨大西洋，西濱太平洋，北抵北極海，南臨墨西哥灣及加勒比海，以巴拿馬地峽與南美洲相接。面積約二千四百四十五餘萬平方公里，域內有美國、加拿大等國)
+75.	贌田 pa̍k-tshân：租田。租用田地耕作。例：贌田來作 pa̍k-tshân lâi tsoh(租田來耕作)
+76.	放伴 pàng-phuānn：輪流互相幫忙。例：作田人放伴作穡。Tsoh-tshân-lâng pàng-phuānn tsoh-sit.
+(農夫輪流互相幫忙從事農務)
+77.	菝仔屎 pa̍t-á-sái(吝嗇)
+78.	包公 pau-kong(成大)；包公 Pau-kong(教典。宋代有名的清官)
+79.	平埔 pênn-poo(成大)；平埔 pênn-poo/pînn-poo(教典。平地、平野、平坦而空曠的原野)
+80.	八字帖 peh-jī-thiap(成大)；八字帖 peh-jī-thiap/pueh-lī-thiap(教典。記載八字的書類)
+81.	白鶴 pe̍h-ho̍h(白鶴)
+82.	邊 pian，邊界 pian-kài(疆域界線)、苦海無邊 khóo-hái bû pian(比喻人世間的苦境是無窮盡的)
+83.	便若 piān-nā：凡是、只要。例：伊便若食牛奶就落屎。I piān-nā tsia̍h gû-ling tō làu-sái. (他只要喝牛奶就拉肚子)
+84.	pìnn-lián(耍花樣，成大)；飛機起飛，變無輪(變不出花樣)
+85.	變成 pìnn-tsiânn(成大)；變成 piàn-sîng(教典)
+86.	pih-tsah(成大)；撆紮 pih-tsah(教典)；衣冠楚楚。形容服飾衣著整齊鮮麗。例：伊的穿插真撆紮。I ê tshīng-tshah tsin pih-tsah. (他的穿著十分整齊。)
+87.	憑 pîn，憑準 pîn-tsún：確實而且可靠的憑據。例：空喙哺舌無路用，白紙烏字才有憑準。Khang- tshuì-pōo-tsi̍h bô-lōo-īng, pe̍h-tsuá-oo-jī tsiah ū pîn-tsún. (空口說白話沒有用，立下字據來，才有個準)
+ 
+88.	憑良心 pîn-liông-sim(憑良心)
+89.	文憑 bûn-pîng(用作證明的文書。舊時指官吏赴任所持的憑證，現則指學校給予學生的畢業或肄業證明文書)
+90.	pîng-kin-tshé(成大)；平均扯 pîng-kin-tshé/pîng-kun-tshé(教典)
+91.	並且 pīng-tshiánn(而且。通常連接兩個句子，是用以表示平列或進一層意義的連詞)
+92.	必定 pit-tīng(一定。表示肯定的推斷)
+93.	保正 pó-tsiànn(相當於現今的村、里長。在日治時代，十戶為一甲，十甲為一保，保正為一保的民政事務管理人)；保正 pó-tsiànn 又唸作 pó-tsìng(教典)
+94.	po̍h-lî-si(成大)；薄縭絲 po̍h-li-si(教典)：形容東西厚度很薄或是分量很少。例：天氣變涼矣，你閣穿甲薄縭絲。Thinn-khì piàn liâng--ah, lí koh tshīng kah po̍h-li-si. (天氣變涼了，你還穿這麼薄)
+95.	磅 pōng，磅仔 pōng-á：1.砝碼。以天平或磅秤稱物時，用來計算重量的標準器。由銅鉛等金屬製成，有輕重大小之別。例：褲袋仔袋磅子。Khòo-tē-á tē pōng-tsí. (褲袋裡裝的是砝碼，看來很重，其實不是錢。形容人窮) 2.炸藥。例：炭空挖塗炭，著愛先用磅子磅。Thuànn-khang óo thôo- thuànn, tio̍h-ài sing iōng pōng-tsí pōng. (炭坑挖煤炭，得要先用炸藥炸開)
+96.	磅 pōng：用體溫計量測體溫。例：你去提度針來磅看囡仔敢有發燒。Lí khì the̍h tōo-tsiam lâi pōng khuànn gín-á kám ū huat-sio. (你去拿溫度計來量量看孩子有沒有發燒)
+97.	補記 póo-kì(補述紀錄)
+98.	pòo-huānn(堤岸，成大)；駁岸 poh-huānn(教典。堤防、河堤。沿河或海邊修築的高岸，用以防水患)；埠頭 poo-thâu：1.碼頭、港口。2.沿海的市鎮或是鄉野間的商業地區、市鎮。例：鹿港是一个真鬧熱的埠頭。Lo̍k-káng sī tsi̍t-ê tsin lāu-jia̍t ê poo-thâu. (鹿港是一個很熱鬧的市鎮)
+99.	佈道 pòo-tō(傳教)
+100.	部落 pōo-lo̍k(人民聚居所形成的單位。通常指具有特定語言與文化的小規模聚落)
+
+1.	pû(成大)；炰 pû：教典。1.將食物覆蓋在熱灰或熱土中燜熟。例：炰番薯 pû han-tsî。2.將食物放在炭的上方直接炙烤。例：炰鰇魚 pû jiû-hî。
+2.	搬話 puann-uē(搬弄是非)；盤話 puânn-uē(爭論、鬥嘴)
+3.	puànn-thīn-thōng(蠢材)(成大)；半伨緟 puànn-thīn-thōng
+4.	盤撋 puânn-nuá：交際應酬。指人與人之間互相交往。例：做業務的就是愛會曉佮人盤撋。Tsò gia̍p-bū--ê tō sī ài ē-hiáu kah lâng puânn-nuá. (當業務的就是要懂得跟人交際應酬)
+5.	培養 puê-iúnn/puê-ióng(成大)；培養 puê-ióng(教典)
+6.	陪綴 puê-tuè(成大)；陪綴 puê-tuè/puê-tè(教典)：人與人之間的交往酬酢，如婚喪、遷居等時的相互贈禮。例：親情間的好歹代誌你攏陪綴有著。Tshin-tsiânn kan ê hó pháinn tāi-tsì lí lóng puê-tuè ū tio̍h. (親戚間的交際應酬，你都有跟到)
+7.	分家 pun-ke(分家)
+8.	分張 pun-tiunn：通常指小孩子慷慨大方願意將食物分給他人。例：這个囡仔誠分張。Tsit ê gín-á tsiânn pun-tiunn. (這個小孩很慷慨大方)
+9.	拋荒 pha-hng：田地棄耕，讓它任意荒廢。例：這塊田拋荒真久矣。Tsit tè tshân pha-hng tsin kú-- ah. (這塊田荒廢很久了)
+10.	拋哩 pha-li(摩登，成大)；葩裡葩裡 pha-lí-pha--lí(時髦亮眼)
+11.	怕 phànn(成大)；可怕 khó-phà又唸作 khónn-phànn(教典。讓人感覺害怕)
+12.	phànn-siàu(成大)；冇數 phànn-siàu(教典)：呆賬、爛賬。例：伊有一筆冇數，到今猶收袂轉來。I ū tsi̍t pit phànn-siàu, kàu-tann iáu siu bē tńg--lâi. (他有一筆呆帳，到現在還是收不回來)
+13.	拍抐涼 phah-la-liâng(成大)；拍抐涼 phah-lā/lâ-liâng(教典)：閒扯、講風涼話。沒有內容的隨興閒
+ 
+談。例：食茶練痟話，消遣拍抐涼。Tsia̍h tê liān-siáu-uē, siau-khián phah-lā-liâng. (一邊喝茶，一邊隨興閒談做為消遣)
+14.	歹勢 pháinn-sì(不舒適，成大)；歹勢 pháinn-sè：教典。1.不好意思、對不起、抱歉。例：誠歹勢， 我無拄好煞共恁的玻璃杯仔摃破去。Tsiânn pháinn-sè, guá bô-tú-hó suah kā lín ê po-lê pue-á kòng phuà--khì. (真不好意思，我不小心把你們的玻璃杯打破了) 2.害羞、難為情。例：你傷過主動啦， 伊會歹勢。Lí siunn-kuè tsú-tōng--lah, i ē pháinn-sè. (你太主動啦，他會害羞)
+15.	豐沛 phang-phài/phong-phài(成大)；豐沛 phong-phài(教典)：菜餚豐盛。例：今仔日的暗頓誠豐沛！ Kin-á-ji̍t ê àm-tǹg tsiânn phong-phài! (今天的晚餐很豐盛！)
+16.	帆 phâng，帆布 phâng-pòo、帆船 phâng-tsûn
+17.	配 phè(成大)；分配 hun-phuè/hun-phè(教典。區分支配。例：我來分配恁逐家的工課)
+18.	稗仔 phē-á(成大)；稗仔 phē-á/phuē-á(教典。稗子。禾本植物。田間雜草，外形如水稻，常與水稻長在一起，而影響水稻的生長發育。)
+19.	砒霜 phi-sng(三氧化二砷。毒性很強能致死，白色粉末，沒有特殊氣味，與麵粉、小蘇打粉等很相似，易誤食中毒)
+20.	phia̍h(成大)；癖 phia̍h：麻疹。例：出癖 tshut-phia̍h(出麻疹) (教典)
+21.	品 phín(比；自誇，成大)；品並 phín-phīng：誇耀、現寶(教典)。例：豬屎籃仔也提出來品並。Ti-sái nâ-á iā the̍h tshut-lâi phín-phīng. (俗語，撿拾豬糞的竹籃子也拿出來誇耀。諷剌人死愛面子，粗俗不值錢的東西也拿出來現寶)
+22.	波波 pho-pho(有泡沫狀，成大)；雪文波 sap-bûn-pho(教典。肥皂的泡泡)
+23.	phò(鬆脆，成大)；泡 phò:(東西吃起來有疏鬆的口感，教典)，例：泡泡 phò-phò(疏鬆口感的)、泡粿phò-kué(一種粿名，)
+24.	破脰 phò-tāu(成大)；破豆 phò-tāu(教典)：閒聊。例：咱誠久無見面矣，有閒就加減來阮兜坐坐
+咧，罔破豆一下啦。Lán tsiânn kú bô kìnn-bīn--ah, ū-îng tō ke-kiám lâi guán tau tsē-tsē--leh, bóng phò-tāu--tsi̍t-ē--lah. (我們很久沒見面了，有空就多少來我家坐坐，稍作閒聊一下)
+25.	phoh-phoh(成大)；粕粕 phoh-phoh(教典)：又乾又鬆、不好的口感，如同失去水分的食物殘渣。
+例：你買的柑仔粕粕無湯，足歹食。Lí bé ê kam-á phoh-phoh bô thng, tsiok pháinn-tsia̍h. (你買的橘子乾乾鬆鬆的沒有湯汁，真難吃)
+26.	phok-kiat(滑稽，成大)；博孑 phok-khiat(特立獨行的行動、行為)
+27.	膨皮 phòng-phuê(成大)；膨皮 phòng-phuê/phòng-phê(教典)：形容臉頰飽滿豐盈的樣子。例：彼个囡仔生做膨皮膨皮誠古錐。Hit ê gín-á senn-tsò phòng-phuê-phòng-phuê tsiânn kóo-tsui. (那個小孩子長得胖胖的很可愛)
+28.	鋪排 phoo-pâi：1.應酬、交際。例：今仔日是恁嬸婆的生日，咱著包紅包去共伊鋪排。Kin-á-ji̍t sī lín tsím-pô ê senn-ji̍t, lán tio̍h pau âng-pau khì kā i phoo-pâi. (今天是你們嬸婆的生日，我們要包錢讓她有場面) 2.奉承。例：鋪排話免講 phoo-pâi-uē bián kóng(奉承話別說)。 3.照顧、安排。例：伊對你特別鋪排。I tuì lí ti̍k-pia̍t phoo-pâi. (他對你特別照顧)
+29.	phú-phú(成大)；殕殕 phú-phú(教典)：1.模糊、灰暗或不鮮明顏色。 2.灰色。
+30.	批判 phue-phuànn(評論判斷)
+31.	屁 phuì，臭屁仙 tshàu-phuì-sian(狂妄、自以為是的人)
+32.	呸面 phuì-bīn：賴皮。翻臉不認帳。例：逐家先品予伊好，等咧欲耍的時毋通呸面。Ta̍k-ke sing
+phín hōo i hó, tán--leh beh sńg ê sî m̄-thang phuì-bīn. (大家先說好，等一下在玩的時候不能翻臉)
+33.	phún(成大)；翸 phún，拍翸 phah-phún：教典。1.打滾、翻滾。躺在地上來回翻滾。例：昨暗伊腹肚疼甲佇眠床頂拍翸。Tsa-àm i pak-tóo thiànn kah tī bîn-tshn̂g-tíng phah-phún. (昨天晚上他肚子痛到在床上打滾) 2.揮霍。例：有錢就烏白拍翸，較濟嘛無夠開！
+ 
+Ū tsînn tō oo-pe̍h phah-phún, khah tsē mā bô kàu khai! (有錢就胡亂揮霍，再多也不夠花！)
+34.	phùn-king(逃竄，成大)；噴 phùn，噴漆 phùn-tshat(教典。用硝酸纖維素、樹脂、顏料、溶劑等製成的人造漆，耐水、耐機油、外乾、色澤好，可用來塗飾汽車、家具、飛機、皮革等)
+35.	相佮 sann-kap(雙手手指交合。例：咱這馬相佮來祈禱)
+36.	sann-kīng(成大)；相楗 sio-kīng(教典)：互相支持、幫忙。例：咱兩人會當相楗。Lán nn̄g lâng ē- tàng sio-kīng. (我們兩個可以互相幫忙)
+37.	sannh(成大)；煞 sannh：教典。心理受到強烈衝擊，或渴望、迷戀某些事物。例：伊去煞著彼个查某囡仔。I khì sannh-tio̍h hit ê tsa-bóo gín-á. (他迷上那個女孩子)
+38.	sa̍h(成大)；白煠 pe̍h-sa̍h(教典)：白煮。一種烹調的方法。食物只用水煮熟，不加任何的佐料。例： 土雞仔用白煠的較清甜。Thóo-ke-á īng pe̍h-sa̍h--ê khah tshing-tinn. (土雞用水煮的較清甜)
+39.	虱母 sat-bó(成大)；蝨母 sat-bó(教典。蝨子。昆蟲名。頭小，口突，腹大，無翅，以吸食動物血液或植物體液為生。會傳染疾病)、木蝨 ba̍k-sat (教典。床蝨、臭蟲。身體呈橢圓且扁平，喜愛乾燥， 白天大多藏在地板、牆壁或草蓆的縫隙，晚上則爬出來吸食人和牲畜的血，是一種會傳染疾病的寄生蟲)
+40.	se-bí-looh(成大)；西裝 se-tsong(教典。西裝)
+41.	西山 se-san：西邊的山。例：日落西山(太陽隱沒在西邊的山腳下，指黃昏的時候)
+42.	洗盪 sé-tn̄g(成大)；洗盪 sé-tn̄g/sué-tn̄g(教典)：洗滌、清洗。例：垃圾人身軀三工無洗盪。
+Lah-sap lâng sin-khu sann kang bô sé-tn̄g. (骯髒鬼三天不洗澡)
+43.	細姨仔 sè-î-á(成大)；細姨 sè-î/suè-î(教典)：小老婆、姨太太。太太以外的小妾。例：伊毋願做人的細姨。I m̄-guān tsò lâng ê sè-î. (她不願意當人家的小老婆)
+44.	生成 senn-sîng(成大)；生成 senn-sîng/sinn-sîng(教典)：天生。自然長成地。例：鳥仔生成會飛；人生成會行路。Tsiáu-á senn-sîng ē pue, lâng senn-sîng ē kiânn-lōo. (鳥天生會飛；人天生會走路)
+45.	生湠 senn-thuànn(成大)；生湠 senn-thuànn/sinn-thuànn(教典。生育繁殖。例：鳥鼠真𠢕生湠)
+46.	鉎鍋 senn-ue(成大)；生鍋 senn-ue/sinn-e(教典。鑄鐵製成的鍋子)
+47.	生話 senn-uē(成大)；生話 senn-uē/sinn-uē(教典)：造謠。捏造不實的說辭。例：你毋通烏白生話。Lí m̄-thang oo-pe̍h senn-uē. (你不要胡亂造謠)
+48.	說話 seh-uē(成大)；說多謝 sueh-to-siā/seh-to-siā(教典。說謝謝，表達感謝)
+49.	se̍h-lin-long(成大)；踅玲瑯 se̍h-lin-long(教典)：1.繞圈子。例：我揣無路，一直佇這搭踅玲瑯。Guá tshuē-bô lōo, it-ti̍t tī tsit-tah se̍h-lin-long. (我找不到路，一直在這附近繞圈子) 2.引申作言行舉止不直接了當、拐彎抹角。例：你欲講就緊講，莫佇遐踅玲瑯好無？Lí beh kóng tō kín kóng, mài tī hia se̍h-lin-long hó--bô? (你有話說就快點說，少在那兒拐彎抹角好不好？)
+50.	si-a-geh(細部裝飾收尾，成大)；si-á-geh(教典)
+51.	氏 sī，氏族 sī-tso̍k、王氏 Ông--sī
+52.	寫實 siá-si̍t(據實而不加修飾的撰寫、描繪或表演等)
+53.	sià-tsóo-kong(成大)；卸祖公 sià-tsóo-kong(教典)：使祖上蒙羞。例：我才無想欲卸祖公。Guá tsiah bô siūnn-beh sià-tsóo-kong. (我才不想要使祖上蒙羞)
+54.	聲嗽 siann-sàu：口氣、語氣。通常指不好的說話口氣。例：伊講話的聲嗽無通好。I kóng-uē ê siann-sàu bô thang hó. (他說話的口氣不會好)
+55.	涎 siânn(成大)；唌人 siânn--lâng(誘人。引誘別人。例：你莫提雞卵糕佇遐唌人)；吐憐涎 thòo-liân-
+siân(教典。胡說八道、信口開河。指人沒有根據，亂說話。例：無證據毋通佇遐吐憐涎。Bô tsìng- kì m̄-thang tī hia thòo-liân-siân.)
+56.	siàm-sái(成大)；滲屎 siàm-sái(教典)：因為生病或者驚嚇等原因，不由自主的排泄糞便。例：老大人腸仔無力，有時會滲屎。Lāu-tuā-lâng tn̂g-á bô la̍t, ū sî ē siàm-sái. (老人腸子沒力，有時會不由
+ 
+自主拉屎)
+57.	仙人 sian-jîn(成大)；仙人 sian-jîn/sian-lîn(教典)：長生不老且具有法術神通的人。例：仙人拍鼓有時錯，跤步踏差啥人無？Sian-jîn phah kóo ū sî tshò, kha-pōo ta̍h-tsha siánn-lâng bô? (仙人打鼓也會有差錯，何況凡人？比喻誰能無過)
+58.	仙公 sian-kong(討巧、躲懶；或指稱呂洞賓)
+59.	仙 sián，一仙錢 tsi̍t sián tsînn(一分錢)
+60.	鮮 sián(新鮮，成大)；新鮮 sin-sian 俗唸作 sin-sián(教典)
+61.	siàng(摔東西，成大)；摔粟 siak-tshik(用力摔成把的稻子，使稻穀脫粒，是脫穀機未發明前的脫穀方式)、摔大眠 siàng-tuā-bîn(倒頭就睡、呼呼大睡。例：伊話講煞，隨越頭做伊去摔大眠)、
+倒摔向 tò-siàng-hiànn(倒栽蔥。仰面摔倒，整個身體往後傾而摔倒。例：好禮仔坐，無，會倒摔向。Hó-lé á tsē, bô, ē tò-siàng-hiànn)
+62.	siap-kīnn-kuāinn(非常澀)
+63.	蕭 siau(樂器，成大)；姓蕭 siau、簫 siau、洞簫 tōng-siau(教典。1.簫。樂器名。形狀似笛子，直吹，正面五孔，背面一孔。2.比喻為鴉片煙管。例：老猴歕洞簫。Lāu-kâu pûn-tōng-siau. 老猴子吹洞簫。嘲諷吸食鴉片者形體削瘦橫躺的樣子)
+64.	銷售 siau-siû(成大)；銷售 siau-siū(教典。販賣)；售 siû(甘字典)
+65.	siau-tháu(成大)；消敨 siau-tháu(教典)：1.疏通不流動的空氣、積水等。例：見擺落大雨，阮遮的溝仔水就消敨袂離。Kiàn-pái lo̍h tuā-hōo, guán tsia ê kau-á-tsuí tō siau-tháu bē lī. (每次下大雨，我們這邊的水溝的水就來不及宣洩) 2.抒解情緒、壓力等。例：消敨鬱卒 siau-tháu ut-tsut(抒解鬱悶)；
+3.解手、大小便。是開玩笑的說法。4.用各種方式發洩性慾。是戲謔的說法。
+66.	痟狗湧 siáu-káu-íng(瘋狗浪。一種海浪現象。由各種不同方向的小波浪匯集而成，沿著一個方向前進，遇到礁石或岸壁時，因強力撞擊而捲起猛浪。由於往往事出突然，令人防不勝防)
+67.	sīnn(成大)；豉 sīnn：1.把生鮮的食物如蔬果、肉類、海鮮等，醃漬成醃漬品。例：魚仔豉鹽落去煎。Hî-á sīnn-iâm lo̍h-khì tsian. (魚要醃一點鹽再放下去煎。)；豉鹹菜 sīnn kiâm-tshài(用鹽來醃漬芥菜)。2.形容傷口或眼睛部位受到鹽或藥物刺激的刺痛感。例：空喙抹著藥水會豉。
+Khang-tshuì buah-tio̍h io̍h-tsuí ē sīnn. (傷口在上藥的時候有刺痛感。)
+68.	si̍h-pún(成大)；蝕本 si̍h-pún(教典)：虧本。虧損賠錢。例：伊做啥物生理攏蝕本，我看伊毋通做生理。I tsò siánn-mih sing-lí lóng si̍h-pún, guá khuànn i m̄-thang tsò sing-lí. (他做什麼生意都虧本， 我看他最好不要做生意)
+69.	新婦仔 sin-pū-á(童養媳。未成年就被領養以備將來做兒媳婦的女孩)
+70.	新文學 sin-bûn-ha̍k(五四運動以後的白話文學，相對於舊文學而言。如白話文體的各種作品都是)
+71.	sin-lô(成大)；辛勞 sin-lô(教典)：雇員、伙計。例：這間店的頭家欲倩兩个辛勞。Tsit king tiàm ê thâu-ke beh tshiànn nn̄g ê sin-lô. (這間店的老闆要請兩個雇員)
+72.	sìn-táu(成大)；信篤 sìn-táu(教典)：相信。例：我才無咧共你信篤。Guá tsiah bô teh kā lí sìn-táu.
+(我才不相信你)
+73.	聖神 sìng-sîn(聖靈)
+74.	性情 sìng-tsîng(性情)
+75.	聖冊 sìng-tsheh(聖經)
+76.	相見 sio-kiàn(成大)；相見 sio-kìnn 又唸作 sann-kìnn(教典)：見面、會面。例：咱暫時袂當相見。Lán tsiām-sî bē-tàng sio-kìnn. (我們暫時不能見面)
+77.	sio-lō(暖和；耗財，成大)；燒烙 sio-lō(溫暖、暖和，教典)
+78.	sio-lo̍h(暖和，成大)
+79.	相輸 sio-su：打賭、比輸贏。例：你若毋相信，咱就來相輸。Lí nā m̄ siong-sìn, lán tō lâi sio-su.
+ 
+(你若不相信，我們就來打賭)
+80.	sio-thàng(成大)；相迵 sio-thàng(教典。相通。例：這條路佮彼條路是相迵的)
+81.	sio-tsìnn(成大)；相諍 sio-tsènn/sio-tsìnn(教典)：爭辯、爭論。例：伊是一个相諍毋認輸，相輸閣毋捌贏的人。I sī tsi̍t ê sio-tsènn m̄ jīn-su, sio-su koh m̄ bat iânn ê lâng. (他是一個跟人家爭論就不認輸，跟人家打賭又不曾贏的人)
+82.	sio̍h(成大)；液 sio̍h：教典。皮膚似汗的分泌物。例：臭跤液 tshàu-kha-sio̍h(臭腳汗)、手液 tshiú-
+sio̍h(手汗)、臭液味 tshàu-sio̍h bī(肉類腐壞的氣味)。
+83.	失覺察 sit-kak-tshat：不留神、疏忽。例：我一時失覺察，物件煞予彼个賊仔偷提去。Guá tsi̍t-sî sit-kak-tshat, mi̍h-kiānn suah hōo hit ê tsha̍t-á thau-the̍h--khì. (我一時疏忽，物品竟然讓那個小偷偷走了)
+84.	翼股頭 si̍t-kóo-thâu(成大)；翼股 si̍t-kóo(教典。翅膀)
+85.	實施 si̍t-si(實行某種措施)
+86.	收束 siu-sok：1.縮小、縮減。例：景氣䆀，生理小收束一下。Kíng-khì bái, sing-lí sió siu-sok--tsi̍t-
+ē. (景氣差，生意稍微縮小一下)2.收口。傷口癒合。例：我的空喙已經收束矣。Guá ê khang-tshuì í
+-king siu-sok--ah. (我的傷口已經癒合了)
+87.	收山 siu-suann：結束。總結，終了。例：伊就是傷膨風，代誌才會舞甲袂收山。I tō sī siunn phòng-hong, tāi-tsì tsiah ē bú kah bē siu-suann. (他就是太愛吹牛，事情才會弄到無法收場)
+88.	收煞 siu-suah：1.收場。例：我有代誌愛先走，賰的工課，麻煩你鬥收煞。Guá ū tāi-tsì ài sing tsáu, tshun ê khang-khuè mâ-huân lí tàu siu-suah. (我有事得先走，剩下的工作，麻煩你幫忙收場)
+2.驅煞。例：伊掠做是囡仔去沖犯著，想欲請司公來收煞。I lia̍h-tsò sī gín-á khì tshiong-huān--tio̍h, siūnn-beh tshiánn sai-kong lâi siu-suah. (他誤以為孩子沖犯了鬼神，想要請道士來驅煞)
+89.	收水 siu-tsuí：物體內部的水分慢慢消失掉。例：番薯囥咧予伊收水了後，食著較甜。Han-tsî khǹg- leh hōo i siu-tsuí liáu-āu, tsia̍h tio̍h khah tinn. (番薯放一陣子，水分少一點以後，吃起來比較甜)
+90.	siûnn(成大)；𣻸siûnn：1.黏液。例：腸仔𣻸 tn̂g-á-siûnn(腸子的黏液)。2.黏滑的。例：塗跤𣻸𣻸thôo- kha siûnn-siûnn(地上黏黏滑滑的)；𣻸塌塌 siûnn-lap-lap 又唸作 siûnn-la̍p-la̍p：非常黏滑、溼滑的樣子。例：彼間餐廳，椅桌、塗跤一四界𣻸塌塌，真無衛生。Hit king tshan-thiann, í-toh, thôo-kha tsi̍t-sì-kè siûnn-lap-lap, tsin bô uē-sing. (那間餐廳，桌椅、地面到處溼滑油膩，很不衛生)；這幾日雨澹水滴，路不時攏𣻸塌塌。Tsit kuí ji̍t hōo-tâm-tsuí-tih, lōo put-sî lóng siûnn-lap-lap. (這幾天淫雨霏霏，路面常常都很溼滑)；齒𣻸khí-siûnn：牙垢。積存在牙齒上的汙穢物；米糕𣻸bí-ko-siûnn： 糾纏不清，如米糕一樣濕黏。例：你莫佮彼个有翁的佇遐咧米糕𣻸。Lí mài kah hit ê ū-ang--ê tī hia teh bí-ko-siûnn. (你不要跟那個有夫之婦糾纏不清)
+91.	想見 siūnn-kìnn(想到、想起)
+92.	siūnn-pue(成大)；象桮 siūnn-pue(教典。擲筊時擲出一反一正的筊杯，表示神明應允)；司公仔象桮sai-kong-á-siūnn-pue：用來比喻形影不離的兩個好朋友或關係密切的人。例：𪜶兩个若司公仔象桮咧。In nn̄g ê ná sai-kong-á-siūnn-pue--leh. (他們一個像道士，一個像筊杯，形影不離、感情深厚)
+93.	霜風 sng-hong(冷風、寒風。例：寒甲霜風鑽入骨)
+94.	sng-ngiuh-ngiuh(酸溜溜，成大)
+95.	sǹg(成大)；繏 sǹg：教典。被繩索類的東西勒住、束緊、套緊。例：領帶傷絚，繏甲我強欲袂喘氣；繏腰 sǹg io：教典。束緊腰部。例：繏腰繏傷絚會艱苦。Sǹg io sǹg siunn ân ē kan-khóo.
+(腰束太緊會不舒服)；繏嚨喉 sǹg nâ-âu：教典。勒喉嚨。用手臂勒住喉嚨。例：咧耍的時陣毋通共人繏嚨喉，真危險。Teh sńg ê sî-tsūn m̄-thang kā lâng sǹg nâ-âu, tsin guî-hiám. (在玩的時候不可以勒人家的喉嚨，很危險)
+96.	燥 sò(成大)；焦燥 ta-sò(乾燥。缺乏水分的。例：這站仔的天氣真焦燥)、燥水 sò-tsuí(缺乏水分、
+ 
+水分蒸發)；枵燥 iau-sò：1.很餓。例：做粗工食體力，到食飯的時，腹肚就足枵燥矣。Tsò tshoo- kang tsia̍h thé-la̍t, kàu tsia̍h-pn̄g ê sî, pak-tóo tō tsiok iau-sò--ah. (做粗工耗體力，到用餐時，往往就飢腸轆轆了) 2.指食欲旺盛。例：伊誠枵燥，連紲食三碗飯。I tsiânn iau-sò, liân-suà tsia̍h sann uánn pn̄g. (他食欲旺盛，一連吃了三碗飯)3. 燥性 sò-sìng(急性子；毛燥)
+97.	sô-siâu(成大)；趖潲 sô-siâu(教典)；趖跤趖手 sô-kha-sô-tshiú：形容動作慢吞吞，拖拖拉拉，反應遲鈍。例：你趖跤趖手，排路邊擔仔無合啦。Lí sô-kha-sô-tshiú, pâi lōo-pinn-tànn-á bô-ha̍h--lah.
+(你手腳慢吞吞的，不適合去擺路邊攤啦)
+98.	sok-kiat(成大)；束結 sok-kiat(教典)：小巧玲瓏不虛大，而且結實大方。例：這間房間真束結。Tsit
+king pâng-king tsin sok-kiat. (這間房子看起來既小巧又玲瓏)
+99.	爽心 sóng-sim(放心、安心)
+100.	sòng-siong(赤貧，成大)；散凶 sàn-hiong(教典。貧窮、窮困。缺乏錢財，生活拮据困乏。例：伊自細漢厝裡就真散凶，生活誠困苦)；宋凶 sòng-hiong
+
+1.	sòng-phàn(成大)；宋盼的 sòng-phàn--ê(教典)：傻子、傻瓜。指軟弱愚蠢或智能較差的人。例：伊定定予人當做宋盼的。I tiānn-tiānn hōo lâng tòng-tsò sòng-phàn--ê. (他常常被人當傻子)
+2.	sông-piah-piah(非常俗氣，成大)；食倯 tsia̍h-sông：教典。欺負老實人、新來的人。例：伊會共人食倯。I ē kā lâng tsia̍h-sông. (他會欺負老實人)
+3.	疏開 soo-khai：1.疏散。戰爭時因躲避空襲而疏散到鄉間。2.開溜。例：看毋是勢，趕緊疏開。Khuànn m̄-sī-sè, kuánn-kín soo-khai. (看情勢不對，趕快開溜)
+4.	所謂 sóo-uī(所說的)；無所謂 bû-sóo-uī 又唸作 bû-sóo-uì(不要緊、沒關係)
+5.	素氣 sòo-khì(樸素，成大)；素素 sòo-sòo(樸素的樣子，教典)
+6.	四海 sù-hái(到處、四處)；四海 sù-hái(到處、四處。古代人認為中國四周環海，所以稱四個方位為
+「四海」，用來泛指世界各地。例：名聲迵四海。Miâ-siann thàng sù-hái. (比喻家喻戶曉。)
+7.	紲接 suà-tsiap(接下來)；紲落去 suà--lo̍h-khì、紲落來 suà--lo̍h-lâi
+8.	suāinn-á-tshinn(成大)；檨仔青 suāinn-á-tshenn/suāinn-á-tshinn(教典。情人果、青芒果。採尚未成熟的青芒果，切片醃鹽後再醃白糖，冷凍結冰後，是一道又酸又甜的消暑食品)
+9.	旋 suan(成大)；旋藤 suan-tîn(教典。指藤蔓植物的枝葉迴旋攀爬)
+10.	宣教師 suan-kàu-su(傳教的人)
+11.	衰尾 sue-bué(成大)；衰尾 sue-bué/sue-bé(教典)：倒楣。例：我今仔日哪會遮衰尾！ Guá kin-á-ji̍t ná ē tsiah sue-bué! (我今天怎麼這麼倒霉！)
+12.	sue-siâu(成大)；衰潲 sue-siâu(教典)：倒楣。運氣不好，做事情不順利。例：揣頭路揣規月日攏揣無，我哪會遮衰潲。
+13.	su̍t-á(江湖術士，成大)；捽仔 sut-á(鞭子，教典)
+14.	礁 ta，海草礁(藻礁)
+15.	ta-pôo(乾枯，成大)；焦痡 ta-pôo(教典)、痡心 pôo-sim(形容根莖類植物嚴重脫水，導致中心部位纖維化)
+16.	乾燥 ta-sò(成大)；焦燥 ta-sò(教典。乾燥。缺乏水分的)
+17.	打擊 tánn-kik：1.挫折。例：公司倒去的代誌，予伊真大的打擊。2.使人感到挫折。例：你千萬毋通打擊伊的信心。
+18.	tánn-tsah(成大)；打扎 tánn-tsah(教典)：1.攙扶。用手輕架著對方胳膊，幫助行走平穩。例：嫁娶的時陣會有一位好命的婦人人打扎新娘。Kè-tshuā ê sî-tsūn ē ū tsi̍t uī hó-miā ê hū-jîn-lâng tánn-tsah sin-niû. (嫁娶時，會有一位好命的婦人攙扶新娘子) 2.扶持、幫助。例：我生理失敗的時佳哉有伊共我打扎。Guá sing-lí sit-pāi ê sî ka-tsài ū i kā guá tánn-tsah. (我做生意失敗時還好有他幫助我)
+ 
+19.	打錢 tánn-tsînn(折現，成大)；打現金 tánn-hiān-kim(折算現金。例：這馬的人嫁粧定定攏打現金)
+20.	打整 tánn-tsíng(整理；懲罰)
+21.	大家 tāi-ke(大家，成大)；逐家 ta̍k-ke(教典，大家)、大家 ta-ke(婆婆)
+22.	大臣 tāi-sîn(擔負國家重任的官吏)
+23.	tāi-tsâi(端莊，成大)；大才 tāi-tsâi(端莊)、大端 tāi-tuan(大方、賢淑、端莊)、大段 tāi-tuān(大方、賢淑、端莊)
+24.	霆 tân(鳴響)，霆雷公 tân-luî-kong(打雷)
+25.	冬尾 tang-bué(成大)；冬尾 tang-bué/tang-bé(教典。殘冬)
+26.	tâng-mn̂g(成大)；同門 tâng-mn̂g、大細腎 tuā-sè-siān(教典。連襟。稱謂，指姊妹的丈夫彼此互稱)
+27.	tâng-sāi(成大)；同姒仔 tâng-sāi-á(教典。妯娌。稱謂。兄弟的妻子彼此互稱)
+28.	銅針 tâng-tsiam(銅製的針)
+29.	銅錢 tâng-tsînn(古代的銅質硬幣，多為圓形而中有方孔)
+30.	答應 tap-ìng(成大)；答應 tah-ìng(教典。允許、承諾)
+31.	鬥搭 tàu-tah(配合良好、步調一致；相稱、貼切)
+32.	投 tâu：1.告狀。例：學生去共老師投。Ha̍k-sing khì kā lāu-su tâu. (學生們去向老師告狀)
+2.契合。例：	講話誠投機。In kóng-uē tsiânn tâu-ki. (他倆談話很契合)
+3.跳進去。例：投水 tâu-tsuí(跳水自殺)	4.奔靠。例：走投無路 tsáu tâu bô lōo
+33.	脰 tāu，吊脰 tiàu-tāu(上吊自殺)
+34.	沓沓仔 ta̍uh-ta̍uh-á：慢慢地。例：沓沓仔行 ta̍uh-ta̍uh-á kiânn(慢慢走)
+35.	té-tì(成大)；底蒂 té-tì/tué-tì(教典)：根蒂。根本，基礎。例：伊數學的底蒂真好。I sòo-ha̍k ê té-tì tsin-hó. (他數學的基礎穩固)
+36.	帝 tè，皇帝 hông-tè(秦朝以後對天子的稱號)
+37.	代 tē/tāi，第三代 tē-sann tē/tāi
+38.	tènn-tshenn(成大)；佯生 tènn-tshenn/tìnn-tshinn(教典)：裝蒜。罵人假糊塗。例：物件就是你提的， 莫佇遐咧佯生啦！Mi̍h-kiānn tō sī lí the̍h--ê, mài tī hia teh tènn-tshenn--lah! (東西就是你拿的，別在那裝蒜了！)
+39.	底時 tī-sî(何時。什麼時候。例：你底時欲來𨑨迌？)
+40.	tī-tāi(成大)；底代 tī-tāi(教典)：何事、什麼事。例：這佮你有啥物底代？Tse kah lí ū siánn-mih tī- tāi? (這干你何事？)
+41.	定著 tiānn-tio̍h：1.一定。例：你定著愛行一逝。Lí tiānn-tio̍h ài kiânn--tsi̍t-tsuā. (你少不了要走一趟) 2.定、決定。例：代誌猶未定著 tāi-tsì iáu-buē tiānn-tio̍h(事情尚未確定) 3.穩重。例：恁大漢後生較定著。Lín tuā-hàn hāu-senn khah tiānn-tio̍h. (你大兒子比較穩重)
+42.	tiak(成大)；擉 tia̍k，又唸作 tiak：彈指。例：擉算盤 tia̍k sǹg-puânn(教典。打算盤)
+43.	tiam(成大)；砧 tiam：教典。1.砧板。以刀切物時墊在下面的板子。例：菜砧 tshài tiam(切菜用的砧板)。2.皮膚受到尖細小物的刺激而產生的刺痛感。例：我的鞋仔內底敢若有石頭仔，感覺砧砧。Guá ê ê-á lāi-té kánn-ná ū tsio̍h-thâu-á, kám-kak tiam-tiam.(鞋子裡好像有小石頭，覺得有點刺痛)
+44.	新點點 sin-tiám-tiám：嶄新。形容很新。例：伊穿一軀新點點的洋裝來食喜酒。I tshīng tsi̍t su sin-
+tiám-tiám ê iûnn-tsong lâi tsia̍h hí-tsiú. (她穿一套嶄新的洋裝來喝喜酒)
+45.	恬靜 tiām-tsīng：1.安靜無聲。2.文靜。例：彼个囡仔真恬靜。Hit ê gín-á tsin tiām-tsīng. (那個小孩很文靜)
+46.	吊鏡 tiàu-kiànn(成大)；召鏡 tiàu-kiànn(教典。望遠鏡。指用來觀察天體或遠處物體的儀器)
+47.	吊鼎 tiàu-tiánn：斷炊。無米可煮，所以把鍋子吊起來閒置；比喻斷炊。例：咱這馬散甲欲吊鼎矣， 閣毋較儉一下。Lán tsit-má sàn kah beh tiàu-tiánn--ah, koh m̄ khah khiām--tsi̍t-ē. (我們現在窮到要
+ 
+斷炊了，還不節省一點)
+48.	條直 tiâu-ti̍t： 1.憨直、坦率。例：你佮恁老爸平條直。Lí kah lín lāu-pē pênn tiâu-ti̍t. (你和你爸一樣憨直) 2.事情已經獲得解決、擺平了。例：是按怎這件代誌到這馬猶未條直？Sī-án-tsuánn tsit kiānn tāi-tsì kàu tsit-má iáu-buē tiâu-ti̍t? (為什麼這件事到現在還沒擺平？)3.乾脆直接而不拖泥帶水。例：工課我家己做做咧較條直！Khang-khuè guá ka-kī tsò-tsò--leh khah tiâu-ti̍t! (工作我自己來做還比較乾脆！)
+49.	纏綿 tînn-mî(纏綿。形容彼此情感甜蜜，如線索糾結纏繞，無法擺脫或割捨)
+50.	滇 tīnn(成大)；喉滇 âu-tīnn(教典)：哽咽。因悲傷而使氣息受阻說不出話來。例：伊話猶未講出喙，就已經喉滇目箍紅矣。I uē iáu-buē kóng tshut-tshuì, tō í-king âu-tīnn ba̍k-khoo âng--ah. (他還沒開口說就已經哽咽眼眶紅了)
+51.	tih(在，成大)；當咧 tng-teh 又唸作 tng-tih；佇 tī(教典)
+52.	挃 ti̍h：要、欲。例：這个袋仔你欲挃無？Tsit ê tē-á lí beh ti̍h--bô? (這個袋子你要嗎？)；毋挃m̄-ti̍h：不要。例：物件猶閣好好你就毋挃矣，按呢敢袂傷討債？Mi̍h-kiānn iáu-koh hó-hó lí tō m̄- ti̍h--ah, án-ne kám bē siunn thó-tsè? (東西還好好的你就不要了，這樣不覺得太浪費嗎？)
+53.	抌 tìm：投、擲、丟 。例：抌石頭 tìm tsio̍h-thâu(投擲石頭)
+54.	tìm-táu(成大。沉重、穩重)；掂篤 tìm-táu；掂 tìm：用手估量物體的輕重。例：麻煩你掂一下看偌重。Mâ-huân lí tìm--tsi̍t-ē khuànn guā tāng. (麻煩你掂掂看看有多重)
+55.	tìm 頭 tìm-thâu(成大。點頭)；頕頭 tàm-thâu 又唸作 tìm-thâu(教典。點頭)
+56.	鎮位 tìn-uī(占用位置，使人感到受阻礙。例：這隻椅仔囥佇遮誠鎮位)
+57.	藤 tîn(成大)；牽藤 khan-tîn(指蔓生植物，如葡萄等，攀附在別的東西上延伸成長)、荖藤 láu-tîn(教典。植物名。蔓生植物，葉子約小孩手掌大小。一般多用荖藤的葉子來包檳榔子，加石灰、甘草等供人嚼食)
+58.	陣頭 tīn-thâu：遊行隊伍。民俗節慶時，參加表演的業餘樂團或遊藝團體。臺灣廟會時，常見的
+「陣頭」有「南管」(lâm-kuán)、「北管」(pak-kuán)、「宋江陣」(Sòng-kang-tīn)、「車鼓陣」(tshia- kóo-tīn)、「蜈蚣閣」(giâ-kang-koh)等
+59.	疔仔 ting-á：膿瘡、疔瘡。例：生疔仔 senn ting-á(長膿瘡)
+60.	釘點 tìng-tiám：水果上出現斑點。例：檨仔釘點矣，緊食食咧。Suāinn-á tìng-tiám--ah, kín tsia̍h- tsia̍h--leh. (芒果生斑了，快吃了吧)
+61.	tîng(成大。重)；重巡 tîng-sûn(雙眼皮。例：伊的目睭重巡，真媠)、一重皮 tsi̍t tîng phuê (一層皮)
+62.	tîng-tânn(成大)；重耽 tîng-tânn(教典)：事情出了差錯。例：代誌去予伊舞一下重耽去。Tāi-tsì khì hōo i bú tsi̍t-ē tîng-tânn--khì. (事情被他搞得出差錯了)
+63.	趒 tiô：1.彈跳、跳動。例：氣甲趒起來。Khì kah tiô--khí-lâi. (氣得跳腳)；車真𠢕趒。Tshia tsin gâu tiô. (車子跳動得很厲害) 2.計算驚嚇次數的單位。例：驚一趒 kiann tsi̍t tiô(嚇一跳)；嚓嚓趒tshia̍k-tshia̍k-tiô：1.活蹦亂跳。朝氣蓬勃的樣子。2.雀躍。比喻心中非常歡喜。例：伊知影考牢矣， 就暢甲嚓嚓趒！I tsai-iánn khó-tiâu--ah, tō thiòng kah tshia̍k-tshia̍k-tiô! (他一得知考上了，雀躍不已！)
+64.	著痧 tio̍h-sua(中暑。曝露於太陽底下所引起的病症，會出現痙攣、昏睡、體溫升高等症狀)
+65.	tio̍h-tse(成大)；著災 tio̍h-tse(教典)；1.雞鴨等動物感染瘟疫。例：伊飼的雞仔攏著災死了了。
+I tshī ê ke-á lóng tio̍h-tse sí-liáu-liáu. (他養的雞都感染瘟疫死光光) 2.受難、遭殃。例：這聲慘矣，予你害一下連我嘛著災矣。Tsit-siann tshám--ah, hōo lí hāi tsi̍t-ē liân guá mā tio̍h-tse--ah. (這下慘了，被你害得連我都遭殃了)
+66.	躊躇 tiû-tû(猶豫、遲疑。例：遮爾好的機會，你是閣咧躊躇啥物)
+67.	tng(成大)；張 tng (教典)：1.伺機、守候。例：予我張著 hōo guá tng--tio̍h(被我堵到)、張鳥仔 tng
+ 
+tsiáu-á(設機關捕鳥)。2.捕捉動物用的器具。例：鳥仔張 tsiáu-á tng(捕鳥器)、鳥鼠張 niáu-tshí
+tng(捕鼠器)。
+68.	轉踅 tńg-se̍h：1.轉身、轉圜。例：這个所在誠狹，真歹轉踅，你轉踅的時陣著細膩。Tsit ê sóo-tsāi tsiânn e̍h, tsin phái tńg-se̍h, lí tńg-se̍h ê sî-tsūn tio̍h sè-jī. (這個地方很窄，很難轉身，你轉身的時候要小心) 2.周轉。資金的運轉。例：最近手頭真絚，愛去揣朋友轉踅一下。Tsuè-kīn tshiú-thâu tsin ân, ài khì tshuē pîng-iú tńg-se̍h--tsi̍t-ē. (最近手頭很緊，要去找朋友周轉一下)
+69.	轉倒 tńg-tó(回轉，成大)；大翻頭 tuā-huan-thâu(大回轉，教典)
+70.	tńg-tsâi(成大)；轉臍 tńg-tsâi(教典)：指生產後，把臍帶切斷的動作。例：查某囝教娘嬭轉臍。Tsa- bóo-kiánn kà niû-lé tńg-tsâi. (女兒教母親切斷臍帶。以前生產多在家裡由母親接生，所以這句話有外行領導內行的意思)
+71.	頓龜 tǹg-ku：指整個屁股跌坐在地上。例：伊予一个生狂囡仔挵一下頓龜。I hōo tsi̍t ê tshenn- kông gín-á lòng--tsi̍t-ē tǹg-ku. (他被一個慌張的孩子撞了一下摔了屁股)
+72.	長短跤話 tn̂g-té-kha-uē：異議。抱怨的話。源於民間笑譚的一句俚諺：「三人共五目，日後無長短跤話。」(sann lâng kāng gōo ba̍k, ji̍t-āu bô tn̂g-té-kha uē.)相傳有一位媒婆，撮合一位跛腳青年與單眼失明的女子，經過巧妙設計相親方式，兩人皆只看到對方優點，未見缺陷，彼此有意結緣，媒婆乃向雙方言明此語，意思是話說前頭，大家心甘情願，以後不得有抱怨的話。
+73.	tn̂g-tu-hîng(成大)；長株形 tn̂g-tu-hîng(教典。長條形、長方形)
+74.	盪 tn̄g(成大)；洗盪 sé-tn̄g/sué-tn̄g(教典。洗滌、清洗。例：垃圾人身軀三工無洗盪)
+75.	搪 tn̄g(剛好遇見、碰巧遇到)；搪著 tn̄g-tio̍h(遇到。語氣完結時唸作 tn̄g--tio̍h)、拄搪 tú-tn̄g：1.恰好、湊巧、剛好。例：是拄搪予我看著，我才知影的。Sī tú-tn̄g hōo guá khuànn--tio̍h, guá tsiah tsai-iánn--ê.(是剛好被我看到，我才知道的) 2.遇到、相遇。例：阮下晡佇學校相拄搪。Guán ē-poo tī ha̍k-hāu sio tú-tn̄g.(我們下午在學校相遇)
+76.	斷頭 tn̄g-thâu(生意斷絕往來)
+77.	倒房 tó-pâng(絕嗣)
+78.	啄龜 tok-ku/tuh-ku(成大)；啄龜 tok-ku、盹龜 tuh-ku、盹瞌睡 tuh-ka-tsuē(教典。打瞌睡)
+79.	瀆 to̍k，冒瀆 mōo-to̍k(打擾他人)、瀆職 to̍k-tsit(國家官員公務員等公職人員濫用職權、疏忽職守)
+80.	當 tòng(成大)；當做 tòng-tsò/tòng-tsuè(看成、認為。例：我共你當做是上好的朋友)、適當 sik-tò
+ng(適當)
+81.	tòng-gōng(成大)；侗戇 tòng-gōng(教典)：1.變得愚蠢、無能、呆笨。例：老大人規日坐佇厝內，毋出去佮人開講，會一直侗戇去。Lāu-tuā-lâng kui-ji̍t tsē tī tshù-lāi, m̄ tshut-khì kah lâng khai-káng, ē it-ti̍t tòng-gōng--khì. (長輩整天坐在屋內，不願出去跟人攀談，就會慢慢失智) 2.笨蛋。愚蠢、呆笨的人。例：隱痀的交侗戇。Ún-ku--ê kau tòng-gōng. (駝背的人結交愚笨的人。比喻物以類聚)
+82.	擋頭 tòng-thâu：耐力。可以忍受的程度。例：阿明仔上有擋頭！A-bîng--á siōng ū tòng-thâu! (阿明最有耐力！)
+83.	唐突 tōng-tu̍t(成大)；撞突 tōng-tu̍t(教典)：出差錯、挫折。例：代誌若有小可撞突，伊就袂食袂睏矣。Tāi-tsì nā ū sió-khuá tōng-tu̍t, i tō bē-tsia̍h-bē-khùn--ah. (事情稍微有不順，他就坐立不安了)
+84.	撞 tōng(成大)；撞球 tōng-kiû、撞著 tōng-tio̍h(教典。撞到東西。語氣完結時唸作 tōng--tio̍h。例： 你共物件囥蹛遮，會去予人撞著)
+85.	廚子 tôo-tsí、廚子師 tôo-tsí-sai(廚師。掌理廚房烹飪事務，並以此為職業的人)
+86.	杜猴 tōo-kâu(蟋蟀。昆蟲名。體型圓長，為黑褐色，觸角細長，後肢長大，很會跳躍。雄蟲翅膀上有發聲器，是利用兩翅摩擦發出聲音的。生性好鬥、怕光，會躲藏在泥土中或石礫下，以植物為食，是農作物的害蟲)
+87.	肚胿仔 tōo-kuai-á(蝌蚪。青蛙或蟾蜍的水生幼體)
+ 
+88.	tu--kuè-lâi(拿過來，成大)；㧣tu：1.推。例：架仔㧣較過去咧。Kè-á tu khah kuè--khì--leh. (架子推過去一點) 2.硬塞、推塞。例：伊代誌攏㧣予我做。I tāi-tsì lóng tu hōo guá tsò. (他事情都硬塞給我做) 3.推出。指推某人做某事。例：㧣伊出來選。Tu i tshut-lâi suán. (推他出來選舉) 4.抵抗、抵擋、將就。例：一領破衫㧣一冬。Tsi̍t niá phuà sann tu tsi̍t tang. (一件破衣服就可將就一年) 5.出言反駁、爭辯。例：人共伊歹，伊毋但毋驚，閣敢佮人㧣。Lâng kā i pháinn, i m̄-nā m̄ kiann, koh kánn kah lâng tu.(別人兇他，他不但不怕，還與人爭辯) 6.撅。例：喙㧣遐懸創啥？Tshuì tu hiah kuân tshòng siánn? (嘴撅那麼高做什麼？)
+89.	tú-tshian(剛好、湊巧，成大)；拄䢢tú-tshiāng(碰巧、剛好，教典。例：這種機會是拄䢢拄䢢。
+Tsit-tsióng ki-huē sī tú-tshiāng-tú-tshiāng)
+90.	注 tù(成大)；落注 lo̍h-tù(下注。出錢賭輸贏)、硩注 teh-tù(下注、壓寶。例：雙爿硩注)
+91.	tù(脹，成大)；滯滯 tù-tù(堵塞、阻塞不通，教典)。例：胃滯滯 uī tù-tù(腸胃不消化)
+92.	大面神 tuā-bīn-sîn：厚臉皮。不知羞恥的樣子。例：彼个人有夠大面神，攏毋知影通歹勢。
+Hit ê lâng ū-kàu tuā-bīn-sîn, lóng m̄ tsai-iánn thang pháinn-sè. (那個人臉皮真厚，都不會不好意思)
+93.	大尾 tuā-bué(成大)；大尾 tuā-bué/tuā-bé(教典。大牌、高傲)
+94.	大姨 tuā-î(稱謂。母親的大姊)
+95.	大妗 tuā-kīm(大舅媽。稱謂。大舅的妻子)
+96.	大箍把 tuā-khoo-pé(成大)；大箍呆 tuā-khoo-tai(教典。罵身材肥胖的人，有嘲笑其反應不靈敏之意)
+97.	大範 tuā-pān：1.一個人的舉止十分大方、自然，不受拘束。例：彼个查某囡仔講話真大範。Hit ê tsa-bóo gín-á kóng-uē tsin tuā-pān. (那個女孩子講話很大方、自然) 2.高雅、不俗氣。例：彼領洋裝看著真大範。Hit niá iûnn-tsong khuànn tio̍h tsin tuā-pān. (那件洋裝看起來很高雅，不會俗氣)
+98.	大石 tuā-tsio̍h(大粒石頭)
+99.	大厝 tuā-tshù(大宅院，成大)；大厝 tuā-tshù(大房子；棺材，教典)
+100.	tuè-sōm--ê(跟班的，成大)；跟綴 kin-tuè/kun-tè(跟隨、隨從人員，教典)、跟隨 kin-suî/kun-suî(跟班、隨從人員，教典)
+
+1.	揬 tu̍h：1.戳、刺。例：攑刀仔共布袋揬破。Gia̍h to-á kā pòo-tē tu̍h--phuà. (拿刀子把布袋戳破)
+2.頂嘴、駁斥。例：用話共伊揬。Iōng uē kā i tu̍h. (用話頂他)；指指揬揬 kí-kí-tu̍h-tu̍h：指指戳戳、指指點點。在人前人後批評，說閒話。例：伊就是傷無良心，才會予人指指揬揬。I tō-sī siunn bô-liông-sim, tsiah ē hōo lâng kí-kí-tu̍h-tu̍h. (他就是太沒良心，才會被指指點點)
+2.	對看 tuì-khuànn(相親，成大)；對看 tuì-khuànn(相互觀看；相親，教典)；看護婦 khàn-hōo-hū
+3.	對年 tuì-nî：人死後滿一周年。例：做對年 tsò tuì-nî(舉行逝世一周年的儀式)
+4.	對同 tuì-tâng：吻合、恰當。例：代誌攏予你講甲對同仔對同。Tāi-tsì lóng hōo lí kóng kah tuì- tâng-á tuì-tâng. (事情都被你講得十分吻合)
+5.	轉 tuínn(宜蘭偏漳腔)/tńg：1.改變方向。例：轉南風 tńg lâm-hong。2.變換、變成。例：見笑轉受氣。Kiàn-siàu tńg siū-khì. (羞愧變成生氣。即惱羞成怒) 3.返回。例：你當時欲轉去？Lí tang-sî beh tńg--khì? (你什麼時候要回去？) 4.旋轉。例：輪仔咧轉。Lián-á teh tńg. (輪子在轉) 5.金錢及事物的調度。例：代誌轉袂好勢。Tāi-tsì tńg bē hó-sè. (事情調度不了)；轉錢 tńg-tsînn(周轉金錢)
+6.	突然 tu̍t-jiân(成大)；突然 tu̍t-jiân/tu̍t-liân(教典。忽然、猝然)
+7.	榻榻米 tha-tha-mih(成大)；tha-thá-mih(教典。一種日本傳統的鋪地墊)
+8.	thái-ko(成大)；癩	thái-ko(教典)：1.痲瘋病。病名。2.骯髒。例：這个所在足癩	的。Tsit ê sóo- tsāi tsiok thái-ko--ê. (這個地方很髒)；癩	鬼 thái-ko-kuí(骯髒鬼、噁心鬼)
+9.	thài-iah(輪胎，成大)；thài-ià(教典)
+10.	thài-lù(磁磚)
+ 
+11.	太平 thài-pîng：1.指天下安定無事。例：天下太平。Thian-hā thài-pîng. 2.沒爭端。例：逐个人若攏忍一下，就天下太平矣。Ta̍k ê lâng nā lóng lún--tsi̍t-ē, tō thian-hā thài-pîng--ah. (若是每個人都能稍微忍耐一下，就會天下太平了)
+12.	探偵 thàm-tsing；偵探 tsing-thàm
+13.	坦橫 thán-huâinn(成大)；坦橫 thán-huâinn/thán-huînn(教典)： 指物體打橫的狀態。例：你欲睏就睏予好勢，毋通按呢睏坦橫。Lí beh khùn tō khùn hōo hó-sè, m̄-thang án-ne khùn thán-huâinn. (你要睡覺就把姿勢擺正，不要這樣橫著睡)
+14.	坦敧 thán-khi：形容人或物體側向行走、倒臥或擺放的狀態。例：坦敧生 thán-khi senn(即嬰兒頭顱偏向一邊的側產)、睏坦敧 khùn-thán-khi(側睡)、囥坦敧 khǹg thán-khi(橫放)。
+15.	thán-phak(成大)；坦覆 thán-phak(教典)：趴著、俯臥。例：嬰仔毋好予伊睏坦覆。Enn-á m̄-hó hōo i khùn thán-phak. (不要讓嬰兒趴著睡)
+16.	坦白 thán-pi̍k：形容個性直率，毫無隱瞞
+17.	坦倒 thán-tó：放倒、躺倒。例：這枝杉仔共伊囥坦倒。Tsit ki sam-á kā i khǹg thán-tó. (這枝杉木把它放倒)
+18.	通光 thang-kng：1.透明的、透光的。例：這爿的窗仔愛安通光的玻璃。Tsit pîng ê thang-á ài an thang-kng ê po-lê. (這邊的窗戶要裝透明玻璃) 2.光線良好、明淨光亮的樣子。例：這間厝改了有較通光。Tsit king tshù kái-liáu ū khah thang-kng. (這間房子改裝後光線比較好) 3.指消息很靈通。 例：做股票行情愛通光。Tsò kóo-phiò hâng-tsîng ài thang-kng. (做股票消息要靈通)
+19.	迵 thàng：通達、穿透。例：這條路迵新店。Tsit tiâu lōo thàng Sin-tiàm. (這條路通到新店)
+20.	迵過 thàng--kuè/thàng--kè：鑽透、穿過。例：新的公路欲開磅空對這粒山下跤迵過。Sin ê kong-lōo beh khui pōng-khang tuì tsit lia̍p suann ē-kha thàng--kuè. (新的公路要開隧道從這座山腳下穿過)
+21.	迵海 thàng-hái：1.通往海濱。例：對火車頭出去，直行就迵海矣。Tuì hué-tshia-thâu tshut--khì, ti̍t- kiânn tō thàng-hái--ah. (從火車站出去，直走就通往海濱了) 2.比喻海量、無限量。例：彼間新開的海產店，麥仔酒予你啉迵海的。Hit king sin khui ê hái-sán-tiàm, be̍h-á-tsiú hōo lí lim thàng-hái--ê.
+(那間新開的海產店，啤酒類無限量供應你喝)
+22.	規年迵天 kui-nî-thàng-thinn：一整年。例：伊規年迵天攏佇國外。I kui-nî-thàng-thinn lóng tī kok-guā. (他一整年都在國外)
+23.	塌 thap：1.凹陷。例：目睭塌落 ba̍k-tsiu thap--lo̍h(眼睛凹陷)。2.虧、賠。例：塌本 thap-pún(賠本)。3.補足，把不足的補上。例：相塌 sio-thap(截長補短)。4.將弧度相似的東西依其弧度互疊套在一起。例：兩頂帽仔塌做伙。Nn̄g tíng bō-á thap tsò-hué. (兩頂帽子疊在一起)
+23.	塌跤 thap-kha：補缺。填補人手。例：奕牌仔欠一跤，緊揣恁阿姨來塌跤。Ī pâi-á khiàm tsi̍t kha,
+kín tshuē lín a-î lâi thap-kha. (玩牌還少一個人，快找你阿姨來補缺)
+24.	塌空 thap-khang：1.拿東西把縫隙塞住。2.填補空缺。例：用塌空的題型來測驗學生的語詞。Iōng thap-khang ê tê-hîng lâi tshik-giām ha̍k-sing ê gí-sû. (用填空題來測驗學生的語詞)3.陷下的洞孔。例：這條路塌空的所在真濟。Tsit tiâu lōo thap-khang ê sóo-tsāi tsin tsē. (這條路凹陷處真多)
+25.	塌本 thap-pún：倒貼、虧本、賠本。未得到應得的利益，反而還要出錢。例：伊自做生理到今一直咧塌本。I tsū tsò-sing-lí kàu-tann it-ti̍t teh thap-pún. (他自從做生意到現在就一直賠本)
+26.	tháu-pàng(成大)；敨放 tháu-pàng(教典)：1.鬆綁。例：伊偷提厝裡的錢，予阿公縛咧，啥人敢共伊敨放？I thau-the̍h tshù--lí ê tsînn, hōo a-kong pa̍k--leh, siánn-lâng kánn kā i tháu-pàng？ (他偷拿家裡的錢，被祖父綁著，誰敢幫他鬆綁？) 2.解放。解除束縛，使自由發展。例：臺灣人的想法敢有得著敨放？Tâi-uân-lâng ê siūnn-huat kám ū tit-tio̍h tháu-pàng. (臺灣人的想法得到解放了嗎？)
+27.	透濫 thàu-lām：參雜混合。例：這味產品是純天然成分煉成的，無透濫一寡有的無的。Tsit bī sán- phín sī sûn thian-jiân sîng-hun liān-sîng--ê, bô thàu-lām tsi̍t-kuá ū--ê-bô--ê. (這道產品是純天然成分
+ 
+煉製成的，沒有參雜一些不明添加物)
+28.	透流 thàu-lâu：1.急流。例：透流生狂湧 thàu-lâu tshenn-kông íng(驚濤駭浪)。2.從一而終、有始有終。例：代誌欲做著愛透流。Tāi-tsì beh tsò tio̍h-ài thàu-lâu. (做事要有始有終)；翁某著愛透流。Ang-bóo tio̍h-ài thàu-lâu. (夫妻應該要從一而終)
+29.	頭面 thâu-bīn：臉色。例：家己出來做頭家，較免看人的頭面。Ka-kī tshut-lâi tsò thâu-ke, khah
+bián khuànn lâng ê thâu-bīn. (自己出來創業當老闆，免得看人家的臉色)
+30.	頭神 thâu-sîn(成大)；無頭神 bô-thâu-sîn(教典)：健忘、沒記性。例：人食老就會較無頭神。Lâng
+tsia̍h-lāu tō ē khah bô-thâu-sîn. (人老了記憶力就差了)
+31.	頭頂 thâu-tíng
+32.	頭一 thâu-tsi̍t(第一)
+33.	頭上仔 thâu-tsiūnn-á：頭胎、第一胎。例：	新婦咧欲生頭上仔矣。In sin-pū teh-beh senn thâu- tsiūnn-á--ah. (他媳婦要生第一胎了)
+34.	頭水 thâu-tsuí：新上市。第一批出產的牲畜或蔬果。例：今年頭水的柚仔真好食。Kin-nî thâu-tsuí ê iū-á tsin hó-tsia̍h. (今年新上市的柚子很好吃)
+35.	頭七 thâu-tshit(人死後，每隔七天奠祭一次，第一個七日稱為「頭七」。民間傳說死者到這一天才知道自己已死，靈魂會回到家裡巡視，喪家會在這天延請僧人在靈前誦經致祭)
+36.	頭圍 Thâu-uî(宜蘭縣頭城)
+37.	撐頭 thènn-thâu(成大)；牚頭 thènn-thâu(教典)：強出頭、多管閒事。例：這件代誌毋免你牚頭，我家己就會當解決。Tsit kiānn tāi-tsì m̄-bián lí thènn-thâu, guá ka-kī tō ē-tàng kái-kuat. (這件事不用你強出頭，我自己就可以解決)
+38.	thènn-thuí(成大)；牚腿 thènn-thuí/thìnn-thuí又唸作 thì-thuí(教典。因為劇烈運動而導致腿部肌肉酸疼。例：昨暗走一下傷久，害我今仔日跤牚腿)
+39.	褫 thí，褫開 thí--khui：把東西打開。例：目睭褫開 ba̍k-tsiu thí--khui(把眼睛打開)
+40.	廳頭 thiann-thâu(大廳的正面，放祖先、神主牌的地方)
+41.	thiah-ha̍h(破曉，成大)；拍殕仔光 phah-phú-á-kng(黎明)；貓霧仔光 bâ-bū-á-kng(破曉時的天色，教典)；拆箬 thiah-ha̍h(破曉)
+42.	拆白 thiah-pe̍h(成大)；拆白講 thiah-pe̍h-kóng(教典)：挑明說。例：咱做生理欲簽合約，條件攏愛拆白講才會清楚。Lán tsò-sing-lí beh tshiam ha̍p-iok, tiâu-kiānn lóng ài thiah-pe̍h kóng tsiah ē
+tshing-tshó. (我們做生意要簽合約，條件全都要挑明說才會清楚)
+43.	thian-pông(成大)；天篷 thian-pông(教典。天花板)
+44.	天上 thian-siōng(天頂)
+45.	天天 thian-thian(做事不牢靠)
+46.	thian-tho̍h(成大)；顛倒 thian-tho̍h(教典)：形容一個人說話或做事顛三倒四。例：你毋咧老顛倒！Lí m̄ teh lāu-thian-tho̍h! (你莫不是老糊塗了！)
+47.	刁工 thiau-kang(成大)；刁工 thiau-kang 又唸作 tiau-kang(教典)：1.專程、特地。例：我刁工來看你。Guá thiau-kang lâi khuànn--lí. (我專程來看你) 2.故意。例：你愈講，伊愈刁工。Lí jú kóng, i jú thiau-kang. (你越說，他越是故意和你唱反調)
+48.	thiau-lāng(成大)；挑俍 thiau-lāng(教典)：1.形容建築物的空間寬敞，光線明亮。例：這間大廳起了誠挑俍。Tsit king tuā-thiann khí liáu tsiânn thiau-lāng. (這間大廳很寬敞明亮)
+2.人的身材高挑。例：阿仁生做誠挑俍。A-jîn senn-tsò tsiânn thiau-lāng. (阿仁長得很高挑)
+49.	天註定 thinn-tsù-tiānn(天命，天運，天生注定)
+50.	thio(剷東西，成大)；沙挑 sua-thio(教典。圓鍬。用來鏟沙土的鐵器)、挑手爿 thio-tshiú-pîng(教典。提手旁。漢字的部首)、挑花刺繡 thio-hue-tshiah-siù：教典。1.刺繡。利用各種色線在紡織品或其他
+ 
+物品上，以不同的方法繡出各種圖案。例：古早的小姐，攏著學挑花刺繡。Kóo-tsá ê sió-tsiá, lóng tio̍h o̍h thio-hue-tshiah-siù. (古時候的閨秀，都得學習花草刺繡) 2.磨蹭、慢吞吞。指一個人動作像在刺繡一樣繁瑣慢工。例：你是咧挑花刺繡是毋？哪會摸遐久？Lí sī teh thio-hue-tshiah-siù sī--m̄? Ná ē bong hiah kú? (你是在刺繡嗎？怎麼會拖那麼久？)
+51.	糶米 thiò-bí：出售米糧。例：你愛學較巧咧，毋通糶米換番薯。Lí ài o̍h khah khiáu--leh, m̄-thang thiò-bí uānn han-tsî. (你要學聰明點，不要用拿賣米的錢去買地瓜。從前的人覺得米比地瓜更有價值，故有此說)
+52.	抽豬母稅 thiu-ti-bú-suè(成大)；抽豬母稅 thiu-ti-bó-suè/thiu-tu-bó-sè又唸作 thiu-ti-bú-suè/thiu-tu-bú-sè
+(教典)：自家養的母豬與別人的種豬交配生產時，出種豬的一方可分得部分仔豬。引申為女兒出嫁所生的小孩中，選其中一、兩人(通常包括次子)從母姓，叫做「抽豬母稅」。例：抽豬母稅的才會佮老母仝姓。Thiu-ti-bó-suè--ê tsiah ē kah lāu-bú kāng sènn. (抽豬母稅的才會跟母親同姓)
+53.	托頭 thok-thâu(成大。提醒)；點注 tiám-tuh(提醒)、提醒 thê-tshénn/thê-tshínn(指點。從旁指出別人要注意的事情)
+54.	捅 thóng：1.超過、多出來。例：伊三十捅歲。I sann tsa̍p thóng huè. (他三十多歲) 2.顯露出來。例：你內衫的手䘼捅出來矣，緊搝入去。Lí lāi-sann ê tshiú-ńg thóng--tshut-lâi--ah, kín khiú--ji̍p- khì. (你內衣袖子露出來了，趕快將它拉進去。) 3.啄。例：雞仔捅米 ke-á thóng bí(雞啄米)。
+55.	捅頭 thóng-thâu：多出來的、超出範圍的。例：阮老爸今年六十捅頭。Guán lāu-pē kin-nî la̍k-tsa̍p thóng-thâu. (我父親今年六十出頭)
+56.	thōng(延宕，成大)；宕 thōng(教典)：拖延、延宕。例：你莫閣宕矣，咱坐火車欲袂赴矣。Lí mài koh thōng--ah, lán tsē hué-tshia beh bē hù--ah. (你別再拖延了，我們坐火車快要來不及了)
+57.	延延 iân-tshiân(教典)：遲延。拖延耽擱。例：你毋通閣延延矣，火車欲開矣。Lí m̄-thang koh iân- tshiân--ah, hué-tshia beh khui--ah. (你不能再耽擱了，火車要開了)
+58.	thōng(成大)；緟 thōng (教典)：1.計算重疊堆積物的單位。例：一緟磚仔 tsi̍t thōng tsng-á(一疊磚塊)、一緟碗 tsi̍t thōng uánn(一疊碗)、一緟紙 tsi̍t thōng tsuá(一疊紙)。2.把物體堆疊起來。例：伊共銀角仔緟起來。I kā gîn-kak-á thōng--khí-lâi. (他把銅板疊起來。)；緟冊 thōng tsheh(疊書)
+59.	thòo-mh(成大)；吐莓 thòo-m̂(結果子)
+60.	塗膏 thôo-ko(鴉片煙膏)
+61.	土漿 thôo-tsiunn(成大)；塗漿 thôo-tsiunn(泥漿)
+62.	thuā(成大)：1.以清水漂洗。例：衫洗好愛汰予清氣。Sann sé hó ài thuā hōo tshing-khì. (衣服洗好要拿去用清水漂洗一下。) 2.受到他人或環境的影響而學習或改變。例：學語言愛有環境，汰久自然就會。O̍h gí-giân ài ū khuân-kíng, thuā kú tsū-jiân tō ē. (學語言要有環境，長期受影響自然就能學會。)；汰歹去 thuā pháinn--khì(受影響染上惡習)
+63.	汰衫 thuā-sann(將洗潔劑洗過的衣服再用清水沖洗乾淨)、洗汰 sé-thuā/sué-thuā(教典。指衣物、器具等用清潔劑洗滌後，再用清水沖洗的動作。例：用雪文洗過的衫，著愛閣洗汰一擺)
+64.	thuā(見習，成大)；導 thuā(甘字典)
+65.	攤販 thuann-huàn、分攤 hun-thuann
+66.	thuánn(成大)；剷 thuánn，剷草 thuánn-tsháu(教典。用工具除草。一般用鋤頭剷除雜草)
+67.	挩鍊仔 thuah-liān-á(拉鍊。例：咱著教囡仔，去便所了後，挩鍊仔著愛挩予好勢)、挩門 thuah-
+mn̂g(拉門。可以左右方向滑動的門)、挩枋 thuah-pang(洗衣板。多呈長方形，表面有平行或弧形刻紋)
+68.	黜破 thuh-phuà：戳穿、拆穿或揭露別人的謊言或隱私。例：伊真愛歕雞胿，總有一工會予人黜
+破。I tsin ài pûn-ke-kui, tsóng ū tsi̍t kang ē hōo lâng thuh-phuà. (他很喜歡吹牛，總有一天會被人戳破)
+ 
+69.	黜仔 thuh-á：鏟子。供鏟除與刨平用的鐵器
+70.	托 thuh，托下頦 thuh ē-hâi (用手撐著下巴)、托枴仔 thuh kuái-á (拄枴杖)
+71.	thuh-tsiúnn(禿頭，成大)；禿頭 thut-thâu(禿頭)、禿額 thuh-hia̍h(教典。髮際的前緣部分禿髮)
+72.	坉塗 thūn-thôo(用土去填平)、坉平 thūn-pênn/thūn-pînn(把有缺陷的凹洞給填補起來。例：無人共窟仔坉平，行路會足危險的)、坉錢 thūn-tsînn(填補本錢、彌補資金缺口。例：欲完成這條高速鐵路， 著閣坉錢)
+73.	查某 kán 仔 tsa-bóo-kán-á(成大)；查某𡢃tsa-bóo-kán(教典)：婢女、丫鬟。專門聽命僱主做事的女性僕人。一般還分專門侍奉年長者的「老𡢃」(lāu kán)、伺候小姐也兼做其他瑣細工作的「幼𡢃」(iù kán)和專門做廚房伙食，洗衣打掃等笨重粗活的「粗𡢃」(tshoo kán)
+74.	乍 tsànn：炸、過油。將食物以熱油稍微炸一下。例：糋好的芋仔糋欲食進前愛閣乍一下。Tsìnn hó ê ōo-á-tsìnn beh tsia̍h tsìn-tsîng ài koh tsànn--tsi̍t-ē. (炸好的芋頭要吃之前得先過油再稍微炸一下)
+75.	閘 tsa̍h，閘風 tsa̍h hong(擋風)、閘光 tsa̍h kng(遮住光線)、閘車 tsa̍h tshia(攔車。攔阻行駛中的車輛)
+76.	才 tsâi，內才 lāi-tsâi(內涵。一個人的內在修為、學識、才華。例：伊足有內才的)、人才 lâng-
+tsâi(外表、儀容。例：恁囝婿的人才生做袂䆀)、才情 tsâi-tsîng(1.指人的才華、本事、才能。例：金水嬸仔三个後生攏誠有才情，毋是經理，就是董事長。 2.有才華的。例：伊哪會遐才情)
+77.	在世 tsāi-sè：生存於世上。例：人生在世，毋免傷計較。Jîn-sing tsāi-sè, m̄-bián siunn kè-kàu. (人活著，不要計較太多)
+78.	在室的 tsāi-sik--ê：1.處女、閨女、處男。2.沒有性經驗的。例：未嫁娶以前，攏是在室的。Buē kè- tshuā í-tsîng, lóng sī tsāi-sik--ê. (還沒嫁娶之前，都是沒有性經驗的)
+79.	在室女 tsāi-sik-lí/tsāi-sik-lú(處女、閨女。未出嫁的女子)
+80.	在在 tsāi-tsāi，老神在在 lāu-sîn-tsāi-tsāi：氣定神閒、處之泰然。遇到事情時態度鎮定，神色自若， 自信到彷彿一切情況都在掌握中。例：代誌到甲這款地步矣，你猶閣老神在在。Tāi-tsì kàu kah tsit khuán tē-pōo--ah, lí iáu-koh lāu-sîn-tsāi-tsāi. (事情都到這種地步了，你竟然還氣定神閒)
+81.	tsám-jiân(非常，成大)；嶄然 tsám-jiân/tsám-liân(相當、非常)
+82.	蹔 tsàm(踹、跺，用力踢或踏)，蹔跤步 tsàm-kha-pōo(1.踏步踏、走正步。2.用力踏步)
+83.	鏨 tsām：1.用來雕琢、鑿刻的工具。例：石鏨 tsio̍h-tsām(鑿石頭的工具)。2.雕刻石頭或金屬。例： 鏨字 tsām jī(雕刻字)。3.砍、剁。用刀子大力剁東西。例：鏨雞肉 tsām ke-bah(剁雞肉)、白鏨雞pe̍h-tsām-ke(白斬雞)
+84.	鏨頭 tsām-thâu(砍頭、殺頭)
+85.	鏨頭短命 tsām-thâu-té-miā：咒人被砍頭短命而死，是女人咒罵男人的話。例：鏨頭短命，莫掠我金金相啦。Tsām-thâu-té-miā, mài lia̍h guá kim-kim-siòng--lah. (短命鬼，不要盯著我看啦)
+86.	鏨仔 tsām-á：鏨子。一種用來鏨切或雕刻的工具。例：用鏨仔雕刻一身佛像。Iōng tsām-á tiau-khik tsi̍t sian hu̍t-siōng. (用鏨子雕刻一尊佛像)
+87.	斬頭 tsām-thâu(成大)；鏨頭 tsām-thâu(教典。砍頭、殺頭)
+88.	站節 tsām-tsat：分寸。例：咱人做代誌著愛有站節。Lán lâng tsò tāi-tsì tio̍h-ài ū tsām-tsat. (我們做事情要有分寸)
+89.	曾 tsan，曾經 tsan-king
+90.	贊 tsān，鬥幫贊 tàu-pang-tsān：幫助。例：這遍佳哉有你鬥幫贊，實在真多謝！Tsit piàn ka-tsài ū lí tàu-pang-tsān, si̍t-tsāi tsin to-siā! (這次多虧有你幫助，實在很感謝！)
+91.	總頭 tsáng-thâu(要領，成大)；摠頭 tsáng-thâu(教典)：1.總攬。總理各種事情的關鍵之處。例：規公司的代誌攏是伊咧摠頭。Kui kong-si ê tāi-tsì lóng sī i teh tsáng-thâu. (整間公司的事務都是由他總攬) 2.頭緒。關鍵之處。例：捎無摠頭。Sa bô tsáng-thâu. (抓不著頭緒)
+ 
+92.	十一哥 tsa̍p-it-ko(單身漢)；羅漢跤仔 lô-hàn-kha-á；單身 tuann-sin
+93.	雜細 tsa̍p-sè(1.雜貨。各種日用零星貨物。2.指婦女用的花粉針線等各項細小貨品)
+94.	十姊妹 tsa̍p-tsí-muē/tsa̍p-tsí-bē(1.薔薇的一種。2.一種鳥)
+95.	十全 tsa̍p-tsn̂g：完滿、齊全。完美無缺憾。例：媠，媠無十全；䆀，䆀無加圇。Suí, suí bô tsa̍p-tsn̂g; bái, bái bô ka-nn̂g. (人不會是十全十美的)
+96.	實 tsa̍t：裝滿、塞滿的樣子。例：貯甲遮實。Té kah tsiah tsa̍t. (裝得這麼紮實。)；實鼻 tsa̍t-
+phīnn(鼻塞)。
+97.	實腹 tsa̍t-pak：內部紮實不空心的。例：樹仔是實腹的，無親像竹仔是空殼的。Tshiū-á sī tsa̍t-pak-- ê, bô tshin-tshiūnn tik-á sī khang-khak--ê. (樹是實心的，不像竹子是空心的)
+98.	tsa̍t-mo̍oh(成大)；實膜 tsa̍t-mo̍oh(不乾脆)
+99.	塞頭 tsa̍t-thâu(不知變通，成大)；實頭 tsa̍t-thâu(教典)：頭腦不靈光。例：伊有夠實頭，袂曉變竅。I ū-kàu tsa̍t-thâu, bē-hiáu piàn-khiàu. (他的頭腦實在不靈光，不懂得變通)
+100.	走過手 tsáu-kuè-tshiú(成大)；走過手 tsáu-kuè-tshiú/tsáu-kè-tshiú(逃過、成功逃走)
+
+1.	坐禪 tsē-siân(學佛的人盤腿閉目靜坐的修行方法)
+2.	tsē-té(成大)；坐底 tshē-té/tshē-tué 又唸作 tsē-té/tsē-tué：1.桶子、瓶子等容器的底部脫落。例：桶仔坐底，袂用得。Tháng-á tshē-té, bē īng--tit. ( 桶子的底部脫落，不能用了) 2.沈澱。例：洗藕粉， 著等藕粉坐底。Sé ngāu-hún, tio̍h tán ngāu-hún tshē-té. (篩洗藕粉，要等藕粉沈澱) 3.指沉入水
+底。例：船破，海坐底。Tsûn phuà, hái tshē-té. (船破了，會進水，最後總要沈入海底。俗語，比喻兒子負債，雙親為之償還；或指事情失敗了，主其事者還是要承擔責任)
+3.	坐清 tsē-tshing：澄清。水中雜質沉殿，使水質變得乾淨清澈。例：這水猶未坐清，毋通燃來啉。Tse tsuí iáu-buē tsē-tshing, m̄-thang hiânn lâi lim. (這水的雜質還沒沉澱，不能煮來喝)
+4.	煮 tsí/tsú，tsí是宜蘭偏漳腔
+5.	tsī-iāng(漏氣，成大)；落氣 làu-khuì(教典)
+6.	正 tsiann，正月 tsiann--gue̍h/tsiann--ge̍h(一月)
+7.	新正年頭 sin-tsiann-nî-thâu(農曆春節期間)
+8.	汫 tsiánn：味道淡、不鹹。例：試鹹汫 tshì kiâm-tsiánn(試味道鹹淡)、湯傷汫 thng siunn tsiánn(湯味道太淡)
+9.	鹹汫 kiâm-tsiánn(味道。指味道的鹹或淡)
+10.	白汫無味 pe̍h-tsiánn-bô-bī：1.指食物味道淡，沒什麼滋味。例：今仔日的菜白汫無味，你敢是袂記得摻鹽？Kin-á-ji̍t ê tshài pe̍h-tsiánn-bô-bī, lí kám-sī bē-kì-tit tsham iâm? (今天的菜味道很淡，你是不是忘了加鹽巴？) 2.平淡無奇。指事物平凡，沒什麼特別。例：買票看這種白汫無味的戲真正是無彩錢。Bé phiò khuànn tsit tsióng pe̍h-tsiánn-bô-bī ê hì tsin-tsiànn sī bô-tshái tsînn. (買票看這種平淡無奇的戲，真的是浪費錢)
+11.	正港 tsiànn-káng：指正宗道地的，非冒名的。例：遮的貨攏是正港的，恁逐家會當放心仔買。Tsia ê huè lóng sī tsiànn-káng--ê, lín ta̍k-ke ē-tàng hòng-sim-á bé. (這裡的貨物都是真貨，你們可以放心購買)
+12.	食的 tsia̍h--ê(吃的東西)
+13.	食力 tsia̍h-la̍t：1.受力。例：這枝柱仔上食力。Tsit ki thiâu-á siōng tsia̍h-la̍t. (這根柱子受力最多)
+2.吃力。例：食老了後目睭花花，看報紙足食力。Tsia̍h-lāu liáu-āu ba̍k-tsiu hue-hue, khuànn pò-tsuá
+tsiok tsia̍h-la̍t. (年老以後眼茫目花，看報紙很費力)
+3.比喻精神或情況嚴重、糟糕。例：伊病一下真食力。I pēnn tsi̍t-ē tsin tsia̍h-la̍t. (他病得很嚴重)
+14.	食色 tsia̍h-sik：用顏料在物品上加顏色。例：伊這項物件小等閣愛食色，做了有夠工夫。I tsit hāng
+ 
+mi̍h-kiānn sió-tán koh ài tsia̍h-sik, tsò liáu ū-kàu kang-hu. (他這件物品等一下還要上色，做得很精緻)
+15.	食錢 tsia̍h-tsînn：收賄、貪汙。例：伊才毋是彼款會食錢的人。I tsiah m̄ sī hit khuán ē tsia̍h-tsînn ê lâng. (他才不是那種會貪汙收賄的人)
+16.	食生跤 tsia̍h-tshenn-kha(欺生)
+17.	針黹 tsiam-tsí：女紅、針指。女子所做的針線、紡織、刺繡、縫紉等工作。例：學生佇學校攏會學做針黹。Ha̍k-sing tī ha̍k-hāu lóng ē o̍h tsò tsiam-tsí. (學生在學校都會學一點女紅)
+18.	剪綹仔 tsián-liú-á：扒手、三隻手。專門在公共場所偷取人家財物的小偷。例：去人濟的所在愛較斟酌咧，錢毋通去予剪綹仔剪去。Khì lâng tsē ê sóo-tsāi ài khah tsim-tsiok--leh, tsînn m̄-thang khì hōo tsián-liú-á tsián--khì. (去人多的地方要小心一點，錢不要被扒手扒走)
+19.	賤 tsiān：1.指人生性好動，喜歡擺弄任何能夠接觸到的東西。例：查某囡仔人愛較定著咧，毋通烏白賤。Tsa-bóo gín-á-lâng ài khah tiānn-tio̍h--leh, m̄-thang oo-pe̍h tsiān. (女孩子家要文靜一點，不要東摸西摸到處亂碰) 2.地位卑下的。例：賤人 tsiān-jîn(卑下的人)
+20.	賤骨 tsiān-kut(劣根性；好動)
+21.	接續 tsiap-sio̍k(連續。相連接、繼續不間斷。例：讀冊若無接續，就較會袂記得)
+22.	捷捷 tsia̍p-tsia̍p(常常。例：伊最近捷捷來)；捷運 tsia̍t-ūn
+23.	齊備 tsiâu-pī(成大)；齊備 tsê-pī(教典)：俱備齊全。例：你欲愛的物件，我絕對共你攢予齊備。Lí beh ài ê mi̍h-kiānn, guá tsua̍t-tuì kā lí tshuân hōo tsê-pī. (你想要的東西，我絕對幫你準備齊全)
+24.	齊勻 tsiâu-ûn：1.指動作順暢不中斷。例：雨水真齊勻。Hōo-tsuí tsin tsiâu-ûn. (雨水不斷) 2.均勻、平均。例：栽仔發甲誠齊勻。Tsai-á huat kah tsiânn tsiâu-ûn. (幼苗生長的很平均。)；做散工的人趁的錢袂齊勻。Tsò suánn-kang ê lâng thàn ê tsînn bē tsiâu-ûn. (打零工的人收入不穩定) 3.完備、周全。
+25.	櫼 tsinn：1.櫼、楔。上平厚、下尖扁的木塊，用來塞在榫頭縫隙中，使整個木製結構固定。
+2.塞、擠。例：櫼入去 tsinn--ji̍p-khì(擠進去)。3.用種子榨油。例：用塗豆櫼塗豆油。Iōng thôo-tāu tsinn thôo-tāu-iû.(用花生榨花生油)
+26.	實櫼 tsa̍t-tsinn：紮實而沒有空隙的樣子。例：貯了傷實櫼。Té liáu siunn tsa̍t-tsinn. (裝塞得太紮實)
+27.	斧頭櫼仔 póo-thâu-tsinn-á：1.嵌進斧頭鐵框內的鐵楔子，將鐵塊與木柄套緊，使得斧頭牢靠不脫落。2.一種海中的貝類。
+28.	tsinn-á(鴿子)；粉鳥 hún-tsiáu(鴿子)
+29.	糋 tsìnn：1.炸。例：糋甜粿 tsìnn tinn-kué(炸炸年糕)、糋番薯糋 tsìnn han-tsî tsìnn(炸番薯)。經油炸而熟的食品。例：肉糋 bah-tsìnn(炸肉)、豆乾糋 tāu-kuann-tsìnn(油炸豆腐)、
+馬花糋 bé-hue-tsìnn(兩相好，又名雙胞胎。以麵粉製作的油炸甜點)
+30.	諍 tsìnn(成大。爭辯、爭執)；諍喙 tsènn-tshuì/tsìnn-tshuì(教典。抬槓、爭論。在言語上與別人發生爭執或衝突。例：伊足愛佮人諍喙。I tsiok ài kah lâng tsènn-tshuì.)
+31.	搢風 tsìnn-hong：逆風。例：這向搢風真歹行。Tsit hiòng tsìnn-hong tsin pháinn kiânn. (這個方向逆風很難走)
+32.	搢做前 tsìnn-tsò-tsîng/tsìnn-tsuè-tsîng：擠到前面去站在領導的地位。例：伊萬項代誌攏欲搢做前。I bān-hāng tāi-tsì lóng beh tsìnn-tsò-tsîng. (他不論做什麼事情都要搶第一)
+33.	接載 tsih-tsài：支撐、支持。例：連紲行幾若點鐘，我強欲接載袂牢矣。Liân-suà kiânn kuí-nā tiám-tsing, guá kiōng-beh tsih-tsài bē tiâu--ah. (連續走好幾個小時，我快要支撐不住了)
+34.	tsih-tsiap(成大)；接接 tsih-tsiap(教典)：1.接洽。與人商議事情。例：彼个客戶就予你去接接。Hit ê
+kheh-hōo tō hōo lí khì tsih-tsiap. (那個客戶就讓你去接洽) 2.接待、招待。例：人客來矣，你毋緊
+ 
+去接接閣蹛遮坐。Lâng-kheh lâi--ah, lí m̄ kín khì tsih-tsiap koh tuà tsia tsē. (客人來了，你不快去接待，還坐在這裡)
+35.	積聚 tsik-tsū(堆積、囤積、累積)
+36.	積車 tsik-tshia(成大)；窒車 that-tshia(塞車，教典)
+37.	寂寞 tsi̍k-bo̍k 俗唸作 siok-bo̍k(孤單的樣子)
+38.	蟳仔 tsîm-á(螃蟹)、蟳膏 tsîm-ko(蟹黃。青蟹體內的卵巢和消化腺)、蟳管 tsîm-kóng(蟹螯)
+39.	真主 tsin-tsú(伊斯蘭教的阿拉、亡國時出現的真國君)
+40.	舂米 tsing-bí(把稻穀放在臼中，擣去皮殼，成為潔淨的白米)、舂臼 tsing-khū(臼。中間下凹的舂米器具)
+41.	精牲 tsing-senn/tsing-sinn：畜生。家中豢養的家禽或家畜。有時也用來罵人。例：這个精牲！竟然做出這款代誌！Tsit ê tsing-senn! Kìng-jiân tsò-tshut tsit khuán tāi-tsì! (這個畜生！竟然做出這種事情！)
+42.	腫頷 tsíng-ām：1.胡說、瞎掰、胡扯。例：我聽你咧腫頷。Guá thiann lí teh tsíng-ām. (我聽你在胡扯) 2.糟糕、慘了。對不好的情況發出感嘆。例：代誌舞甲按呢，這聲腫頷矣！Tāi-tsì bú kah án- ne, tsit siann tsíng-ām--ah!(事情搞成這樣，這下糟糕了！)
+43.	種傳 tsíng-thn̂g(遺傳毛病，成大)；傳種 thn̂g-tsíng 又唸作 tn̂g-tsíng(傳宗接代，教典)；好種毋傳
+(thn̂g)，歹種毋斷(好的不傳，壞的卻不斷傳下來，有感嘆之意)
+44.	政事 tsìng-sū(政治的事務)
+45.	石車 tsio̍h-tshia(1.載石頭ê車。2.壓榨甘蔗等使用ê迴轉石器)
+46.	囑 tsiok，遺囑 uî-tsiok(遺書、遺囑。人在臨終前所遺留的言辭)
+47.	tsiong(真準，成大)
+48.	從中 tsiông-tiong(從其中、從裡面)
+49.	執訣 tsip-kuat(任性、固執)
+50.	州仔 tsiu-á(沙洲，成大)；浮崙 phû-lūn(教典。沙洲。江海河流中由泥沙淤積而成的陸地)、沙線
+sua-suànn(教典。沙洲)
+51.	咒語 tsiù-gí(成大。咒語)；咒語 tsiù-gí/tsiù-gú
+52.	咒懺 tsiù-tshàm(成大)；咒讖 tsiù-tshàm(教典)：1.埋怨、數落。 例：伊不時咒讖別人，無欲檢討家己。I put-sî tsiù-tshàm pa̍t-lâng, bô beh kiám-thó ka-kī. (他時常數落別人，不檢討自己) 2.詈罵、詛咒。指用惡毒的言語辱罵他人。例：伊定定共人咒讖甲真歹聽。I tiānn-tiānn kā lâng tsiù-tshàm kah tsin pháinn-thiann. (他常常把別人罵得很難聽)
+53.	tsiunn-ám(成大)；漿泔 tsiunn-ám(教典。漿洗。衣服洗淨後，浸入煮飯水中上漿，使它晒乾後較硬挺)
+54.	指甲扦 tsíng-kah-tshuann(肉刺。指甲周圍的角質因為乾裂而翹起來)
+55.	鑽仔 tsǹg-á(鑽子。用來鑽孔的工具)
+56.	旋 tsn̄g：髮旋。例：雙个旋，惡甲無人問。Siang ê tsn̄g, ok kah bô-lâng mn̄g. (兩個髮旋的人，兇惡得沒人聞問。民間傳說有兩個髮旋的人天性兇惡)
+57.	左派 tsó-phài(主要是指支持平等原則和平等主義的政治意識形態)
+58.	做醮 tsò-tsiò(成大)；做醮 tsò-tsiò/tsuè-tsiò(教典。建醮。僧道設壇祈神求福的過程。通常選定一段特定的日期，設立祭壇，為新廟落成、神像開光、祈福、超渡亡魂等做法事。在做醮時通常需要齋戒，祈求做醮成功、合境平安)
+59.	造作 tsō-tsok(成大。土木建築等的施工)；成格 tshiânn-kik 又唸作 tshiânn-keh(室內隔間裝潢，教典)、裝潢 tsong-hông、間格 king-keh(裝潢，教典)
+60.	作孽 tsok-gia̍t：皮、搗蛋。惡作劇。例：囡仔人毋通傷作孽。Gín-á-lâng m̄-thang siunn tsok-gia̍t.
+ 
+(小孩子不可以太調皮搗蛋)
+61.	主日學 tsú-ji̍t-o̍h(成大)；主日學 tsú-ji̍t-o̍h/tsú-li̍t-o̍h(是基督教教會於主日早上在教堂或其他場所進行的宗教教育，一般在主日敬拜之前或之後舉行)
+62.	主裁 tsú-tshâi(仲裁)
+63.	注死 tsù-sí(碰巧，成大)；註死 tsù-sí：教典。1.註定死期、註定應死。例：未註生，先註死。Buē tsù-senn, sing tsù-sí. (在出生前，就已經註定死亡的日子。比喻生死早有註定) 2.湊巧、碰巧。例： 伊佇半路仔註死去拄著債主。I tī puànn-lōo-á tsù-sí khì tú-tio̍h tsè-tsú. (他在路上湊巧遇見債權人)
+3.註定悽慘倒楣，或發生意外災害。例：偷提物件予警察掠著，有夠註死！Thau-the̍h mi̍h-kiānn hōo kíng-tshat lia̍h--tio̍h, ū-kàu tsù-sí! (偷東西被警察抓到，有夠倒楣！)
+64.	註死 tsù-sí(該死，成大)；註死 tsù-sí，偷提物件予警察掠著，有夠註死(教典)
+65.	注神 tsù-sîn(全神貫注)
+66.	煎 tsuann：熬煮、燒煮。例：煎藥仔 tsuann io̍h-á(熬湯藥)、煎茶 tsuann tê(煮茶)
+67.	炸 tsuànn：1.油炸。用高溫、慢火將肥肉或固態油脂熔為液體脂肪。例：伊共這塊肥豬肉提去炸豬油。I kā tsit tè puî ti-bah the̍h khì tsuànn ti-iû. (他將這塊肥豬肉拿去炸豬油) 2.引申為胡說八道。例：你莫閣炸矣。Lí mài koh tsuànn--ah. (你別再胡說八道了)
+68.	tsuânn(就這樣，成大)；就按呢 tsiū-án-ne 又唸作 tsū-án-ne，合音唸作 tsua̋n-ne、tsua̋n：1.就這樣子。依照指示。例：代誌就按呢進行。Tāi-tsì tsiū-án-ne tsìn-hîng. (事情就這樣子去做) 2.因此、所以。用來連結上下文的因果關係。例：伊行無好勢，就按呢跋倒。I kiânn bô hó-sè, tsiū-án-ne pua̍h-tó. (他沒走好，所以跌倒)
+69.	濺 tsuānn(水或液體噴灑出來)，濺水 tsuānn tsuí(噴水。通常指利用水管噴射水注)、水濺仔 tsuí- tsuānn-á(澆水桶。為植物澆水用的澆水桶，可以澆出水花)
+70.	走縒 tsáu-tsua̍h：1.走樣、失真、失序、出錯、有所偏差。例：一下捋，就走縒。Tsi̍t-ē lua̍h, tsiū tsáu-tsua̍h. (俗語，厲害的拳師一碰觸到對方的手臂，對方馬上受傷。或指一出手就賠錢。或指一插手就把事情搞砸)；雙爿講的話無走縒。Siang-pîng kóng ê uē bô tsáu-tsua̍h. (雙方所說的話沒有出入) 2.器物、身體或心理發生毛病。例：機器有佗位仔走縒，才袂振動。Ki-khì ū tó-uī-á tsáu-tsua̍h, tsiah bē tín-tāng. (機器有某個地方故障，才不會運轉)；身體有走縒，才袂食飯。Sin-thé ū tsáu- tsua̍h, tsiah bē tsia̍h-pn̄g. (身體有恙，才吃不下飯)
+71.	無較縒 bô-khah-tsua̍h：沒有用。例：已經害去矣，閣哭嘛無較縒。Í-king hāi--khì--ah, koh khàu mā bô-khah-tsua̍h. (已經壞掉了，再哭也沒有用)
+72.	賺 tsuán，賺食 tsuán-tsia̍h(不當得利，成大)；賺食 tsuán-tsia̍h(賺錢、謀生，這馬真歹賺食；詐騙， 伊予人賺食去矣！)(教典)
+73.	水沖 tsuí-tshiâng(瀑布。例：出日的時，佇水沖邊仔有可能會看著虹)
+74.	尊存 tsun-tshûn：禮讓、顧及。基於對長輩或重要人士的敬重，在一些事情上禮讓或顧及先知會對方，為其保留地位及尊嚴。例：你欲出去做生理，無愛閣蹛厝內，著愛尊存作穡的老爸，先佮伊參詳。Lí beh tshut-khì tsò sing-lí, bô-ài koh tuà tshù-lāi, tio̍h-ài tsun-tshûn tsoh-sit ê lāu-pē, sing kah i tsham-siông. (你要出去做生意，不想再待家裡，得要顧及種田的父親，先跟他商量)
+75.	前年 tsûn--nî(去年的前一年)
+76.	鏇仔 tsūn-á(成大)；loo-lài-bà(教典。螺絲起子)、捘 tsūn(教典。旋轉)
+77.	tshá-tshuì-khí(抬槓，成大)；吵喙齒 tshá-tshuì-khí
+78.	tshah-tshah(成大)；插插插 tshah-tshah-tshah(教典)：人群聚集。例：戲院門口人插插插。Hì-īnn mn̂g-kháu lâng tshah-tshah-tshah. (戲院門口擠滿了人)
+79.	菜蔬 tshài-se(蔬菜。一切可供食用的青菜瓜果。例：伊愛食菜蔬，無愛食肉)
+80.	菜店 tshài-tiàm(酒家、酒店)、菜店查某 tshài-tiàm-tsa-bóo(妓女。從事特種行業的女性)
+ 
+81.	菜糋 tshài-tsìnn(炸菜丸子)
+82.	豺狼 tshâi-lông(山犬和郎)
+83.	祀 tshāi：設立神佛、祖先牌位。例：祀公媽 tshāi kong-má(供奉祖先牌位)
+84.	鑿 tsha̍k：1.刺、扎。例：我的手予針鑿著。Guá ê tshiú hōo tsiam tsha̍k--tio̍h. (我的手被針扎到)
+2.感官或感覺不舒服的。例：這領衫穿著足鑿的。Tsit niá sann tshīng tio̍h tsiok tsha̍k--ê. (這件衣服穿起來刺刺的，感覺不舒服)
+85.	鑿仔 tsha̍k-á(鑿子。一種可以用來穿孔的刃器)
+86.	鑿目 tsha̍k-ba̍k：1.刺眼、扎眼。例：傷過光，倒鑿目。Siunn kuè kng, tò tsha̍k-ba̍k. (太亮反而刺眼) 2.礙眼、不順眼。例：看了鑿目，規氣莫看就無代誌。Khuànn liáu tsha̍k-ba̍k, kui-khì mài khuànn tō bô tāi-tsì. (看了礙眼，乾脆不看就沒事了)
+87.	tshân-tshân(成大)；殘殘 tshân-tshân(教典)：乾乾脆脆，不再猶豫、狠下心來，果斷去做。例：毋通閣躊躇矣，殘殘共決落去！M̄-thang koh tiû-tû--ah, tshân-tshân kā kuat--lo̍h-khì. (不要再猶豫了，乾乾脆脆把它決定下來！)；殘殘豆干切五角。Tshân-tshân tāu-kuann tshiat--gōo-kak. (俗語，字面意 思是果斷要求老板切五角錢左右的豆干，有自嘲或笑人連一點小事都猶豫不決的意味)
+88.	tshàng(成大)；藏水沬 tshàng-tsuí-bī(教典。潛水)、共禮物提去藏 Kā lé-bu̍t the̍h-khì tshàng. (把禮物拿去藏起來，教典)
+89.	tshàng(成大)；聳 tshàng(教典)：毛髮蓬亂毛燥的樣子。例：頭毛聳聳 thâu-mn̂g tshàng-tshàng(頭髮蓬鬆立起)
+90.	tshàng-tshiu(成大)；聳鬚 tshàng-tshiu(教典)：1.鬍鬚聳起來或蓬亂。2.引申為囂張、逞威風。例：你免聳鬚，連鞭警察就來矣。Lí bián tshàng-tshiu, liâm-mi kíng-tshat tō lâi--ah. (你別囂張，警察馬上就來了)
+91.	賊頭 tsha̍t-thâu(警察，成大)；賊頭 tsha̍t-thâu(匪首，教典)
+92.	草蓆 tsháu-tshio̍h：用乾藺草編織而成的蓆子。例：你先去共草蓆仔舒予伊好才去睏。Lí sing khì kā tsháu-tshio̍h-á tshu hōo i hó tsiah khì khùn. (你先將草蓆鋪好再去睡)
+93.	tshàu-hiàn(成大)；臭羶 tshàu-hiàn(教典)：腥味。例：有人講羊仔肉真臭羶。Ū lâng kóng iûnn-á-bah tsin tshàu-hiàn. (有人說羊肉有腥味)
+94.	臭香 tshàu-hiunn(黑斑病)
+95.	tshàu-iāng(成大)；臭煬 tshàu-iāng(教典)：神氣、臭屁。常用於對他人的貶詞。例：阿三仔誠臭煬， 不時講家己偌𠢕拄偌𠢕。A sam--á tsiânn tshàu-iāng, put-sî kóng ka-kī guā gâu tú guā gâu. (阿三很臭屁，老跟別人說自己很行)
+96.	tshē(成大)；坐毋著 tshē m̄-tio̍h、坐不是 tshē put-sī(教典)：賠不是。例：是你得失人，愛去共人坐毋著。Sī lí tik-sit--lâng, ài khì kā lâng tshē-m̄-tio̍h. ( 是你得罪了人家，要去向人家賠個不是)
+97.	tshē-té(成大)；坐底 tshē-té/tshē-tué 又唸作 tsē-té/tsē-tué(教典)
+98.	生份 tshenn-hūn(成大)；生份 senn-hūn/sinn-hūn 又唸作 tshenn-hūn/tshinn-hūn(教典)：陌生。沒見過的、不認識的或不熟悉的。例：這个名真生份，我毋捌聽過。Tsit ê miâ tsin senn-hūn, guá m̄-bat thiann kuè. (這個名字真陌生，我沒聽過)
+99.	青狂 tshenn-kông(成大)；生狂 tshenn-kông/tshinn-kông(教典)：做事慌慌張張的樣子。例：拄著代誌愛冷靜，毋通遐生狂。Tú tio̍h tāi-tsì ài líng-tsīng, m̄-thang hiah tshenn-kông. (遇到事情要冷靜，不要這麼慌張)
+100.	tsheh-khuì(飲泣，成大)；慼氣 tsheh-khuì(飲泣)；怨慼 uàn-tsheh/uàn-tshueh 怨恨；慼心 tsheh- sim/tshueh-sim 因怨恨而傷心、絕望。例：我做甲流汗，猶閣予人嫌甲流瀾，有夠慼心啦！
+ 
+1.	tshi-tshi-tshu̍h-tshu̍h(成大)；嗤舞嗤呲 tshi-bú-tshi̍h-tshū(教典)：說話小聲怕別人聽見的樣子。例： 嗤舞嗤呲佇遐咧講人的歹話。In tshi-bú-tshi̍h-tshū tī hia teh kóng lâng ê pháinn-uē. (他們小小聲的在那裡說別人的壞話)
+2.	tshím(成大)；寢 tshím：纔。剛才，不久之前。例：伊寢來爾爾。I tshím lâi niā-niā. (他剛來而已)
+3.	寢頭 tshím(教典)：起初、起先。剛開始的時候。例：寢頭伊講好欲來，到落尾又閣毋來。Tshím-
+thâu i kóng-hó beh lâi, kàu lo̍h-bué iū-koh m̄ lâi. (一開始他說好要來，到後來又不來)
+4.	tshì-giâ-giâ(凶巴巴；咄咄逼人，成大)；刺夯夯 tshì-giâ-giâ
+5.	tshì-kui(成大)；刺䲅tshì-kui(教典。六斑刺河豚。魚類。全身除吻端和尾鰭外，密佈長棘，頭部的棘較身體上之棘為長，無毒，味道鮮美，是饕客喜歡品嚐的一種海鮮)
+6.	刺波 tshì-pho(野草莓)；草莓 tsháu-m̂
+7.	刺鑿 tshì-tsha̍k：1.刺癢、刺眼。被東西扎到的感覺。例：中晝的日頭真刺鑿。Tiong-tàu ê ji̍t-thâu tsin tshì-tsha̍k. (中午的太陽很刺眼) 2.使人心裡不舒服或感覺討厭。例：伊的面我看著就刺鑿。
+I ê bīn guá khuànn-tio̍h tō tshì-tsha̍k. (他的臉我看了就討厭)；㤉潲 gê-siâu 表示討厭的粗俗用語。例：我誠㤉潲伊彼款做代誌的態度。Guá tsiânn gê-siâu i hit khuán tsò tāi-tsì ê thāi-tōo.
+8.	市草 tshī-tsháu：市場買賣的情況。例：最近市草好無？Tsuè-kīn tshī-tsháu hó--bô? (最近市況好不好？)
+9.	車拼 tshia-piànn(成大)；捙拚 tshia-piànn(教典)：指兩方人馬彼此之間的拚鬥較勁，多半帶有挑釁的意味。例：你這馬是一定欲佮我捙拚是無？Lí tsit-má sī it-tīng beh kah guá tshia-piànn sī--bô? (你現在是一定要跟我拚鬥嗎？)
+10.	車單 tshia-tuann(車票。乘車所用的憑據票證)
+11.	請茶 tshiánn-tê(1.請人喝茶。2.招呼喝茶的話)
+12.	晟 tshiânn：教導、養育。例：爸母用心來共咱晟。Pē-bú iōng-sim lâi kā lán tshiânn. (父母費盡心力來養育我們)
+13.	晟養 tshiânn-ióng：養育。例：我是阿媽共我晟養大漢的。Guá sī a-má kā guá tshiânn-ióng tuā- hàn--ê. (我是奶奶養育成人的)
+14.	tshiah-sng(成大)；刺酸 tshiah-sng(教典。胃酸)、溢刺酸 ik-tshiah-sng(教典。指人體中胃酸逆流的現象。例：胃無好會溢刺酸)
+15.	攕仔 tshiám-á(叉子)
+16.	攕 tshiám：1.尖尖長長像叉子一樣的東西。例：米攕 bí-tshiám(插入米袋中的尖叉子，為取樣的工具) 2.以尖物插入或刺入。例：攕煙腸 tshiám ian-tshiâng(叉起香腸)。3.成串的東西，多半指食物。例：李仔攕 lí-á-tshiám(李子串，用李子做的糖葫蘆) 4.計算成串物的單位。例：一攕玉蘭花。Tsi̍t tshiám gio̍k-lân-hue. (一串玉蘭花)
+17.	tshiân(成大)；延延 iân-tshiân(遲延。拖延耽擱。教典)；相延 sio-tshiân(互相推讓。教典)
+18.	唱聲 tshiàng-siann(以言語大聲威嚇、撂狠話，表示警告與不滿，並帶有挑釁意味。例：你家己做毋著閣敢來唱聲，我無咧驚你)
+19.	淌淌滾 tshiâng-tshiâng-kún(成大)；沖沖滾 tshiâng-tshiâng-kún(教典)：1.水沸騰的樣子。2.引申為人氣沸騰、熱鬧非凡。例：規街仔路人沖沖滾。Kui ke-á-lōo lâng tshiâng-tshiâng-kún. (街道人聲鼎沸，熱鬧非凡)
+20.	tshiāng-tú-tshiāng(成大)；䢢拄䢢tshiāng-tú-tshiāng(教典)：正巧、碰巧、剛剛好。例：我有代誌想欲佮你參詳，䢢拄䢢去拄著你。Guá ū tāi-tsì siūnn beh kap lí tsham-siông, tshiāng-tú-tshiāng khì tú- tio̍h lí. (我有事想要找你商量，碰巧遇到你)
+21.	抄找 tshiau-tshuē(成大)；搜揣 tshiau-tshuē(探索、搜索、搜尋)
+22.	tshinn-tsho(腥味，成大)；腥臊 tshenn-tshau/tshinn-tshau(菜色豐盛，教典)
+ 
+23.	揤 tshi̍h：1.按。用手向下壓。例：有人咧揤電鈴。Ū-lâng teh tshi̍h tiān-lîng. (有人在按電鈴)；揤風琴 tshi̍h hong-khîm(彈風琴)、空喙揤牢咧，才袂閣流血。Khang-tshuì tshi̍h tiâu--leh, tsiah bē koh lâu-hueh. (傷口按住，才不會再流血) 2.壓住，引申為阻攔之義。例：這件代誌是頂司揤牢咧，若無早就辦矣。Tsit kiānn tāi-tsì sī tíng-si tshi̍h tiâu--leh, nā-bô tsá tō pān--ah. (這件事情是上司壓住攔著，要不早就辦了) 3.迫近。例：一陣人揤倚來欲相拚。Tsi̍t tīn lâng tshi̍h uá--lâi beh sio-piànn.
+(一群人迫近來想打架)
+24.	揤電鈴 tshi̍h tiān-lîng(按電鈴)
+25.	歪膏揤斜 uai-ko-tshi̍h-tshua̍h(歪七扭八。歪斜不正的樣子。例：一領衫穿甲歪膏揤斜，有夠歹看)
+26.	tshik(協調；促成，成大)；促 tshik：教典。縮短距離。例：逐家共椅仔小促較倚咧，較好夾菜。Ta̍k-ke kā í-á sió tshik khah uá--leh, khah hó ngeh tshài. (大家把椅子稍微靠過來一點，比較方便夾菜)；索仔愛閣促較短咧，才袂傷櫳。Soh-á ài koh tshik khah té--leh, tsiah bē siunn lang.(繩子要再調短一點，才不會太稀疏)
+27.	觸衰 tshik-sue(成大)；拍觸衰 phah-tshik-sue(教典)：觸霉頭。遇到倒霉、不愉快、不順暢的事。
+例：你莫講彼號話共我拍觸衰。Lí mài kóng hit-lō uē kā guá phah-tshik-sue. (你別講那種話觸我霉頭)
+28.	tshi̍k(成大)；摵 tshi̍k(上下用力搖晃)，撨摵 tshiâu-tshi̍k(調度。安排配置。例：所有的代誌攏交予我來撨摵)、摵仔麵 tshi̍k-á-mī(一種臺灣傳統麵食。利用類似竹籠的撈麵用具，在熱湯中上下搖晃抖動，待煮熟後，再加上湯頭和佐料而成)
+29.	深更 tshim-kinn(成大)；深更 tshim-kenn/tshim-kinn(深夜)
+30.	親事 tshin-sū：婚姻大事。例：親事講袂成，免想欲結婚。Tshin-sū kóng bē sîng, bián siūnn-beh kiat-hun. (親事沒談成，別想結婚)
+31.	親同 tshin-tông(成大)；親堂 tshin-tông(教典)：堂房。同宗但非嫡親的親戚。例：阮小妹欲嫁，親堂攏來鬧熱。Guán sió-muē beh kè, tshin-tông lóng lâi lāu-jia̍t. (我們小妹要出嫁，堂房都來一起熱鬧)
+32.	秤花 tshìn-hue(成大)；秤仔花 tshìn-á-hue(教典。秤桿上標示斤兩的花點)
+33.	tshìn-nah(成大)；起凊瘼 khí-tshìn-mo̍oh/mooh(教典)：蕁麻疹，病名。一種常見的兒科疾病，特徵是皮膚上出現很多形狀不一的丘疹。丘疹出現後，會有明顯的搔癢，同時在出現四十八小時內大部分會消失，但舊疹子消失了，新的又繼續長出來。常因食物或藥物過敏而引起，可注射腎上腺素或給予抗組織胺藥物治療。也稱為「風疹塊」。
+34.	秤頭 tshìn-thâu(斤兩。比喻所稱得的重量。例：生理人秤頭愛有夠，生理才做會久)、食秤頭 tsia̍h-
+tshìn-thâu(偷斤減兩。賣東西時，以少報多，欺騙顧客。例：做生理毋通共人食秤頭)
+35.	tshìn-tshìn(冷漠)；凊凊 tshìn-tshìn(冷漠)
+36.	青天 tshing-thian
+37.	tshìng(抬高，成大)；血壓衝 tshìng 誠懸、衝 tshìng 甲掠袂牢(教典)
+38.	擤 tshìng：捏著鼻子，將鼻涕用力排出來。例：擤鼻 tshìng-phīnn(擤鼻涕)
+39.	tshìng(噴，成大)；噴點 phùn-tiám(斑點；飄雨，教典)
+40.	tshio(好色，成大)；𪁎哥 tshio-ko(教典)：1.好色。例：你毋通遐爾仔𪁎哥，無，早慢會出代誌。Lí m̄-thang hiah-nī-á tshio-ko, bô, tsá-bān ē tshut-tāi-tsì. (你不要那麼好色，不然早晚會出事)
+2.好色的人。
+41.	tshio(拉風，成大)；俏 tshio(教典)：顏色鮮豔亮麗、花俏。例：伊今仔日穿甲真俏。I kin-á-ji̍t tshīng kah tsin tshio. (他今天穿得很花俏)
+42.	充軍 tshiong-kun(流放去做兵)
+43.	沖天 tshiong-thinn(成大)；沖天炮 tshiong-thian-phàu(教典)
+ 
+44.	縱貫 tshiòng-kuàn(縱貫)
+45.	羞 tshiu，羞！羞！羞！袂見笑 siàu!
+46.	秋凊 tshiu-tshìn：涼爽。清涼舒爽。例：今仔日下晡的天氣真秋凊。Kin-á-ji̍t ē-poo ê thinn-khì tsin
+tshiu-tshìn. (今天下午的天氣真涼爽)
+47.	手尾錢 tshiú-bé-tsînn(成大)；手尾錢 tshiú-bué-tsînn/tshiú-bé-tsînn(教典)：1.過世的人手上或身上所帶的錢。 2.臺灣地方習俗，人死後還沒入棺之，先讓死者手中握一些錢，然後再取下來分給死者的子孫，那筆錢叫做「手尾錢」。 3.遺產。有些地方稱祖先的遺產為「手尾錢」。
+48.	手路菜 tshiú-lōo-tshài：拿手好菜。例：這是阮阿母的手路菜。Tse sī guán a-bú ê tshiú-lōo-tshài.
+(這是我媽媽的拿手好菜)
+49.	手 ńg tshiú-ńg(成大)；手䘼tshiú-ńg(教典)：衣袖。衣服的袖子，也就是從肩膀以下的部分
+50.	手槍 tshiú-tshìng(成大)；手銃 tshiú-tshìng(教典)：1.手槍。2.形容小孩子頑皮。例：囡仔人毋通傷手銃。Gín-á-lâng m̄-thang siunn tshiú-tshìng. (小孩子不可以太頑皮)
+51.	穿 tshng：1.貫通、通過。例：穿針 tshng tsiam、穿線 tshng suànn。2.洞、孔。例：蛀一大穿 tsiù tsi̍t tuā tshng(蛀了一個好大的洞)。3.計算孔數的單位。例：蛀幾若穿 tsiù kuí-nā tshng(蛀好幾個洞)。
+52.	吮 tshńg，𠢕吮食 gâu-tshńg-tsia̍h：很會挑選最好的，引申為鑽營求取利益。例：伊真𠢕吮食。I tsin gâu-tshńg-tsia̍h. (他很會鑽營)
+53.	tshńg-á-hî(成大)；串仔魚 tshǹg-á-hî/tshǹg-á-hû(鮪魚)
+54.	tshoh(成大)；𧮙tshoh：教典。用粗鄙的話罵人。例：𧮙姦撟 tshoh-kàn-kiāu(以髒話罵人)。
+55.	簇 tshok：量詞，用於計算成堆聚集在一起的人或物。例：遐圍一簇人，毋知咧創啥？Hia uî tsi̍t tshok lâng, m̄ tsai teh tshòng siánn？ (那裡圍了一些人，不曉得在幹什麼？)；頭毛白一簇 thâu- mn̂g pe̍h tsi̍t tshok (頭髮白了一撮)
+56.	tshòng-khang(成大)；創空 tshòng-khang(教典)：暗算、陰謀、做手腳。例：你愛較細膩咧，才袂予伊創空。Lí ài khah sè-jī--leh, tsiah bē hōo i tshòng-khang. (你要小心點，才不會被他暗中動手腳)
+57.	粗本 tshoo-pún(資本大)
+58.	粗胚 tshoo-phue(成大)；粗坯 tshoo-phue/tshoo-phe(教典)；毛坯、坯料。已具備雛形，尚需加工製造的半成品
+59.	初初 tshoo-tshoo(剛開始)
+60.	tshop 印仔	tshop ìn-á(蓋章)
+61.	厝跤 tshù-kha(房客。租房屋住的人)、厝契 tshù-khè/tshù-khuè(房契。房屋的所有權狀。也指房產買賣契約書)
+62.	厝宅 tshù-the̍h(宅第。住宅、庭園及土地)
+63.	跙 tshū(滑)，跙倒 tshū-tó、跙倒 tshū--tó(滑倒)、跙流籠 tshū-liû-lông(溜滑梯)
+64.	tshuā-jiō(成大)；泄尿 tshuā-jiō/tshuā-liō(教典)：遺尿。不自覺的排尿現象，常發生在幼童身上。例：伊細漢的時陣定定偷泄尿。I sè-hàn ê sî-tsūn tiānn-tiānn thau tshuā-jiō. (他小的時候常常尿床)
+65.	扦 tshuann，拆扦 thiah-tshuann(肉刺、指甲刺。指甲周圍的角質因為乾裂而翹起來)、竹扦 tik-
+tshuann(小竹刺)
+66.	閂 tshuànn：1.關閉門戶用的橫木。例：門閂 mn̂g-tshuànn。2.插上門閂，把門關緊。例：你去共門閂起來。Lí khì kā mn̂g tshuànn--khí-lâi. (你去把門閂起來)
+67.	疶 tshuah：無法控制地排泄屎尿。例：疶屎 tshuah-sái(洩屎)
+68.	tshuah-lâu(成大)；掣流 tshuah-lâu(教典)：1.急流、激流。例：若拄著掣流，毋通想欲蹽過。Nā tú- tio̍h tshuah-lâu, m̄-thang siūnn-beh liâu--kuè. (若遇到激流，不要想涉水通過)
+2.水急流狀。例：水真掣流。Tsuí tsin tshuah-lâu. (水流很急)
+ 
+69.	串 tshuàn：1.使二者連貫起來。例：串通 tshuàn-thong。2.每次、經常、往往、總是。表示一種經常發生的狀況。例：你串講攏講遐的，無效啦！Lí tshuàn-kóng lóng kóng hia--ê, bô-hāu--lah! (你每次都說那些，沒有用啦！)；歹囝串飼爸。Pháinn kiánn tshuàn tshī pē.(表面上最不爭氣的孩子，最後往往承擔了奉養父母的責任) 3.戲曲音樂的過奏、間奏。例：串仔 tshuàn-á(過奏、間奏)。
+4.貫穿。例：藥效會串筋鑽骨 Io̍h-hāu ē tshuàn-kin tsǹg-kut(藥效會貫穿筋骨)
+70.	竄 tshuàn，竄改 tshuàn-kái、流竄 liû-tshuàn
+71.	篡 tshuàn：霸占、強奪。例：篡位 tshuàn-uī
+72.	催魂 tshui-hûn(急欲使人死亡或受傷害。比喻催促得很急)
+73.	推命 tshui-miā(成大)；催命 tshui-miā(根據干支來推算運命)
+74.	喙掩 tshuì-am(成大)；喙罨 tshuì-am(教典。口罩)
+75.	喙斗 tshuì-táu：胃口。食慾。例：好喙斗 hó-tshuì-táu(胃口好)
+76.	春夢 tshun-bāng(表現人潛意識對於性渴望的夢境)
+77.	伸勻 tshun-ûn：伸懶腰。舒展疲倦困乏的腰身。例：伊坐了𤺪矣，佇遐伸勻。I tsē liáu siān--ah, tī
+hia tshun-ûn. (他坐累了，在那裡伸懶腰)
+78.	tshûn-pān(成大)；存範 tshûn-pān 又唸作 tshūn-pān(教典)：1.打算做某事。例：這陣的股市行情誠好，伊攢兩千萬，存範欲大抐一下。Tsit-tsūn ê kóo-tshī hâng-tsîng tsiânn hó, i tshuân nn̄g tshing bān, tshûn-pān beh tuā lā--tsi̍t-ē. (這陣子的股市行情很好，他準備了兩千萬，打算要大幹一場)
+2.存心不良的念頭。例：存範欲予伊好看。Tshûn-pān beh hōo i hó-khuànn. (存心給他好看)
+79.	出死線 Tshut-sí-suànn(白話字小說名)
+80.	出台 tshut-tâi(登場)
+81.	出丁 tshut-ting：生男孩子。例：較早的人感覺出丁是福氣。Khah-tsá ê lâng kám-kak tshut-ting sī
+hok-khì. (以前人覺得生男孩子是福氣)
+82.	出酒 tshut-tsiú：酒醉而吐。例：伊昨暗出酒，到今猶咧艱苦。I tsa-àm tshut-tsiú, kàu-tann iáu teh kan-khóo. (他昨晚酒醉漚吐，到現在還在不舒服)
+83.	污點 ù-tiám(缺點、不光彩的事跡)、貪官污吏 tham-kuann-ù-lī(貪財納賄的官吏)【成大】；貪官汙吏tham-kuann-ù-lī【教典】
+84.	有--的 ū--ê(成大)；有的無的 ū--ê-bô--ê (教典)：指那些沒有意義或沒有內容的事情。例：串講一寡有的無的。Tshuàn-kóng tsi̍t-kuá ū--ê-bô--ê. (老是講一些沒有意義的事情)
+85.	ū-khang-bô-sún(成大)；有空無榫 ū-khang-bô-sún(教典)：器物接合的地方，凸的部分叫「榫」，就是
+「榫頭」，凹陷的部分叫「空」，就是「榫眼」。有凹進去的榫眼，卻沒有接合的榫頭，用來比喻不合理、不著邊際或沒有結果的事情。例：阿明人誠古意，袂舞遐的有空無榫的代誌。A-bîng lâng tsiânn kóo-ì, bē bú hia--ê ū-khang-bô-sún ê tāi-tsì. (阿明為人很忠厚老實，不會做那些不合情理的事)
+86.	哇 ua(諂媚的聲音、音亂的聲音、嬰兒的聲音、唱歌的聲音)
+87.	換帖 uānn-thiap(成大)；換帖的 uānn-thiap--ê(教典)：結拜兄弟、拜把兄弟。朋友間因為感情親密而結拜成義兄弟，以求患難時能夠相助，有時也有女性參加。結拜時要互相交換庚帖和相關家族資料，並且將結拜的原因書寫下來，通常會拜請關聖帝君做見證，這種習俗在臺灣早期很盛行
+88.	活欲 ua̍h-beh(成大)；活欲 ua̍h-beh/ua̍h-bueh(教典)：活活要……、幾乎要……。例：叫你毋通講你閣講，我實在活欲予你氣死！Kiò lí m̄-thang kóng lí koh kóng, guá si̍t-tsāi ua̍h-beh hōo lí khì--sí!
+(叫你別說你還說，我實在要活活被你氣死了！)
+89.	活骨 ua̍h-kut(好動)
+90.	冤家 lōo-tsè uan-ke-lōo-tsè(成大)；冤家量債 uan-ke-niû-tsè(教典。吵架。像冤家一樣爭吵不停。例：你做人大兄閣一日到暗佮小弟冤家量債，敢袂歹勢？)
+ 
+91.	吵家抐計 tshá-ke-lā-kè(教典。吵得家裡不得安寧。例：恁莫閣佇遐吵家抐計)
+92.	吵家抐宅 tshá-ke-lā-the̍h(形容一個家庭吵鬧不休，不得安寧。例：你莫按呢逐工吵家抐宅)
+93.	怨妒 uàn-tòo：嫉妒。對才能或境遇比自己好的人心懷不平和怨恨。例：伊怨妒別人比伊較好額。I uàn-tòo pa̍t-lâng pí i khah hó-gia̍h. (他嫉妒別人比他有錢)
+94.	圓滿 uân-buán：形容事務完滿而沒有缺憾。例：這改的婚禮辦了真圓滿。Tsit kái ê hun-lé pān liáu tsin uân-buán. (這次的婚禮辦得很圓滿)
+95.	uān-nā(一邊…一邊，成大)；那 ná (教典)：1.一邊……一邊……。以「那……那……」(ná……n
+á……)形式出現。例：那行那看 ná kiânn ná khuànn(一邊走一邊看)。
+2.愈……愈……。例：伊那來那媠。I ná lâi ná suí. (她愈來愈漂亮)
+96.	椏 ue：樹幹的分支。例：樹椏 tshiū-ue(樹枝)
+97.	挨 ue(成大)；挨 e (教典)：從旁邊碰到。例：予竹篙挨著。Hōo tik-ko e--tio̍h. (被竹竿拂到)
+98.	ue-ue-khueh-khueh(成大)；相挨相𤲍sio-e-sio-kheh/sann-ue-sann-khueh(教典)：摩肩接踵。指人多且擁擠的樣子。例：看鬧熱的人相挨相𤲍。Khuànn lāu-jia̍t ê lâng sio-e-sio-kheh. (看熱鬧的人很擁擠)
+99.	挨挨陣陣 e-e-tīn-tīn/ue-ue-tīn-tīn(教典)：摩肩接踵、擁擠雜沓。眾人成群結隊，場面很熱鬧
+100.	話母 uē-bó：口頭禪。例：伊講話攏帶一个話母。I kóng-uē lóng tài tsi̍t ê uē-bó. (他講話都帶著口頭禪)
+101.	話尾 uē-bué(成大)；話尾 uē-bué/uē-bé(教典)：1.絃外之音。話中隱含的意思。例：人講話頭咱著愛知話尾。Lâng kóng uē-thâu lán tio̍h ài tsai uē-bué. (人家說頭我們就該知道尾) 2.話的末段。例：尪姨順話尾。Ang-î sūn uē-bué. (靈媒會順著對方言語的末段、揣摩對方的心意來說話)
+102.	話骨 uē-kut(語病、話柄)
+103.	話頭 uē-thâu：1.講話的開頭。2.話。例：你想欲知影我佮伊是按怎熟似？這講起來就話頭長。Lí siūnn-beh tsai-iánn guá kah i sī án-tsuánn si̍k-sāi? Tse kóng--khí-lâi tō uē-thâu tn̂g. (你想知道我跟他是怎麼認識的？這就說來話長了)
+104.	揻 ui：以針狀物刺、戳。例：心肝像針揻。Sim-kuann tshiūnn tsiam ui. (心像被針刺一樣)；揻一空 ui tsi̍t khang(戳一個洞)。
+105.	ui(成大)；萎 ui (教典)：磨損。例：鞋底萎去矣，去買一雙新的。Ê-té ui--khì--ah, khì bé tsi̍t siang sin--ê. (鞋底磨損了，去買一雙新的)
+106.	uì(成大)；飫 uì(教典)：東西吃太多而感到厭膩。例：食甲會飫 tsia̍h kah ē uì(吃到會怕)、飫飫 uì-
+uì(覺得有點膩)。
+107.	慰問 uì-būn(安慰問候)
+108.	瘟疫 un-i̍k(指流行性急性傳染病的統稱)
+109.	塭仔寮ùn-á-liâu(魚塭旁的小屋)
+110.	隱龜ún-ku(成大)；隱痀ún-ku(教典。駝背。背部因為脊椎等病變而變形彎拱)
+111.	ûn(成大)；沿 iân (教典)：輩份。例：頂下沿 tíng-ē iân(前後輩)
+
+(C1 end)
+𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
+
+    `;
+    // =========================================================================
+    // ↑↑↑ 資料庫黏貼區域結束 ↑↑↑
+    // =========================================================================
+
+    // 預設設定值
+    const DEFAULT_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
+    const DEFAULT_MODEL = 'gemini-2.5-flash';
+
+    // 頁面載入時初始化設定
+    window.onload = function() {
+        loadSettingsToUI();
+        
+        // 綁定 Enter 鍵觸發搜尋
+        const keywordInput = document.getElementById('keyword');
+        keywordInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                generateContent();
+            }
+        });
+    };
+
+    // --- 設定區塊邏輯 ---
+    function toggleSettings() {
+        const panel = document.getElementById('settingsPanel');
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            loadSettingsToUI();
+            panel.style.display = 'block';
+        }
+    }
+
+    function loadSettingsToUI() {
+        document.getElementById('apiKey').value = localStorage.getItem('taigi_apiKey') || '';
+        document.getElementById('baseUrl').value = localStorage.getItem('taigi_baseUrl') || DEFAULT_BASE_URL;
+        document.getElementById('modelSelect').value = localStorage.getItem('taigi_model') || DEFAULT_MODEL;
+    }
+
+    function saveSettings() {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        const baseUrl = document.getElementById('baseUrl').value.trim() || DEFAULT_BASE_URL;
+        const model = document.getElementById('modelSelect').value;
+        const statusDiv = document.getElementById('settingsStatus');
+
+        localStorage.setItem('taigi_apiKey', apiKey);
+        localStorage.setItem('taigi_baseUrl', baseUrl);
+        localStorage.setItem('taigi_model', model);
+
+        if (!apiKey) {
+            statusDiv.textContent = '⚠️ 提醒：API Key 尚未輸入！需輸入才能進行查詢。';
+            statusDiv.style.color = '#e74c3c';
+            statusDiv.style.display = 'block';
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+                toggleSettings(); // 延遲收合
+            }, 2500);
+        } else {
+            statusDiv.textContent = '✅ 設定已儲存！';
+            statusDiv.style.color = '#27ae60';
+            statusDiv.style.display = 'block';
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+                toggleSettings(); // 儲存後收合面板
+            }, 1000);
+        }
+    }
+
+    function clearSettings() {
+        document.getElementById('apiKey').value = '';
+        document.getElementById('baseUrl').value = DEFAULT_BASE_URL;
+        document.getElementById('modelSelect').value = DEFAULT_MODEL;
+        
+        localStorage.removeItem('taigi_apiKey');
+        localStorage.removeItem('taigi_baseUrl');
+        localStorage.removeItem('taigi_model');
+
+        const statusDiv = document.getElementById('settingsStatus');
+        statusDiv.textContent = '🗑️ API Key 與設定已清除！';
+        statusDiv.style.color = '#e74c3c';
+        statusDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 2000);
+    }
+
+    // --- 複製結果邏輯 ---
+    function copyResult() {
+        const resultText = document.getElementById('result').innerText;
+        if (!resultText) return;
+
+        navigator.clipboard.writeText(resultText).then(() => {
+            const copyBtn = document.getElementById('copyBtn');
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ 已複製！';
+            copyBtn.style.backgroundColor = '#1abc9c';
+            copyBtn.style.color = 'white';
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.style.backgroundColor = '#ffffff';
+                copyBtn.style.color = '#1abc9c';
+            }, 2000);
+        }).catch(err => {
+            // 如果無法使用 clipboard API，直接顯示在結果區塊的錯誤訊息中
+            alert('複製失敗，請嘗試手動複製。');
+        });
+    }
+
+    // --- AI 生成邏輯 ---
+    async function generateContent() {
+        // 先嘗試從 localStorage 抓取，如果沒有再看目前輸入框是否有值
+        let apiKey = localStorage.getItem('taigi_apiKey') || document.getElementById('apiKey').value.trim();
+        const baseUrl = localStorage.getItem('taigi_baseUrl') || document.getElementById('baseUrl').value.trim() || DEFAULT_BASE_URL;
+        const model = localStorage.getItem('taigi_model') || document.getElementById('modelSelect').value || DEFAULT_MODEL;
+        const keyword = document.getElementById('keyword').value.trim();
+        
+        const resultWrapper = document.getElementById('resultWrapper');
+        const resultDiv = document.getElementById('result');
+        const loadingDiv = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // UI 狀態更新預設
+        resultWrapper.style.display = 'none';
+        resultDiv.innerHTML = '';
+
+        // 檢查防呆 (改為直接在結果區塊顯示，不使用 alert)
+        if (!apiKey) {
+            resultDiv.innerHTML = '<span class="error-msg">⚠️ 尚未設定 API Key！請點擊上方「⚙️ API 系統設定」輸入您的 Key。</span>';
+            resultWrapper.style.display = 'block';
+            document.getElementById('settingsPanel').style.display = 'block';
+            return;
+        }
+        if (!keyword) {
+            resultDiv.innerHTML = '<span class="error-msg">⚠️ 請輸入情境關鍵詞！</span>';
+            resultWrapper.style.display = 'block';
+            document.getElementById('keyword').focus();
+            return;
+        }
+        if (documentText.trim().length < 50) {
+            resultDiv.innerHTML = '<span class="error-msg">⚠️ 資料庫似乎是空的！請用文字編輯器打開 HTML 檔案，將台語資料庫貼入指定的原始碼常數位置。</span>';
+            resultWrapper.style.display = 'block';
+            return;
+        }
+
+        // 正式開始載入
+        loadingDiv.style.display = 'block';
+        submitBtn.disabled = true;
+
+        // 系統提示詞設計 (Prompt) 包含強制補充說明格式
+        const promptText = `
+你是一個專業的台語學者。請根據以下提供的台語詞彙文本檔案內容，篩選出 5 個與華語概念「${keyword}」相關的台語詞，並造句。
+
+嚴格條件：
+1. 必須使用「台語正字」書寫。
+2. 篩選出的詞彙，其華語解說必須與「${keyword}」有相關聯（可以稍微延伸或比喻）。
+3. 針對列出的 5 個詞，請逐一提供：
+   - 詞彙詳細解說，以及適合使用的「情境」。
+   - 使用該台語詞造句（並附華文翻譯）。
+   - 明確標示引用該詞彙在檔案內面的「佗一个頁（PAGE）」（請查看資料內的 --- PAGE X --- 標記）。
+
+4. 最後，請務必加上一段「補充說明」對這 5 個詞進行綜合分析比較。請嚴格模仿以下範例的結構與寫作風格來撰寫：
+
+[補充說明範例格式開始]
+補充說明：
+遮5个詞攏體現「${keyword}」的核心概念：
+1. (針對此概念的特質分析，列出各詞特點，如：外表佮內在的落差。空殼：外表有形體，內底是空的 / 料小：看起來有...)
+2. 使用對象：(分類列出，如：物品：料小、空殼... / 人：膨風...等)
+3. 程度或特徵排列：(按輕重或其他邏輯排列，如：按輕到重排列：白汫無味 < 料小 < 兩光 < 空殼 < 膨風)
+4. 實際應用例句補充：
+(為這5個詞各自再造一個生活化的例句，並附華語翻譯，例如：料小：彼个老闆看起來誠有錢... / 空殼：這間百貨...)
+總結：(總結這幾個詞在台語表達上的豐富層次，例如：每一個詞攏有伊適合使用的情境佮對象，這就是台語詞彙豐富的所在。)
+[補充說明範例格式結束]
+
+檔案內容如下：
+${documentText}
+        `;
+
+        // 組合 API 網址
+        const cleanBaseUrl = baseUrl.replace(/\/$/, "");
+        const apiUrl = `${cleanBaseUrl}/models/${model}:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: promptText }]
+                    }]
+                })
+            });
+
+            // 處理 API 回傳錯誤
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'API 請求失敗，請確認 API 設定。');
+            }
+
+            // 取得生成結果
+            const data = await response.json();
+            let generatedText = data.candidates[0].content.parts[0].text;
+            
+            // 簡易 Markdown 解析 (粗體與換行)
+            generatedText = generatedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            generatedText = generatedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            generatedText = generatedText.replace(/\n/g, '<br>');
+            
+            resultDiv.innerHTML = generatedText;
+            resultWrapper.style.display = 'block';
+
+        } catch (error) {
+            resultDiv.innerHTML = `<span class="error-msg">發生錯誤：${error.message}<br><br>👉 解決建議：<br>1. 點擊上方「⚙️ API 系統設定」，確認 API Key 是否正確。<br>2. 嘗試切換其他 AI 模型。<br>3. 確認 API Base URL 格式是否正確。</span>`;
+            resultWrapper.style.display = 'block';
+        } finally {
+            // 恢復 UI 狀態
+            loadingDiv.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
