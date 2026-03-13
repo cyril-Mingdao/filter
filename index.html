@@ -18,9 +18,9 @@
             font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 20px;
+            /* 移除 max-width 限制，並將左右 padding 與 margin 設為 0 以達到滿版效果 */
+            margin: 0;
+            padding: 20px 0;
             background-color: var(--bg-color);
             
             /* 禁止選取文字 */
@@ -60,6 +60,7 @@
             display: flex;
             justify-content: flex-end;
             margin-bottom: 10px;
+            padding: 0 20px; /* 為了滿版微調按鈕間距 */
         }
         .btn-toggle {
             background-color: var(--primary-color);
@@ -77,8 +78,9 @@
         .container {
             background-color: #fff;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* 移除圓角與陰影，讓左右貼齊邊緣時不留白邊 */
+            border-radius: 0;
+            box-shadow: none;
         }
         
         /* 自訂設定視窗 (取代彈出視窗) */
@@ -1390,6 +1392,7 @@ uì(覺得有點膩)。
 
 (C1 end)
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
+
 
     `;
     // =========================================================================
