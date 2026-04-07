@@ -18,24 +18,24 @@
             font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
             line-height: 1.6;
             color: #333;
-            /* 移除 max-width 限制，並將左右 padding 與 margin 設為 0 以達到滿版效果 */
-            margin: 0;
-            padding: 20px 0;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
             background-color: var(--bg-color);
             
-            /* 禁止選取文字 */
+            /* 禁止選取文字 (預設) */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
         
-        /* 允許輸入框可以正常選取與輸入 */
-        input, select, textarea {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
+        /* 允許輸入框與結果方框可以正常選取文字 */
+        input, select, textarea, #result {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         h1 {
@@ -60,7 +60,6 @@
             display: flex;
             justify-content: flex-end;
             margin-bottom: 10px;
-            padding: 0 20px; /* 為了滿版微調按鈕間距 */
         }
         .btn-toggle {
             background-color: var(--primary-color);
@@ -78,9 +77,8 @@
         .container {
             background-color: #fff;
             padding: 30px;
-            /* 移除圓角與陰影，讓左右貼齊邊緣時不留白邊 */
-            border-radius: 0;
-            box-shadow: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
         
         /* 自訂設定視窗 (取代彈出視窗) */
@@ -245,7 +243,7 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
 <div class="container">
     <div class="header-actions">
@@ -315,6 +313,7 @@
     const documentText = `
 
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
+【資料庫1:台語C1詞彙】
 (C1 start)
 1.	a-lú-mih(成大)；輕銀 khin-gîn/khin-gûn(教典。鋁。金屬元素之一。其色銀白，質輕不鏽，富延展性，傳熱及導電性極佳。可加工製成電線、鋁箔、日常用器皿等)
 2.	a-sa-puh-luh(成大)；阿沙不魯 a-sa-puh-luh(教典)：形容人或事物粗俗、不入流。例：你莫佇遐做一寡仔阿沙不魯的代誌。Lí mài tī hia tsò tsi̍t-kuá-á a-sa-puh-luh ê tāi-tsì. (你少在那裡做一些不入流的事情)
@@ -1391,7 +1390,7 @@ uì(覺得有點膩)。
 111.	ûn(成大)；沿 iân (教典)：輩份。例：頂下沿 tíng-ē iân(前後輩)
 
 (C1 end)
-2025年《教典》新增詞詞彙表 詞彙 音讀 註解 kah 例句
+【資料庫2:2025年《教育部台語辭典》新增詞詞彙表】 
 押尾後
 ah-bué-āu/ah-bé-āu
 ⚫
@@ -3044,6 +3043,7 @@ uì-siáu-jîn/uì-siáu-lîn
 1. 慢慢地、謹慎小心地。
 山路坎坎坷坷真歹行，你著勻聊仔行。(山路崎嶇不平很難走，你要慢慢地走。)
 
+【資料庫3:教育部台語辭典俗諺】
 序號	俗諺語詞目	讀音	華語釋義
 1	鴨仔聽雷。
 Ah-á thiann luî. 	指鴨子聽到雷聲，並不知道是怎麼回事。比喻一個人對所接收的訊息無法理解。 比喻一個人對所接收的訊息無法理解。
@@ -3821,9 +3821,7 @@ Uai-tshuì ke tsia̍h hó bí. 	歪嘴雞吃好米。「歪喙雞」比喻不健
 Uan-ke piàn tshin-ke. 	由仇人變成姻親。 原本互不相容的人，爭吵到後來反而發現對方的優點而成為好友。
 388	怨生無怨死。
 Uàn senn bô uàn sí. 	人死了，一了百了，前債恩怨都應一筆勾銷。勸人解除對往生之人的懷恨。
-
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
-
 
     `;
     // =========================================================================
