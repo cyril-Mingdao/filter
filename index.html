@@ -18,24 +18,26 @@
             font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 850px;
-            margin: 0 auto;
+            /* 修改為滿版，左右不留邊 */
+            max-width: 100%;
+            margin: 0;
             padding: 20px;
             background-color: var(--bg-color);
+            box-sizing: border-box;
             
-            /* 禁止選取文字 (預設) */
+            /* 禁止選取文字 (全域預設) */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
         
-        /* 允許輸入框與結果方框可以正常選取文字 */
+        /* 允許輸入框與結果區域可以正常選取與輸入，並強制開啟選取功能 */
         input, select, textarea, #result {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
         }
 
         h1 {
@@ -79,6 +81,11 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* 讓容器也能隨滿版寬度調整 */
+            width: 100%;
+            max-width: 1200px; /* 設定一個較大的上限，避免超寬螢幕時比例過扁 */
+            margin: 0 auto;
+            box-sizing: border-box;
         }
         
         /* 自訂設定視窗 (取代彈出視窗) */
@@ -3821,6 +3828,7 @@ Uai-tshuì ke tsia̍h hó bí. 	歪嘴雞吃好米。「歪喙雞」比喻不健
 Uan-ke piàn tshin-ke. 	由仇人變成姻親。 原本互不相容的人，爭吵到後來反而發現對方的優點而成為好友。
 388	怨生無怨死。
 Uàn senn bô uàn sí. 	人死了，一了百了，前債恩怨都應一筆勾銷。勸人解除對往生之人的懷恨。
+
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
 
     `;
