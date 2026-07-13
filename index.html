@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台語C1詞彙篩選器</title>
+    <title>伊的台語號做啥？</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
     <style>
         :root {
@@ -257,9 +257,9 @@
         <button class="btn-toggle" onclick="toggleSettings()">⚙️ API 系統設定</button>
     </div>
 
-    <h1>台語C1詞彙篩選器</h1>
-    <p class="author-subtitle">詹宗龍 製作</p>
-    <p class="subtitle">輸入情境，由 AI 從資料庫挑選 5 個精準詞彙並提供詳細補充解析</p>
+    <h1>伊的台語號做啥？</h1>
+    <p class="author-subtitle">台中明道中學 詹宗龍 製作</p>
+    <p class="subtitle">輸入情境，將由 AI 從資料庫挑選 5 個精準詞彙並提供詳細補充解析</p>
 
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
@@ -299,7 +299,7 @@
 
     <div class="search-area">
         <div class="form-group" style="margin-bottom:0;">
-            <label for="keyword">🔍 請輸入情境關鍵詞（支援 Enter 鍵直接送出）：</label>
+            <label for="keyword">🔍 請輸入情境關鍵詞：</label>
             <input type="text" id="keyword" placeholder="例如：虛有其表、生氣、吝嗇、胡說八道...">
         </div>
     </div>
@@ -320,7 +320,7 @@
     const documentText = `
 
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
-【資料庫1:台語C1詞彙】
+【資料庫1:成大台語C1詞彙】
 (C1 start)
 1.	a-lú-mih(成大)；輕銀 khin-gîn/khin-gûn(教典。鋁。金屬元素之一。其色銀白，質輕不鏽，富延展性，傳熱及導電性極佳。可加工製成電線、鋁箔、日常用器皿等)
 2.	a-sa-puh-luh(成大)；阿沙不魯 a-sa-puh-luh(教典)：形容人或事物粗俗、不入流。例：你莫佇遐做一寡仔阿沙不魯的代誌。Lí mài tī hia tsò tsi̍t-kuá-á a-sa-puh-luh ê tāi-tsì. (你少在那裡做一些不入流的事情)
@@ -1397,7 +1397,7 @@ uì(覺得有點膩)。
 111.	ûn(成大)；沿 iân (教典)：輩份。例：頂下沿 tíng-ē iân(前後輩)
 
 (C1 end)
-【資料庫2:2025年《教育部台語辭典》新增詞詞彙表】 
+【資料庫2:教育部新增詞條202504】 
 押尾後
 ah-bué-āu/ah-bé-āu
 ⚫
@@ -4267,340 +4267,351 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
 	伊罕得有家己的想法，干焦會曉承人的話鬚。I hán-tit ū ka-kī ê siūnn-huat, kan-na ē-hiáu sîn lâng ê uē-tshiu. (他很少有
 自己的意見，只會鸚鵡學舌。)
 
-
-【資料庫5：教育部新增諺語 202604】
-序號	俗諺	音讀
-	華文釋義
-	例句
-
-
-1	目睭看佇雙糕潤。	Ba̍k-tsiu khuànn tī siang-ko-jūn.
-	雙眼盯著雙糕潤看。雙糕潤是祭神的供品，在祭拜神明時，雙眼卻直直盯著供品，表示心不虔誠，另有所圖。引申人在
-做某件事時另有企圖。
-	伊平素時仔做人都遐自私，這擺穩當是「目睭看佇雙糕潤」，去憶著啥物好空的才會假好心欲來鬥相共，你千萬毋通著吊。
-I pîng-sòo-sî-á tsò-lâng to hiah tsū-su, tsit pái ún-tàng sī “ba̍k-tsiu khuànn tī siang-ko-jūn”, khì it-tio̍h siánn-mih hó-khang--ê tsiah ē ké-hó- sim beh lâi tàu-sann-kāng, lí tshian-bān m̄-thang tio̍h-tiàu.
-(他平時為人那麼自私，這次鐵定是「另有所圖」，貪圖什麼利益才會假慈悲要來幫忙，你千萬別上當。)
-
-
-2	目睭生佇頭殼頂。	Ba̍k-tsiu senn tī thâu-khak-tíng.
-	眼睛長在頭頂上。形容人驕傲自大，瞧不起比自己地位低下的人。
-	這个少年家靠勢家己是董事長囝，毋但性地䆀閣「目睭生佇頭殼頂」，啥物人都看袂起。
-Tsit ê siàu-liân-ke khò-sè ka-kī sī táng-sū-tiúnn kiánn, m̄-nā sìng-tē bái koh “ba̍k-tsiu senn tī thâu-khak-tíng”, siánn-mih-lâng to khuànn-bē- khí.
-(這個年輕人仗勢自己是董事長的孩子，不但脾氣差又「自視甚高」，看不起任何人。)
-	
- 
-
-
-3	目睭大細蕊。	Ba̍k-tsiu tuā-sè luí.
-	眼睛一大一小。形容人勢利眼，處事不公。
-	伊佮下跤手人講話真歹聲嗽，毋過若拄著頂司就扶扶挺挺，正經是「目睭大細蕊」。
-I kah ē-kha-tshiú-lâng kóng-uē tsin pháinn-siann-sàu, m̄-koh nā tú-tio̍h tíng-si tō phôo-phôo-thánn-thánn, tsìng-king sī “ba̍k-tsiu tuā-sè luí”.
-(他跟下屬說話口氣很不好，但是一遇到上司就對人阿諛奉承，真的是「勢利眼」。)
-
-
-4	無米兼閏月。	Bô bí kiam jūn-gue̍h.
-	家裡米糧已吃完，又逢閏月，要撐十二個月已經很拮据了，現在得撐十三個月，那更是辛苦了。形容不如意的事情接連
-發生。
-	阿美仔共人稅一間店面來做生理，毋過最近生理加誠歹做，厝主閣喝欲起厝稅，這聲有影是「無米兼閏月」囉。
-A-bí--á kā lâng suè tsi̍t king tiàm-bīn lâi tsò-sing-lí, m̄-koh tsuè-kīn sing-lí ke tsiânn pháinn tsò, tshù-tsú koh huah beh khí tshù-suè, tsit- siann ū-iánn sī “bô bí kiam jūn-gue̍h”--looh.
-(小美向人承租了一間店面來做生意，但是最近生意難做多了，房東又揚言要調漲房租，這下子真的是「屋漏偏逢連夜雨」囉。)
-
-
-5	未想贏，著先想輸。	Buē siūnn iânn, tio̍h sing siūnn su.
-	想到贏的種種美好之前，要先考慮輸的後果及應該如何處理。指凡事要做最壞的打算，並有所準備。
- 
-	咱若欲創業做頭家，著愛「未想贏，著先想輸」，想看萬不二若了錢，著按怎來收煞。
-Lán nā beh tshòng-gia̍p tsò thâu-ke, tio̍h-ài “buē siūnn iânn, tio̍h sing siūnn su”, siūnn khuànn bān-put-jī nā liáu-tsînn, tio̍h án-tsuánn lâi siu-suah.
-(我們若要創業當老闆，得「做最壞的打算」，想好萬一若賠錢，該如何來善後。)
-
-
-6	夯石頭硩心肝。	Giâ tsio̍h-thâu teh sim-kuann.
-	搬石頭壓在心上。比喻對某種想望或執念死心。
-	這个計畫佇開會的時已經決議通過矣，你就準閣較毋願，嘛著愛「夯石頭硩心肝」，克苦嘛著接受。
-Tsit ê kè-uē tī khui-huē ê sî í-king kuat-gī thong-kuè--ah, lí tō tsún koh-khah m̄-guān, mā tio̍h-ài “giâ tsio̍h-thâu teh sim-kuann”, khat-khóo mā tio̍h tsiap-siū.
-(這個計畫開會時已經決議通過了，你即便再不甘心，也得「死了這條心」，再苦也得接受。)
-
-
-7	囡仔會走，大人逐甲嘛嘛吼。	Gín-á ē tsáu, tuā-lâng jiok kah mà-mà-háu.
-	小孩會跑，大人追得哇哇叫。初為父母者，皆期待孩子早日學會走路；當小孩學會走路後，大人反而更辛苦，得天天緊
-隨在後，常追得氣喘噓噓，就因深恐其發生危險。形容父母育兒的艱辛。
-	你莫叫是講騙囡仔真輕可，袂曉行路的時，著愛定定抱佇手裡，等到會行會走，大人就愛佇後壁綴牢牢，逐甲大氣喘袂
-離，這就是人咧講的「囡仔會走，大人逐甲嘛嘛吼」，有影誠忝頭。
- 
-	Lí mài kiò-sī kóng phiàn-gín-á tsin khin-khó, bē-hiáu kiânn-lōo ê sî, tio̍h-ài tiānn-tiānn phō tī tshiú--lí, tán-kàu ē kiânn ē tsáu, tuā-lâng tō ài tī āu-piah tuè-tiâu-tiâu, jiok kah tuā-khuì tshuán bē lī, tse tō sī lâng teh kóng--ê “gín-á ē tsáu, tuā-lâng jiok kah mà-mà-háu”, ū-iánn tsiânn thiám-thâu.
-(你別以為哄小孩很輕鬆，不會走路的時候，得常常抱在手裡，等到會走會跑了，大人就要隨時跟前跟後，追得氣喘如牛，這就像人家說的「小
-孩會跑，大人追得哇哇叫」，實在很疲累。)
-
-
-8	囡仔三歲牢皮，五歲牢骨。	Gín-á sann huè tiâu phuê, gōo huè tiâu kut.
-	孩子三歲時的習性尚未根深柢固，仍有改變的可能，但若放任不管，到五歲時所習得的行為習慣便已定型，難以改變。
-指少成若天性，習慣成自然。
-	俗語講：「囡仔三歲牢皮，五歲牢骨。」若發見細漢囡仔有歹習慣，著愛隨共管教，若無，等𪜶慣勢了後，欲改就誠僫矣。
-Sio̍k-gí kóng, “Gín-á sann huè tiâu phuê, gōo huè tiâu kut.” Nā huat-kiàn sè-hàn gín-á ū pháinn si̍p-kuàn, tio̍h-ài suî kā kuán-kà, nā-bô, tán in kuàn-sì liáu-āu, beh kái tō tsiânn oh--ah.
-(俗話說：「少成若天性，習慣成自然。」如果發現年幼的孩子有壞習慣，要隨即糾正他們，不然，等他們習慣以後，要改善就很困難了。)
-
-
-9	囡仔人跳過溝，食三甌。	Gín-á-lâng thiàu-kuè kau, tsia̍h sann au.
-	小孩跳過水溝，就能吃下三碗飯。指小孩子活力十足，新陳代謝好，餓得也快。
-	囡仔人佇學校連鞭傱、連鞭跳，活骨無比止，腹肚若袂枵才是奇，有影是親像人咧講的「囡仔人跳過溝，食三甌」。
-Gín-á-lâng tī ha̍k-hāu liâm-mi tsông, liâm-mi thiàu, ua̍h-kut bô-pí-tsí, pak-tóo nā bē iau tsiah-sī kî, ū-iánn sī tshin-tshiūnn lâng teh kóng--ê
- 
-	“gín-á-lâng thiàu-kuè kau, tsia̍h sann au”.
-(小孩子在學校一會兒跑，一會兒跳，活潑到無人能比，肚子不餓才怪，真的就像人家說的「小孩子跑跑跳跳，很快就餓了」。)
-
-
-10	囡仔人，大人心肝。	Gín-á-lâng, tuā-lâng sim-kuann
-	小孩子，大人的心胸。指年紀雖小，但志氣高遠。
-	伊細漢罔細漢，毋過人「囡仔人，大人心肝」，對家己的未來攏有咧拍算。
-I sè-hàn bóng sè-hàn, m̄-koh lâng “gín-á-lâng, tuā-lâng sim-kuann”, tuì ka-kī ê bī-lâi lóng ū teh phah-sǹg.
-(他雖然年紀小，不過他「人小志氣高」，對於自己的未來早有規畫。)
-
-
-11	牛毋通𠢕行，人毋通出名。	Gû m̄-thang gâu kiânn, lâng m̄-thang tshut-miâ.
-	牛的腳力好，善於行走，便須常常出去工作；人一旦出名，便會引來諸多困擾。比喻樹大招風，勸人不要出風頭。
-	都共你講「牛毋通𠢕行，人毋通出名」，你干干仔欲四界展風神，毋才人會目空赤，這馬代誌舞甲袂收山，知苦矣乎。
-To kā lí kóng “gû m̄-thang gâu kiânn, lâng m̄-thang tshut-miâ”, lí kan-kan-á beh sì-kè tián-hong-sîn, m̄-tsiah lâng ē ba̍k-kháng-tshiah, tsit- má tāi-tsì bú kah bē-siu-suann, tsai-khóo--ah--honnh.
-(就跟你說「人怕出名，豬怕肥」，你偏偏要到處炫耀，才會遭人嫉妒，現在事情弄到無法收場，知道要受罪了吧。)
-
-
-12	牛鼻毋拎，拎牛尾。	Gû phīnn m̄ lîng, lîng gû bué.
-	牽牛時不去拉牛鼻上控制牛的圈環，反而去拉牛尾。形容做事不得要領。
- 
-	囡仔跋倒著傷，伊毋緊共消毒、抹藥仔，煞叫囡仔徛佇遐咧共教示，有影是「牛鼻毋拎，拎牛尾」。
-Gín-á pua̍h-tó tio̍h-siong, i m̄ kín kā siau-to̍k, buah io̍h-á, suah kiò gín-á khiā tī hia teh kā kà-sī, ū-iánn sī “gû phīnn m̄ lîng, lîng gû bué”.
-(孩子跌倒受傷，他不趕緊幫他消毒、擦藥，竟然叫孩子站在那裡聽他說教，真是「本末倒置」。)
-
-
-13	牛屎龜牚石枋。	Gû-sái-ku thènn tsio̍h-pang.
-	小小的糞金龜，也妄想撐起大石板。形容人不自量力。
-	阿財最近開一間新型的𥴊仔店，講兩冬內就欲拚贏連鎖的便利商店。少年人有志氣是誠好，總是人猶原笑伊是「牛屎龜
-牚石枋」。
-A-tsâi tsuè-kīn khui tsi̍t king sin-hîng ê kám-á-tiàm, kóng nn̄g tang lāi tō beh piànn-iânn liân-só ê piān-lī siong-tiàm. Siàu-liân-lâng ū tsì-khì sī tsiânn hó, tsóng--sī lâng iu-guân tshiò i sī “gû-sái-ku thènn tsio̍h-pang”.
-(阿財最近開了一間新型的雜貨店，說兩年內就要超越連鎖的便利商店。年輕人有志氣是很好，不過大家仍然笑他是「不自量力」。)
-
-
-14	喝水會堅凍。	Huah tsuí ē kian-tàng.
-	吆喝一聲，水就凝結成冰。比喻一個人的權勢極具影響力，得以掌控大局。
-	伊佇企業界通講是「喝水會堅凍」的大人物，逐家攏誠共伊尊存。
-I tī khì-gia̍p-kài thang-kóng sī “huah tsuí ē kian-tàng” ê tuā-jîn-bu̍t, ta̍k-ke lóng tsiânn kā i tsun-tshûn.
-(他在企業界稱得上是「一言九鼎」的大人物，大家都很敬重他。)
- 
-
-
-15	火過矣，才咧炰芋。	Hué kuè--ah, tsiah teh pû ōo
-	火快熄滅了，才要烤芋頭。指人錯失良機，為時已晚。
-	好空的代誌毋是定定有的，著愛目睭擘予金，即時出手捎予牢，若是「火過矣，才咧炰芋」，彼就袂赴市矣。
-Hó-khang ê tāi-tsì m̄ sī tiānn-tiānn ū--ê, tio̍h-ài ba̍k-tsiu peh hōo kim, tsik-sî tshut-tshiú sa hōo tiâu, nā-sī “hué kuè--ah, tsiah teh pû ōo”, he tō bē-hù-tshī--ah.
-(有賺頭的事情不是常有的，你得睜大眼睛，馬上出手抓住，要是「錯失良機」，就來不及了。)
-
-
-16	火燒跤，隨人掰。	Hué sio kha, suî-lâng pué.
-	火燒到腳，各自撥掉火。意即大難臨頭時，人人自顧不暇。
-	亂世走反人人都有家己的身命愛顧，人講「火燒跤，隨人掰」，這也是誠無奈的代誌。
-Luān-sè tsáu-huán lâng-lâng to ū ka-kī ê sin-miā ài kòo, lâng kóng “hué sio kha, suî-lâng pué”, tse iā sī tsiânn bô-nāi ê tāi-tsì.
-(戰爭時每個人為了自己的身家性命逃跑避難，人們說「大難臨頭，人人自顧不暇」，這也是很無奈的事情。)
-
-
-17	火燒跤後蹬。	Hué sio kha-āu-tenn.
-	火燒到腳後跟。比喻事態急迫，火燒屁股。
-	賰一禮拜就愛做好的工課，到今做都無一半，這聲有影「火燒跤後蹬」矣，無緊叫寡跤手來鬥相共袂用得。
-Tshun tsi̍t lé-pài tō ài tsò-hó ê khang-khuè, kàu-tann tsò to bô tsi̍t-puànn, tsit-siann ū-iánn “hué sio kha-āu-tēnn”--ah, bô kín kiò kuá kha-
- 
-	tshiú lâi tàu-sann-kāng bē-īng--tit.
-(剩一週就得完成的工作，到現在還做不到一半，這下子真是「火燒屁股」了，非趕緊找些人手來幫忙不可。)
-
-
-18	火車過了，才歕觱仔。	Hué-tshia kuè-liáu, tsiah pûn pi-á.
-	火車過了，才吹哨示警。比喻事情過了，才做些於事無補的措施。
-	代誌舞甲袂得收山了後，你才咧教人按怎重頭做起，袂輸「火車過了，才歕觱仔」仝款，敢有較縒？
-Tāi-tsì bú kah bē-tit siu-suann liáu-āu, lí tsiah teh kà lâng án-tsuánn tîng-thâu tsò-khí, bē-su “hué-tshia kuè-liáu, tsiah pûn pi-á” kāng-khuán, kám ū khah-tsua̍h?
-(事情都弄到無法收拾了，你才要教人家怎麼重新開始，如同「火車過了，才吹哨示警」一樣，有用嗎？)
-
-
-19	教囝學泅，毋通教囝𬦰樹。	Kà kiánn o̍h siû, m̄-thang kà kiánn peh tshiū.
-	教孩子學游泳，不要教孩子爬樹。小孩學會游泳，懂得水性，以後遇到有水的環境或水災才不會害怕，還能救人救己； 倒是爬樹其實是危險的，有些樹的質地很容易斷，一失神從樹上掉下來，容易受傷，摔殘、摔死的很多。比喻大人教導
-小孩時，要教實用的技能，同時要避免危險的行為。
-	做序大的人著愛「教囝學泅，毋通教囝𬦰樹」，因由是囡仔大漢才袂落水袂泅，𬦰樹無實用閣有危險性。
-Tsò sī-tuā ê lâng tio̍h-ài “kà kiánn o̍h siû, m̄-thang kà kiánn peh tshiū”, in-iû sī gín-á tuā-hàn tsiah bē lo̍h-tsuí bē siû, peh tshiū bô si̍t-iōng koh ū guî-hiám-sìng.
- 
-	(做父母的人要「教孩子學游泳，不要教孩子爬樹」，等到孩子長大才能落水時自救，爬樹不實用又有危險性。)
-
-
-20	江湖一點訣，講破毋值三仙錢。	Kang-ôo tsi̍t tiám kuat, kóng-phuà m̄-ta̍ t sann sián tsînn.
-	江湖祕訣全憑那一點技巧，說白了便不值錢。引申某些事在不懂的人眼裡覺得很困難，一旦將其要領說穿，其實也就只
-是一點點小訣竅而已。
-	阮阿媽本底袂曉用手機仔拍字，彼日我共教講，用怙講的就通自動轉做字，伊學了歡喜甲，隨綴喙講：「江湖一點訣，講
-破毋值三仙錢。」
-Guán a-má pún-té bē-hiáu iōng tshiú-ki-á phah-jī, hit ji̍t guá kā kà kóng, iōng kōo kóng--ê tō thang tsū-tōng tsuán-tsò jī, i o̍h-liáu huann-hí kah, suî tuè-tshuì kóng, “Kang-ôo tsi̍t tiám kuat, kóng-phuà m̄-ta̍t sann sián tsînn.”
-(我奶奶原先不會用手機打字，那天我教他說，用說的就能自動轉成文字，他學了高興得很，隨口說：「行走江湖就憑一點訣竅，說出來不值
-三分錢。」)
-
-
-21	巧的食戇，戇的食天公。	Khiáu--ê tsia̍h gōng, gōng--ê tsia̍h Thinn-kong.
-	慧黠者常會占憨直者的便宜，而憨厚的人往往仰賴上天的眷顧。比喻傻人有傻福。
-	俗語講：「巧的食戇，戇的食天公。」咱雖然並人較頇顢，總是若跤踏實地，天公的確嘛會疼戇人。
-Sio̍k-gí kóng, “Khiáu--ê tsia̍h gōng, gōng--ê tsia̍h Thinn-kong.” Lán sui-jiân phīng lâng khah hân-bān, tsóng--sī nā kha-ta̍h-si̍t-tē, Thinn-kong tik-khak mā ē thiànn gōng-lâng.
- 
-	(俗話說：「聰明人占傻子便宜，傻人卻有老天眷顧。」我們雖然比別人笨拙，但若是腳踏實地，老天爺肯定也會疼惜憨厚的人。)
-
-
-22	乞食望普渡，做兵望落雨。	Khit-tsia̍h bāng phóo-tōo, tsò-ping bāng lo̍h-hōo.
-	乞丐渴望在中元普渡時，能夠大快朵頤飽餐一頓；當兵的人希望下雨能在室內休息，免得在烈日下辛苦操練。各行各業
-各有所求。
-	曝鹽的人向望逐工攏出日，才會較緊有鹽通收；佈稻仔的人上愛緊落雨，就有水通淹田，無仝途的人攏親像「乞食望普
-渡，做兵望落雨」按呢，天公伯仔都毋知欲先為啥人較好。
-Pha̍k iâm ê lâng ǹg-bāng ta̍k-kang lóng tshut-ji̍t, tsiah ē khah kín ū iâm thang siu; pòo-tiū-á ê lâng siōng ài kín lo̍h-hōo, tō ū tsuí thang im-tshân, bô kāng tôo ê lâng lóng tshin-tshiūnn “khit-tsia̍h bāng phóo-tōo, tsò-ping bāng lo̍h-hōo” án-ne, Thinn-kong-peh--á to m̄ tsai beh sing uī siánn-lâng khah hó.
-(曬鹽的人盼望日日都是好天氣，才能早點有鹽可收；種田的農夫最希望快下雨，才有水可以灌溉，不同行業的人都好像「各行各業各有所求」
-一樣，老天爺都不知道該先為誰才好。)
-
-
-23	囥酒會芳，囥柑仔爛規籠。	Khǹg tsiú ē phang, khǹg kam-á nuā kui láng.
-	酒越陳越香，橘子放久則會全部爛光。比喻有些人是可以終身交往的，有些卻是可一而不可再的。或指擇物須熟知物性，
-用人須知性善任。
- 
-	人講：「囥酒會芳，囥柑仔爛規籠。」咱倩員工愛了解𪜶的性癖，規矩閣認真的愛共栽培，若貧惰閣痟貪的就愛緊共辭掉。
-Lâng kóng, “Khǹg tsiú ē phang, khǹg kam-á nuā kui láng.” Lán tshiànn uân-kang ài liáu-kái in ê sìng-phiah, kui-kí koh jīn-tsin--ê ài kā tsai-puê, nā pîn-tuānn koh siáu-tham--ê tō ài kín kā sî-tiāu.
-(人家說：「酒越陳越香，橘子放久了會整籃爛光。」我們選擇員工要瞭解他們的個性，規矩又認真的要栽培他，如果懶惰又貪婪的就得趕緊
-辭退。)
-
-
-24	看田面，毋通看人面。	Khuànn tshân-bīn, m̄-thang khuànn lâng-bīn.
-	自己努力耕種較為可靠，不可一直冀望他人。比喻人應自食其力、自力更生，不倚靠他人。
-	出社會咧走跳，別人無一定予咱會靠得，毋才講著愛「看田面，毋通看人面」，家己骨力趁的顛倒較有底。
-Tshut-siā-huē teh tsáu-thiàu, pa̍t-lâng bô-it-tīng hōo lán ē-khò--tit, m̄-tsiah kóng tio̍h-ài ”khuànn tshân-bīn, m̄-thang khuànn lâng-bīn”, ka-kī kut-la̍t thàn--ê tian-tò khah ū-té.
-(在社會闖蕩，他人不一定能讓我們依靠，才會說我們要「自食其力，不可依賴他人」，自己努力賺來的反而更牢靠。)
-
-
-25	筊精，生理虎。	Kiáu tsinn, sing-lí-hóo.
-	通常會賭博的人都非常精明；而會做生意的人，為了賺取利潤，貪得無厭，好似凶狠的老虎一般。
-	俗語咧講的「筊精，生理虎」，是咧提醒咱佮筊鬼跋筊欲贏真僫，啊若欲買賣，愛揣有信用的行號，才袂食虧了錢。
-Sio̍k-gí teh kóng ê “kiáu tsinn, sing-lí-hóo”, sī teh thê-tshénn lán kah kiáu-kuí pua̍h-kiáu beh iânn tsin oh, ah nā beh bé-bē, ài tshuē ū sìn- iōng ê hâng-hō, tsiah bē tsia̍h-khui liáu-tsînn.
- 
-	(俗話說的「賭徒奸詐，生意人狠」，是在提醒我們跟賭鬼賭博想贏很難，如果要做買賣，得找有信用的商家，才不會吃虧賠錢。)
-
-
-26	功德做佇草仔埔。	Kong-tik tsò tī tsháu-á-poo.
-	在荒煙漫草中為先人做法事祈求功德，對已逝的先人毫無實際助益。比喻徒勞無功，白費力氣。
-	序大人用田園厝宅去抵押借錢，栽培囡仔出國，望囝會成樣，後日仔食老有人通倚靠。無疑悟「功德做佇草仔埔」，囡仔
-畢業了後煞無欲轉來，留佇國外咧快活，放𪜶爸母佇故鄉還數，艱苦過日。
-Sī-tuā-lâng iōng tshân-hn̂g tshù-the̍h khì tí-ah tsioh tsînn, tsai-puê gín-á tshut-kok, bāng kiánn ē tsiânn-iūnn, āu-ji̍t-á tsia̍h-lāu ū lâng thang uá-khò. Bô-gî-ngōo “kong-tik tsò tī tsháu-á-poo”, gín-á pit-gia̍p liáu-āu suah bô beh tńg--lâi, lâu tī kok-guā teh khuìnn-ua̍h, pàng in pē-bú tī kòo-hiong hîng siàu, kan-khóo kuè-ji̍t.
-(父母親將房地產拿去抵押貸款，栽培小孩出國，望子成龍，期待日後老有所養。不料「白費心血」，小孩學成後卻不打算回國，留在國外享
-樂，讓兩老在故鄉還債，艱辛度日。)
-
-
-27	內行看布底，外行綴人買。	Lāi-hâng khuànn pòo-té, guā-hâng tuè lâng bé.
-	內行人買布會看布的質料好不好，外行的人只能盲目地跟著人家買。內行人做事情看重點，外行的人只能跟著仿效。
-	會曉買布的人，攏咧斟酌料身佮布幅，毋捌的顛倒是看人買就緊綴人落去買，正經是「內行看布底，外行綴人買」。
-Ē-hiáu bé pòo ê lâng, lóng teh tsim-tsiok liāu-sin kah pòo-pak, m̄ bat--ê tian-tò sī khuànn lâng bé tō kín tuè lâng lo̍h-khì bé, tsìng-king sī “lāi-hâng khuànn pòo-té, guā-hâng tuè lâng bé”.
- 
-	(懂得買布的行家，都會仔細端詳布料的材質和布面的寬窄，外行人反倒是看到別人買就趕緊跟著人家買，真的是「內行看門道，外行看熱
-鬧」。)
-
-
-28	六月賣火熥。	La̍k--gue̍h bē hué-thang.
-	六月賣暖爐。火熥是冬天時用來取暖的火爐，中間內裝陶罐，可放碳火。六月天氣非常熱，賣暖爐根本沒人會買。比喻
-做事不合時宜。
-	阿火仔佇熱天來賣羊肉爐，就若「六月賣火熥」，較加嘛生理䆀。
-A-hué--á tī jua̍h-thinn lâi bē iûnn-bah-lôo, tō ná “la̍k--gue̍h bē hué-thang”, khah-ke mā sing-lí bái.
-(阿火在夏天賣羊肉爐，就如同「六月天賣暖爐」，難怪生意慘淡。)
-
-
-29	六月棉被，揀人蓋。	La̍k-gue̍h mî-phuē, kíng lâng kah.
-	六月天的棉被挑人蓋。六月天氣熱，一般人不會蓋棉被，但是也有人要蓋棉被，表示有些事做不做因人而異。
-	有人真驚芫荽的味，死都毋肯食，毋過嘛有人講芫荽真芳，食蚵仔麵線一定愛摻，真正是「六月棉被，揀人蓋」。
-Ū lâng tsin kiann iân-sui ê bī, sí to m̄ khíng tsia̍h, m̄-koh mā ū lâng kóng iân-sui tsin phang, tsia̍h ô-á-mī-suànn it-tīng ài tsham, tsin-tsiànn sī “la̍k-gue̍h mî-phuē, kíng lâng kah”.
-(有人很討厭香菜的味道，死都不肯吃，但也有人說香菜很香，吃蚵仔麵線一定要加，真的是「因人而異」。)
- 
-
-
-30	人比人，氣死人。	Lâng pí lâng, khì-sí lâng.
-	人生在世各有境遇，各有得失，不需要凡事都跟別人比較。畢竟一一相比，最終也只是徒增煩惱而心生怨懟。
-	一人一款命，若講事事項項攏欲提來佮人比，較加嘛「人比人，氣死人」。
-Tsi̍t lâng tsi̍t khuán miā, nā kóng sū-sū-hāng-hāng lóng beh the̍h-lâi kah lâng pí, khah-ke mā “lâng pí lâng, khì-sí lâng”.
-(每個人有不同的命運，如果凡事都要跟別人做比較，也難怪會「人比人，氣死人」。)
-
-
-31	五虎下西山。	Ngóo hóo hā se-san.
-	五虎下山嶺。形容聲勢浩大，來勢兇猛。
-	做人老爸的聽著囡仔佇學校予人拍，就招一陣人，袂輸「五虎下西山」，來到學校欲揣人理論，想袂到實情是𪜶囝先動手，
-拍輸才轉厝裡討救兵，這聲顛倒愛共人會失禮。
-Tsò lâng lāu-pē--ê thiann-tio̍h gín-á tī ha̍k-hāu hōo lâng phah, tō tsio tsi̍t tīn lâng, bē-su “ngóo hóo hā se-san”, lâi-kàu ha̍k-hāu beh tshuē lâng lí-lūn, siūnn-bē-kàu si̍t-tsîng sī in kiánn sing tāng-tshiú, phah-su tsiah tńg tshù--lí thó-kiù-ping, tsit-siann tian-tò ài kā lâng huē-sit-lé.
-(父親聽到小孩在學校被人欺負，就召集一群人，像「五虎下西山似的，來勢洶洶」，到學校要找人理論，想不到實情是他小孩先動手，打輸
-才回家討救兵，這下子反而要向對方道歉。)
-	五色人，講十色話。	Ngóo sik lâng, kóng tsa̍p sik uē.
- 
-32	指不同成長背景的人有不同的見解，人一多意見就多。
-	台仔跤啥物款的人都有，意見袂講得濟，真正是「五色人，講十色話」，閣搪著主持人袂曉節時間，較加嘛宕到這陣才收
-煞。
-Tâi-á-kha siánn-mih khuán ê lâng to ū, ì-kiàn bē-kóng-tit tsē, tsin-tsiànn sī “ngóo sik lâng, kóng tsa̍p sik uē”, koh tn̄g-tio̍h tsú-tshî-jîn bē- hiáu tsat sî-kan, khah-ke mā thōng kàu tsit-tsūn tsiah siu-suah.
-(台下聚集形形色色的人，意見眾多，可謂「人多嘴雜」，又遇上主持人不會節制時間，也難怪會拖到現在才結束。)
-
-
-33	年頭食鹹菜，年尾才轉嗽。	Nî-thâu tsia̍h kiâm-tshài, nî-bué tsiah tńg-sàu.
-	年初吃了鹹菜，到了年底才咳嗽。指事情過了很久，才出現狀況，形容人對事情反應遲鈍。
-	阿輝咧講笑詼，逐家聽了攏笑甲攬腹肚，干焦阿志過一睏才知影是佗位咧好笑，有影是「年頭食鹹菜，年尾才轉嗽」。
-A-hui teh kóng-tshiò-khue, ta̍k-ke thiann-liáu lóng tshiò kah lám pak-tóo, kan-na A-tsì kuè tsi̍t-khùn tsiah tsai-iánn sī tó-uī teh hó-tshiò, ū- iánn sī “nî-thâu tsia̍h kiâm-tshài, nî-bué tsiah tńg-sàu”.
-(阿輝在說笑話，大家聽了都捧腹大笑，只有阿志過了一會兒才知道好笑在哪裡，真的是「反應遲鈍」。)
-
-
-34	先顧腹肚，才顧佛祖。	Sing kòo pak-tóo, tsiah kòo Pu̍t-tsóo.
-	先求肚子溫飽，再求能祭奉佛祖。意指人的生存以食為要，先致力民生所需後，再有餘力才顧及精神需求。
-	明其都趁無偌濟錢，生活也無真好過，嘛綴人咧寄付起廟。敢無聽人咧講，做人愛「先顧腹肚，才顧佛祖」。
- 
-	Bîng-ki to thàn bô guā-tsē tsînn, sing-ua̍h iā bô tsin hó-kuè, mā tuè lâng teh kià-hù khí biō. Kám bô thiann lâng teh kóng, tsò lâng ài “sing kòo pak-tóo, tsiah kòo Pu̍t-tsóo”.
-(明明收入不怎麼好，生活也不是過得很好，也學別人捐款建廟。難道沒聽人說過，我們人要「先顧肚子溫飽，才顧祭拜佛祖」。)
-
-
-35	算命仔喙糊瘰瘰。	Sǹg-miā-á tshuì hôo-luì-luì.
-	命相為業的人常常為了取信於人，說話會投人所好，所以他說的話不可盡信。
-	敢無聽人講：「算命仔喙糊瘰瘰。」算命仔講的咱罔參考就好，毋通傷過頭信。
-Kám bô thiann lâng kóng, “Sǹg-miā-á tshuì hôo-luì-luì.” Sǹg-miā-á kóng--ê lán bóng tsham-khó tō hó, m̄-thang siunn kuè-thâu sìn.
-(難道沒聽人說過：「算命之言，不可盡信」。算命師講的話我們姑且參考就好，不要太過相信。)
-
-
-36	天地無餓死人。	Thinn-tē bô gō-sí lâng.
-	天地之間沒有餓死人的事。意指大自然就如同生養我們的父母，養育著我們，只要願意努力，就有辦法生存下去。比喻
-天無絕人之路。
-	伊自細漢就無爸無母，閣無親人通倚靠，毋過伊相信「天地無餓死人」，孤靠慈善機關贊助，讀到國中畢業，閣佇建教合
-作的學校完成學業，認真拍拚真出擢。
-I tsū sè-hàn tō bô pē bô bú, koh bô tshin-lâng thang uá-khò, m̄-koh i siong-sìn “thinn-tē bô gō-sí lâng”, koo khò tsû-siān ki-kuan tsàn-tsōo, tha̍k kàu kok-tiong pit-gia̍p, koh tī kiàn-kàu ha̍p-tsok ê ha̍k-hāu uân-sing ha̍k-gia̍p, jīn-tsin phah-piànn tsin tshut-tioh.
- 
-	(他從小就無父無母，又沒有親人可以依靠，但他相信「天無絕人之路」，僅靠慈善機關贊助，讀到國中畢業，又在建教合作的學校完成學業，
-認真努力非常傑出。)
-
-
-37	出去若拍毋見，轉來若抾著。	Tshut--khì ná phah-m̄-kìnn, tńg--lâi ná khioh--tio̍h.
-	出外就斷了音訊，宛如走失一般；回來就好像撿到的一樣。比喻人對家庭欠缺責任感，我行我素。通常用於父母對兒女
-的叨唸。
-	伊出門攏無共序大人講，有時規日無甲半通電話，𪜶爸母定定共唸講：「『出去若拍毋見，轉來若抾著』，袂輸共厝裡當做
-旅社咧。」
-I tshut-mn̂g lóng bô kā sī-tuā-lâng kóng, ū-sî kui-ji̍t bô kah puànn thong tiān-uē, in pē-bú tiānn-tiānn kā liām kóng, “‘Tshut--khì ná phah- m̄-kìnn, tńg--lâi ná khioh--tio̍h’, bē-su kā tshù--lí tòng-tsò lí-siā--leh.”
-(他出門都不跟父母說，有時外出整天沒半通電話，他父母常說他：「『出門就像走失了一樣，回來就好像是撿到的』，簡直把家當成旅社似的。」)
-
-
-38	出門看天色，入門看目色。	Tshut-mn̂g khuànn thinn-sik, ji̍p-mn̂g khuànn ba̍k-sik
-	出門要看天氣，進門要看主人的臉色表情。喻處世當察言觀色，方不致於吃眼前虧。
-	序大人定定交代講「出門看天色，入門看目色」，吩咐咱佇社會行踏，目睭著擘較金咧，才袂克虧。
-Sī-tuā-lâng tiānn-tiānn kau-tài kóng “tshut-mn̂g khuànn thinn-sik, ji̍p-mn̂g khuànn ba̍k-sik”, huan-hù lán tī siā-huē kiânn-ta̍h, ba̍k-tsiu tio̍h peh khah kim--leh, tsiah bē khik-khui.
- 
-	(父母親常常交代說「出門看天氣，進門看臉色」，叮囑我們在社會闖蕩，眼睛要睜大一點，才不會吃虧。)
-
-
-39	食偌濟，做偌濟，註好好。	Tsia̍h guā-tsē, tsò guā-tsē, tsù-hó-hó.
-	吃多少，做多少，是註定好的。人的歲數，人的成就，都是老天註定好的。亦即生死有命，富貴在天。
-	就準俗語有講：「食偌濟，做偌濟，註好好。」咱嘛是著盡咱的力量去追求人生的目標。
-Tō tsún sio̍k-gí ū kóng, “Tsia̍h guā-tsē, tsò guā-tsē, tsù-hó-hó.” Lán mā sī tio̍h tsīn lán ê li̍k-liōng khì tui-kiû jîn-sing ê bo̍k-piau.
-(即使俗話說：「生死有命，富貴在天。」我們還是要盡我們的力量去追求人生的目標。)
-
-
-40	水鬼騙城隍。	Tsuí-kuí phiàn Sîng-hông.
-	水鬼欺騙城隍爺。城隍就是城隍爺，傳說中是由水鬼升格，成為守護地方的神明，城隍的手下，有許多水鬼供差使。意
-指下司意欲欺瞞上司，當然成功機會不大。通常用以責備人小鬼大，想欺騙長者的人。
-	伊才拄來做採買，就隨佮廠商鬥空趁抽頭，久來煏空，真正予人㨑著，莫怪主管共伊剾洗講「水鬼騙城隍」，尾仔包袱仔
-款款咧轉去食家己矣。
-I tsiah tú lâi tsò tshái-bé, tō suî kah tshiúnn-siong tàu-khang thàn thiu-thâu, kú--lâi piak-khang, tsin-tsiànn hōo lâng tsang--tio̍h, bo̍k-kuài tsú- kuán kā i khau-sé kóng “tsuí-kuí phiàn Sîng-hông”, bué--á pau-ho̍k-á khuán-khuán--leh tńg-khì tsia̍h-ka-kī--ah.
-(他才剛擔任採買的業務，就馬上和廠商串通賺回扣，時間一久便東窗事發，被人逮個正著，難怪主管譏諷他「你這把戲騙不了人」，最後東
- 
+【資料庫5：教育部新增詞條 202404】
+序號	例句	202404教育部新增詞條	例句音讀	202404教育部新增詞條讀音	華語釋義
+1	爸仔，你敢有欲出國去日本𨑨迌？	爸仔	Pâ--á, lí kám ū beh tshut-kok khì Ji̍t-pún tshit-thô? 	pâ--á	爸爸，你有沒有要出國去日本玩呢？
+2	阮做小盤的不比大盤的生理做遐大，愛薄利多銷才較有利純通趁	小盤	Guán tsò sió-puânn--ê put-pí tuā-puânn--ê sing-lí tsò hiah tuā, ài po̍h-lī to siau tsiah khah ū lī-sûn thang thàn.	sió-puânn	我們做零售商的不比大盤商生意做得那麼大，得薄利多銷才比較有利潤可賺
+3	你死好啦！叫你莫耍股票，你就干干仔欲，今輸甲褪褲矣乎	死好	Lí sí-hó--lah! Kiò lí mài sńg kóo-phiò, lí tō kan-kan-á beh, tann su kah thǹg-khòo--ah--honnh.	sí-hó	你活該啦！叫你不要玩股票，你就偏偏要，現在輸到連內褲都沒了
+4	若欲和朋友佇生份所在佮無熟似的人拍麻雀，著愛斟酌是毋是會予人剪筊去	剪筊	Nā beh hām pîng-iú tī senn-hūn sóo-tsāi kah bô si̍k-sāi ê lâng phah-muâ-tshiok, tio̍h-ài tsim-tsiok sī m̄ sī ē hōo lâng tsián-kiáu--khì.	tsián-kiáu	如果要和朋友在陌生的地方與不認識的人打麻將，要留意是否有人在設局詐賭
+5	伊少年袂曉想，整筊行歹路，佳哉這陣收跤洗手，做正當的頭路矣	整筊	I siàu-liân bē-hiáu siūnn, tsíng-kiáu kiânn pháinn-lōo, ka-tsài tsit-tsūn siu-kha-sé-tshiú, tsò tsìng-tong ê thâu-lōo--ah.	tsíng-kiáu	他年輕時不懂事，開設賭場走偏了路，還好現在走回正途，從事正當工作了
+6	阮三叔公誠有親，定定辦桌請阮，予阮遮的序細仔足感心的。	有親	Guán sann-tsik-kong tsiânn ū-tshin, tiānn-tiānn pān-toh tshiánn--guán, hōo guán tsia-ê sī-sè-á tsiok kám-sim--ê.	ū-tshin	我三叔公很看重親屬情誼，常常設宴請我們，讓我們這些晚輩非常感恩。
+7	若招親情五十來厝裡拍麻雀做議量，仙都毋通跋歹筊，才袂共親堂、朋友總得失了了。	跋歹筊	Nā tsio tshin-tsiânn-gōo-tsa̍p lâi tshù--lí phah-muâ-tshiok tsò-gī-niū, sian to m̄-thang pua̍h-pháinn-kiáu, tsiah bē kā tshin-tông, pîng-iú tsóng tik-sit-liáu-liáu.	pua̍ h-pháinn-kiáu	若邀親朋好友來家裡打麻將做消遣，千萬不可設局詐賭，才不會把親戚、朋友都得罪光。
+8	老歲仔人若身體勇健、心情樂暢，手頭閣有寡，就較有才調踏入到食清、睏宮、人精英的坎站。	食清	Lāu-huè-á-lâng nā sin-thé ióng-kiānn, sim-tsîng lo̍k-thiòng, tshiú-thâu koh ū--kuá, tō khah ū tsâi-tiāu ta̍h-ji̍p kàu tsia̍h-tshing, khùn-king, lâng tsing-ing ê khám-tsām.	tsia̍h-tshing	老人家如果能維持身體健康、心情舒暢，手頭上又富裕些，才有辦法進入到吃飯不欠人情，不必感謝他人，無憂無慮的境界。
+9	看著𪜶阿爸坐佇客廳的膨椅盹龜，伊跕跤勻勻仔行過去，驚共𪜶阿爸吵精神。	跕跤	Khuànn-tio̍h in a-pah tsē tī kheh-thiann ê phòng-í tuh-ku, i liam-kha ûn-ûn-á kiânn--kuè-khì, kiann kā in a-pah tshá tsing-sîn.	liam-kha	看到他爸爸坐在客廳的沙發椅上打瞌睡，他踮起腳尖輕輕走過去，怕把他爸爸吵醒了。
+10	阮牽的少年真好枝骨，可惜中年以後無咧保養，身材煞走精去。	好枝骨	Guán  khan--ê siàu-liân tsin hó-ki-kut, khó-sioh tiong-liân í-āu bô teh pó-ióng, sin-tsâi suah tsáu-tsing--khì.	hó-ki-kut	我老婆年輕時身材很好，可惜中年之後沒有保養，身材卻走樣了。
+11	做服務業，對人客著較好笑神咧，毋通定定激一个烏昏面。	烏昏	Tsò ho̍k-bū-gia̍p, tuì lâng-kheh tio̍h khah hó-tshiò-sîn--leh, m̄-thang tiānn-tiānn  kik tsi̍t ê oo-hng bīn.	oo-hng	從事服務業，對客人得經常面帶笑容，不要常常擺出嚴肅的神色。
+12	食抗生素治療細菌感染，的確著按時服藥，好原全才會使停藥。	服藥	Tsia̍h khòng-sing-sòo tī-liâu sè-khún kám-jiám, tik-khak tio̍h àn-sî ho̍k-io̍h, hó guân-tsuân tsiah ē-sái thîng io̍h.	ho̍k-io̍h	服用抗生素來治療細菌感染，務必得按時吃藥，痊癒後才可以停藥。
+13	咱的意見差傷濟，規氣兩爿攏退一步，掠中和敢好？	掠中和	Lán ê ì-kiàn tsha siunn tsē, kui-khì nn̄g-pîng lóng thè tsi̍t pōo, lia̍h-tiong-hô kám hó?	lia̍h-tiong-hô	我們的意見相差太多，乾脆雙方都退讓一步，採折衷做法好嗎？
+14	這隻牛規工佇田裡作穡，跤骨纘袂牢，蝹佇塗跤𬦰袂起來。	纘袂牢	Tsit tsiah gû kui-kang tī tshân--lí tsoh-sit, kha-kut tsàn bē tiâu, un tī thôo-kha peh bē khí--lâi.	tsàn-bē-tiâu	這頭牛整天在田裡耕作，腿支撐不住，癱在地上爬不起來。
+15	我提一千箍去𥴊仔店買五十箍的物件，頭家娘找我四百五。我講伊找毋著，伊一直諍講我予伊五百箍。等錄影看了，伊隨雞喙變鴨喙。	雞喙變鴨喙	Guá the̍h tsi̍t-tshing khoo khì kám-á-tiàm bé gōo-tsa̍p khoo ê mi̍h-kiānn, thâu-ke-niû tsāu guá sì-pah-gōo. Guá kóng i tsāu m̄-tio̍h, i it-ti̍t tsènn kóng guá hōo i gōo-pah khoo. Tán lo̍k-iánn khuànn-liáu, i suî ke-tshuì piàn ah-tshuì.	ke-tshuì piàn ah-tshuì	我拿一千塊到雜貨店買五十塊的東西，老闆娘找我四百五。我說他找錯了，她一直爭辯說我給她五百塊。等看過錄影，她立刻啞口無言。
+16	透早騎跤踏車去學校的時，拄好咧𬦰崎閣著㧣風，騎甲怦怦喘。	㧣風	Thàu-tsá khiâ kha-ta̍h-tshia khì ha̍k-hāu ê sî, tú-hó teh peh-kiā koh tio̍h tu-hong, khiâ kah phēnn-phēnn-tshuán.	tu-hong	早上騎腳踏車去學校的時候，正巧在爬坡又得頂著風，騎得氣喘吁吁。
+17	你若定定抱心，心臟跳了無正常，著愛緊去予醫生看！	抱心	Lí nā tiānn-tiānn phō-sim, sim-tsōng thiàu liáu bô tsìng-siông, tio̍h-ài kín khì hōo i-sing khuànn!	phō-sim	你若常心悸，心跳不正常，得趕緊去看醫生！
+18	伊欲出國是看心情，見若心適興，飛行機票買落就出去。	心適興	I beh tshut-kok sī khuànn sim-tsîng, kiàn-nā sim-sik-hìng, hue-lîng-ki-phiò bé--lo̍h tō tshut--khì.	sim-sik-hìng	他想出國是取決於心情，只要興起，機票買了就飛出去了。
+19	我見擺都共這間冊店交關，這擺一下手就買欲五千，結局嘛是無割引。	割引	Guá kiàn-pái to kā tsit king tsheh-tiàm kau-kuan, tsit pái tsi̍t-ē-tshiú tō bé beh gōo-tshing, kiat-kio̍k mā sī bô kuah-ín.	kuah-ín	我每次都去這間店光顧，這次一口氣就買了近五千元，結果還是沒有折扣。
+20	阮阿公定講日本時代的錢加真大圓。	大圓	Guán a-kong tiānn kóng Ji̍t-pún sî-tāi ê tsînn ke tsin tuā-înn.	tuā-înn	我爺爺常說日治時期的錢幣值高很多。
+21	趁今仔日大晡日，棉襀被緊挔出來曝曝咧。	大晡日	Thàn kin-á-ji̍t tuā-poo-ji̍t, mî-tsioh-phuē kín hiannh tshut-lâi pha̍k-pha̍k--leh.	tuā-poo-ji̍t	趁今天是大晴天，棉被趕緊拿出來曬一曬。
+22	笑色的衫略仔沐著垃圾就看現現。	笑色	Tshiò-sik ê sann lio̍h-á bak-tio̍h lah-sap tō khuànn-hiān-hiān.	tshiò-sik	淺色的衣服稍微沾了髒污就看得清清楚楚。
+23	這陣囡仔會遮挐，攏嘛是伊咧歹鬼𤆬頭。	歹鬼𤆬頭	Tsit tīn gín-á ē tsiah jû, lóng mā sī i teh pháinn-kuí-tshuā-thâu.	pháinn-kuí-tshuā-thâu	這些孩子會這麼無理取鬧，都是他帶頭起鬨的。
+24	伊中風了後就半身不隨矣。	半身不隨	I tiòng-hong liáu-āu tō puàn-sin-put-suî--ah.	puàn-sin-put-suî	他中風了以後就半身不遂了。
+25	若想欲共人買較貴的物件，愛先交定才有準算。	交定	Nā siūnn-beh kā lâng bé khah kuì ê mi̍h-kiānn, ài sing kau-tiānn tsiah ū tsún-sǹg.	kau-tiānn	如果想跟別人買比較貴的東西，要先付訂金才算數。
+26	有人講半仿仔頭腦會較好，身體嘛會較健康。	半仿仔	Ū lâng kóng puànn-hóng-á thâu-náu ē khah hó, sin-thé mā ē khah kiān-khong.	puànn-hóng-á	有人說混血兒頭腦會比較好，身體也會比較健康。
+27	專工出國去買一跤皮包仔轉來，煞去買著仿仔，想著誠厭氣。	仿仔	Tsuan-kang tshut-kok khì bé tsi̍t kha phuê-pau-á tńg--lâi, suah khì bé-tio̍h hóng-á, siūnn tio̍h tsiânn iàn-khì.	hóng-á	專程出國去買一個皮包回來，卻買到仿冒品，想起來真是一肚子氣。
+28	囡仔冊攏會寫甲真淺現，若用傷深的詞，驚囡仔人較僫理解。	淺現	Gín-á-tsheh lóng ē siá kah tsin tshián-hiān, nā īng siunn tshim ê sû, kiann gín-á-lâng khah oh lí-kái.	tshián-hiān	童書都會寫得淺顯易懂，若使用太艱澀的詞彙，恐怕小孩子較難理解。
+29	軟蜞生活佇陰暗溼氣重的所在。	軟蜞	Nńg-khî sing-ua̍h tī im-àm sip-khì tāng ê sóo-tsāi.	nńg-khî	蛞蝓生活在陰暗潮溼的地方。
+30	較早的人感覺查某人愛過家毋是好代誌。	過家	Khah-tsá ê lâng kám-kak tsa-bóo-lâng ài kuè-ke m̄ sī hó tāi-tsì.	kuè-ke/kè-ke	以前的人覺得女人喜歡串門子不是好事。
+31	伊食到六十外矣，猶閣咧蹔酒家、揣粉味，實在是老風騷。	老風騷	I tsia̍h kàu la̍k-tsa̍p-guā--ah, iáu-koh teh tsàm tsiú-ka, tshuē hún-bī, si̍t-tsāi sī lāu-hong-so.	lāu-hong-so	他都六十幾歲了，還在上酒店、喝花酒，實在是個老風流。
+32	阮新婦誠𠢕理家。	理家	Guán sin-pū tsiânn gâu lí-ke.	lí-ke	我媳婦很會操持家務。
+33	伊雖然個性較白直，毋過心肝真善良，袂去害人。	白直	I sui-jiân kò-sìng khah pe̍h-ti̍t, m̄-koh sim-kuann tsin siān-liông, bē khì hāi--lâng.	pe̍h-ti̍t	他雖然個性較死心眼，但心地善良，不會做傷害人的事。
+34	拍乒乓需要有場地佮對手。	乒乓	Phah phi̋n-phóng su-iàu ū tiûnn-tē kah tuì-tshiú.	phi̋n-phóng	打桌球需要有場地跟對手。
+35	伊跟做木師傅都學猶未一冬咧，工夫皮皮仔爾爾！	皮皮仔	I kin tsò-ba̍k sai-hū to o̍h iáu-buē tsi̍t tang--leh, kang-hu phuê-phuê-á niā-niā!	phuê-phuê-á	他跟木工師父學不到一年，技術略知一點皮毛而已！
+36	較早作穡人會共稻草摠做稻草囷用來燃火。	稻草囷	Khah-tsá tsoh-sit-lâng ē kā tiū-tsháu tsáng-tsò tiū-tsháu-khûn iōng-lâi hiânn-hué.	tiū-tsháu-khûn	從前農人會把稻草紮成稻草束用來生火。
+37	伊做代誌實在傷過貓神，一點點仔缺點都袂使有。	貓神	I tsò tāi-tsì si̍t-tsāi siunn kuè niau-sîn, tsi̍t-tiám-tiám-á khuat-tiám to bē-sái ū.	niau-sîn	他做事情實在太過挑剔了，一點點缺點也不能發生。
+38	我若喙凊，就緊含一粒鹹梅仔。	喙凊	Guá nā tshuì-tshìn, tō kín kâm tsi̍t lia̍p kiâm-muê-á.	tshuì-tshìn	我如果噁心想吐，就趕緊含一粒話梅。
+39	囡仔豚當咧轉成，莫怪一頓食幾若碗飯。	轉成	Gín-á-thûn tng-teh tńg-tsiânn, bo̍k-kuài tsi̍t tǹg tsia̍h kuí-nā uánn pn̄g.	tńg-tsiânn	青少年正在發育，難怪一餐吃好幾碗飯。
+40	伊毋但面肉媠閣笑粉。	笑粉	I m̄-nā bīn-bah suí koh tshiò-hún.	tshiò-hún	他不僅長得美，皮膚也很粉嫩。
+41	咧欲割稻仔矣，咱來相換工，我先共你鬥割。	相換工	Teh-beh kuah-tiū-á--ah, lán lâi sio-uānn-kang, guá sing kā lí tàu kuah.	sio-uānn-kang	快要收割稻子了，我們來互助工作，我先幫你收割。
+42	關節炎若夯起來，骨目就會痠軟疼。	骨目	Kuan-tsat-iām nā giâ--khí-lâi, kut-ba̍k tō ē sng-nńg-thiànn.	kut-ba̍k	關節炎如果發作，骨節就會又痠又痛。
+43	你跤手毋就較猛掠咧，傷慢手就做無工課。	慢手	Lí kha-tshiú m̄-tō khah mé-lia̍h--leh, siunn bān-tshiú tō tsò bô khang-khuè.	bān-tshiú	你動作要敏捷一點，動作太慢工作就沒有進度。
+44	雞母愛予雞公拍雄過，生出來的卵孵雞仔囝才孵會出來。	拍雄	Ke-bó ài hōo ke-kang phah-hîng--kuè, senn--tshut-lâi ê nn̄g pū ke-á-kiánn tsiah pū ē tshut--lâi.	phah-hîng	母雞要跟公雞交配受精過，生出來的蛋才孵得出小雞來。
+45	人咧相拍，你莫徛踮邊頭較安全。	邊頭	Lâng teh sio-phah, lí mài khiā tiàm pinn--thâu khah an-tsuân.	pinn--thâu	人家在打架，你不要站旁邊較安全。
+46	伊宿題攏烏白寫，凊彩撇撇咧，若親像咧畫土符仔。	土符仔	I siok-tê lóng oo-pe̍h siá, tshìn-tshái phiat-phiat--leh, ná-tshin-tshiūnn teh uē thóo-hû-á.	thóo-hû-á	他功課都胡亂寫，隨便撇一撇，好像在畫符咒。
+47	這馬的人注重養生，所以真濟人食素，四界攏有賣素料的店頭。	素料	Tsit-má ê lâng tsù-tiōng ióng-sing, sóo-í tsin tsē lâng tsia̍h-sòo, sì-kè lóng ū bē sòo-liāu ê tiàm-thâu.	sòo-liāu	現代人重視養生，所以很多人吃素，到處都有賣素料的商店。
+48	阿美仔𠢕妝娗，目彩畫甲足有神的。	目彩	A-bí--á gâu tsng-thānn, ba̍k-tshái uē kah tsiok ū-sîn--ê.	ba̍k-tshái	阿美很會妝扮，眼影畫得很有神采。
+49	囡仔的冊包攏是冊，逐跤都足掂篤。	掂篤	Gín-á ê tsheh-pau lóng sī tsheh, ta̍k kha to tsiok tìm-táu.	tìm-táu	小孩子的書包都是書，每個都很重。
+50	這間店無接受信用卡，欲買物件攏愛納現仔。	現仔	Tsit king tiàm bô tsiap-siū sìn-iōng-khah, beh bé mi̍h-kiānn lóng ài la̍p hiān-á.	hiān-á	這家店不接受信用卡，要買東西都得付現金。
+51	伊讀冊的時不時偷走學，予爸母、老師真頭疼。	偷走學	I tha̍k-tsheh ê sî put-sî thau-tsáu-o̍h, hōo pē-bú, lāu-su tsin thâu-thiànn.	thau-tsáu-o̍h	他上學的時候經常逃學，讓父母、老師很頭痛。
+52	聽講廟埕這陣當咧做鬧熱，你敢欲同齊來去看？	做鬧熱	Thiann-kóng biō-tiânn tsit-tsūn tng-teh tsò-lāu-jia̍t, lí kám beh tâng-tsê lâi-khì khuànn?	tsò-lāu-jia̍t	聽說廟前的大廣場現正有迎神賽會，你要一起去看嗎？
+53	遮的是阮店裡賰的現貨，看你佮意佗一雙，我會當俗俗仔賣予你喔！	現貨	Tsia--ê sī guán tiàm--lí tshun ê hiān-huè, khuànn lí kah-ì tó tsi̍t siang, guá ē-tàng sio̍k-sio̍k-á bē hōo--lí--ooh!	hiān-huè	這些是我們店裡所剩的現貨，看你喜歡哪一雙，我可以便宜賣給你喔！
+54	阮細漢的今年欲讀大學矣。	細漢的	Guán sè-hàn--ê kin-nî beh tha̍k tāi-ha̍k--ah.	sè-hàn--ê	我們家老么今年要上大學了。
+55	古早人講：「蜈蚣、蛤仔、蛇，三不服。」是咧講這三種動物毋但相忌爾爾，閣會相剋。	三不服	Kóo-tsá-lâng kóng, “Giâ-kang, kap-á, tsuâ, sam-put-ho̍k.” Sī teh kóng tsit sann tsióng tōng-bu̍t m̄-nā sio-khī niā-niā, koh ē sio-khik.	sam-put-ho̍k	古人說：「蜈蚣、青蛙、蛇，是死對頭。」是指這三種動物非但相忌，還會相剋。
+56	伊用一百萬起底去做生理，料袂到這馬煞變做一个億來億去的好額人。	起底	I īng tsi̍t-pah bān khí-té khì tsò-sing-lí, liāu-bē-kàu tsit-má suah piàn-tsò tsi̍t ê ik-lâi-ik-khì ê hó-gia̍h-lâng.	khí-té	他拿本錢一百萬去做生意，想不到現在已經成為億萬富豪。
+57	捾佇手裡的一袋麵粉一直窞倕落來。	窞倕	Kuānn tī tshiú--lí ê tsi̍t tē mī-hún it-ti̍t thām-thuī--lo̍h-lâi.	thām-thuī	提在手裡的一袋麵粉一直往下垂落。
+58	這陣的時景佮較早袂比得矣。	時景	Tsit-tsūn ê sî-kíng kah khah-tsá bē-pí--tit--ah.	sî-kíng	現今的景況跟先前不能相比了。
+59	現此時欲買鹹水貨加誠利便。	鹹水貨	Hiān-tshú-sî beh bé kiâm-tsuí-huè ke tsiânn lī-piān.	kiâm-tsuí-huè	現在想要買舶來品方便多了。
+60	人客有共阮品講這批甘蔗，粗幼袂使精差傷濟。	粗幼	Lâng-kheh ū kā guán phín kóng tsit phue kam-tsià, tshoo-iù bē-sái tsing-tsha siunn tsē.	tshoo-iù	客人跟我們約定了這批甘蔗，直徑的大小不能相差太多。
+61	囡仔偷走厝的原因真複雜，有真濟是因為家庭失能造成的。	偷走厝	Gín-á thau-tsáu-tshù ê guân-in tsin ho̍k-tsa̍p, ū tsin tsē sī in-uī ka-tîng sit-lîng tsō-sîng--ê.	thau-tsáu-tshù	小孩子離家出走的原因很複雜，有很多是因為家庭失能造成的。
+62	看伊攑菜刀剁肉、切菜的款勢誠熟手，對煮食應該真有經驗。	款勢	Khuànn i gia̍h tshài-to tok bah, tshiat tshài ê khuán-sè tsiânn si̍k-tshiú, tuì tsú-tsia̍h ing-kai tsin ū king-giām.	khuán-sè	看他拿菜刀剁肉、切菜的架式十分上手，對烹飪應該很有經驗。
+63	彼个囡仔磕袂著就挐頭使性地，實在足毋是款！	挐頭	Hit ê gín-á kha̍p-bē-tio̍h tō jû-thâu sái-sìng-tē, si̍t-tsāi tsiok m̄-sī-khuán!	jû-thâu	那個孩子動不動就胡鬧耍脾氣，實在很不像樣！
+64	少年顧𨑨迌，食老顧退悔。	退悔	Siàu-liân kòo tshit-thô, tsia̍h-lāu kòo thè-hué.	thè-hué	年少縱情玩樂，老來忙著悔恨。
+65	阿峰一下聽著組員報告煞，紲話落去補充伊拄才無講著的資料。	紲話	A-hong tsi̍t-ē thiann-tio̍h tsoo-uân pò-kò suah, suà-uē lo̍h-khì póo-tshiong i tú-tsiah bô kóng--tio̍h ê tsu-liāu.	suà-uē	阿峰一聽到組員報告結束，接著下去補充他剛才沒提到的資料。
+66	阿華痟跋筊，一四界欠數，攏嘛𪜶翁咧共伊帕尾。	帕尾	A-huâ siáu pua̍h-kiáu, tsi̍t-sì-kè khiàm-siàu, lóng mā in ang teh kā i phè-bué.	phè-bué/phè-bé	阿華沉迷賭博，到處欠債，都是他先生替他善後的。
+67	雞著災了後，雖罔無死，煞圇痀去，飼攏袂大格。	圇痀	Ke tio̍h-tse liáu-āu, sui-bóng bô sí, suah lun-ku--khì, tshī lóng bē tuā-keh.	lun-ku	雞得了雞瘟後，雖然沒死，卻日漸萎縮，怎麼養都養不大。
+68	佇庄跤所在，毋管好額抑散赤，是年是節攏愛趁人的樣做粿、刣精牲仔，才袂予人看衰。	是年是節	Tī tsng-kha sóo-tsāi, m̄-kuán hó-gia̍h ia̍h sàn-tshiah, sī-nî-sī-tseh lóng ài thàn lâng ê iūnn tsò kué, thâi tsing-senn-á, tsiah bē hōo lâng khuànn-sue.	sī-nî-sī-tseh	在鄉下地方，無論貧富，逢年過節都要照別人的樣子做糕點、殺雞鴨，才不會被鄰居看輕。
+69	咱人的心臟佮紅筋連做伙，成做血路循環的系統，若出問題，健康就會有影響。	紅筋	Lán-lâng ê sim-tsōng kah âng-kin liân tsò-hué, tsiânn-tsò hueh-lōo sûn-khuân ê hē-thóng, nā tshut būn-tê, kiān-khong tō ē ū íng-hióng.	âng-kin	我們人的心臟與血管連結，形成血液循環系統，若出問題就會影響健康。
+70	阿月仔頂擺車厄了後，人就略略仔錦痀，行路嘛加較慢淡薄。	錦痀	A-gua̍t-á tíng-pái tshia-eh liáu-āu, lâng tō lio̍h-lio̍h-á gìm-ku, kiânn-lōo mā ke khah bān--tām-po̍h.	gìm-ku	阿月先前出了車禍，身形就呈現些許駝背，走起路來比較慢一點。
+71	這種藥粉有摻黃連，共伊做成雞毛管仔，較袂食著苦苦。	雞毛管仔	Tsit tsióng io̍h-hún ū tsham n̂g-nî, kā i tsò-sîng ke-mn̂g-kóng-á, khah bē tsia̍h tio̍h khóo-khóo.	ke-moo-kóng-á	這種藥粉加了黃連，把它做成膠囊，吃起來比較不會苦苦的。
+72	𪜶兩个兄弟仔自細漢就做伙食、做伙睏，感情上搭粒，予人真欣羨。	搭粒	In nn̄g ê hiann-tī-á tsū sè-hàn tō tsò-hué tsia̍h, tsò-hué khùn, kám-tsîng siōng tah-lia̍p, hōo lâng tsin him-siān.	tah-lia̍p	他們兩人從小就一起吃飯、就寢，感情很親密，讓人非常羨慕。
+73	阮大家官欲來阮兜看孫攏無時無陣，我定定都袂赴通準備。	無時無陣	Guán ta-ke-kuann beh lâi guán tau khuànn sun lóng bô-sî-bô-tsūn, guá tiānn-tiānn to bē-hù thang tsún-pī.	bô-sî-bô-tsūn	我公婆要到我家來看孫子都不是在固定的時間，我常常都來不及準備。
+74	襟胸的油質較低，閣有豐富的卵白質，是真濟選手運動了後的食物選擇。	襟胸	Khim-hing ê iû-tsit khah kē, koh ū hong-hù ê nn̄g-pe̍h-tsit, sī tsin tsē suán-tshiú ūn-tōng liáu-āu ê si̍t-bu̍t suán-ti̍k.	khim-hing	雞胸肉的油質較低，且有豐富的蛋白質，是很多選手運動之後的食物選擇。
+75	教練叫我佮阿明練閹雞行，阿明忝跤我忝手。	閹雞行	Kàu-liān kiò guá kah A-bîng liān iam-ke-kiânn, A-bîng thiám kha guá thiám tshiú.	iam-ke-kiânn	教練叫我跟阿明練老漢推車，阿明累的是腳，我累的是手。
+76	伊做人真漚搭，人也無去得失伊，伊煞一四界去烏白呾，講人攏對伊有偌䆀。	漚搭	I tsò-lâng tsin àu-tah, lâng iā bô khì tik-sit--i, i suah tsi̍t-sì-kè khì oo-pe̍h tànn, kóng lâng lóng tuì i ū guā bái.	àu-tah	他為人很糟糕，別人也沒得罪他，他卻四處胡說，說別人都對他有多不好。
+77	伊車禍傷著龍骨去開刀，了後著愛穿鐵衫來固定。	鐵衫	I tshia-hō siong-tio̍h liông-kut khì khui-to, liáu-āu tio̍h-ài tshīng thih-sann lâi kòo-tīng.	thih-sann	他車禍脊椎受傷開刀，之後就要穿背架來支撐。
+78	伊是一个負責任的人，交代予伊的代誌攏攢辦甲足周至的。	攢辦	I sī tsi̍t ê hū-tsik-jīm ê lâng, kau-tài hōo i ê tāi-tsì lóng tshuân-pān kah tsiok tsiu-tsì--ê.	tshuân-pān	他是一個負責任的人，交代給他的事項都準備得很周全。
+79	咱來攘，贏的人會使先騎車仔。	攘	Lán lâi jiāng, iânn ê lâng ē-sái sing khiâ tshia-á.	jiāng/giāng	我們來猜拳，贏的人可以先騎車。
+80	上課若閬站，我才敲電話予你。	閬站	Siōng-khò nā làng-tsām, guá tsiah khà tiān-uē hōo--lí.	làng-tsām	上課如果有空檔的時候，我再打電話給你。
+81	有一寡相命仙璇石喙，講甲糊瘰瘰，愛細膩。	璇石喙	Ū tsi̍t-kuá siòng-miā-sian suān-tsio̍h-tshuì, kóng kah hôo-luì-luì, ài sè-jī.	suān-tsio̍ h-tshuì	有一些算命仙能言善道，說得天花亂墜，要小心。
+82	阮翁熱底的，𠢕流汗、不時喝喙焦，閣定定大便祕結。	熱底	Guán ang jia̍t-té--ê, gâu lâu-kuānn, put-sî huah tshuì-ta, koh tiānn-tiānn tāi-piān pì-kiat.	jia̍t-té	我老公是熱性體質，容易流汗，老是說口渴，又常常便秘。
+83	這馬有的人嫌家己的鼻刀傷凹，想欲去手術。	鼻刀	Tsit-má ū ê lâng hiâm ka-kī ê phīnn-to siunn nah, siūnn-beh khì tshiú-su̍t.	phīnn-to	現在有些人嫌自己鼻梁不夠高，想去動手術。
+84	這个計畫照原就好，毋通閣改矣。	照原	Tsit ê kè-uē tsiàu-guân tō hó, m̄-thang koh kái--ah.	tsiàu-guân	這個計畫就照舊就好，不要再改了。
+85	進仔干焦會對厝裡的人大細聲，拄著外人攏嘛毋敢嗤噌。	嗤噌	Tsìn--á kan-na ē tuì tshù--lí ê lâng tuā-sè-siann, tú-tio̍h guā-lâng lóng mā m̄ kánn tshi̍h-tshn̍gh.	tshi̍h-tshn̍gh	阿進只會對家人大小聲，遇到外人就不敢吭聲。
+86	咱對序大袂使摘名摘姓，愛共人照輩份來稱呼才有禮貌。	摘名摘姓	Lán tuì sī-tuā bē-sái tiah-miâ-tiah-sènn, ài kā lâng tsiàu puè-hūn lâi tshing-hoo tsiah ū-lé-māu.	tiah-miâ-tiah-sènn	我們對長輩不能指名道姓，要依照輩份稱呼才有禮貌。
+87	十一點上北的火車慢分，愛閣二十分鐘才會到站。	慢分	Tsa̍p-it tiám tsiūnn-pak ê hué-tshia bān-hun, ài koh jī-tsa̍p hun-tsing tsiah ē kàu-tsām.	bān-hun	十一點北上的火車誤點，得再二十分鐘才會到站。
+88	阿娟的別莊整理甲嶄然四序。	嶄然	A-kuan ê pia̍t-tsong tsíng-lí kah tsám-jiân sù-sī.	tsám-jiân	阿娟的別墅整理得非常整齊、清潔。
+89	彼个囡仔真厲害，逐項比賽攏有法度過通關。	過通關	Hit ê gín-á tsin lī-hāi, ta̍k hāng pí-sài lóng ū-huat-tōo kuè-thong-kuan.	kuè-thong-kuan	那個孩子非常厲害，每項比賽都能過關斬將。
+90	伊是一个真愛烏白共人詼的詼仙，做人閣袂正經，逐家攏誠慼伊。	詼仙	I sī tsi̍t ê tsin ài oo-pe̍h kā lâng khue ê khue-sian, tsò-lâng koh bē tsìng-king, ta̍k-ke lóng tsiânn tsheh--i.	khue-sian	他是一個很喜歡隨便嘲弄他人的人，為人又不正派，大家都很討厭他。
+91	電梯一時仔櫼遐濟人入來煞超磅，門關袂起來。	超磅	Tiān-thui tsi̍t-sî-á tsinn hiah tsē lâng ji̍p--lâi suah tshiau-pōng, mn̂g kuainn bē khí--lâi.	tshiau-pōng	電梯一下子擠那麼多人進來，以致超載門關不起來。
+92	詐騙案件的受害者真濟攏是因為貪心才會著吊。	著吊	Tsà-phiàn àn-kiānn ê siū-hāi-tsiá tsin tsē lóng sī in-uī tham-sim tsiah ē tio̍h-tiàu.	tio̍h-tiàu	詐騙案件的受害者很多都是因為貪心才會上當。
+93	𪜶兩个較早有冤仇，這馬見若相拄就目降鬚聳。	目降鬚聳	In nn̄g ê khah-tsá ū uan-siû, tsit-má kiàn-nā sio-tú tō ba̍k-kàng-tshiu-tshàng.	ba̍k-kàng-tshiu-tshàng	他們兩個從前有冤仇，現在每次相遇就吹鬍子瞪眼。
+94	佇都會區，徛家若倚捷運站近兜，厝價攏會較懸。	近兜	Tī too-huē-khu, khiā-ke nā uá tsia̍t-ūn-tsām kīn-tau, tshù-kè lóng ē khah kuân.	kīn-tau	在都會區，若住家緊鄰捷運站附近，房價會比較高。
+95	伊拄對銀行領錢出來，雄雄一个強徒出手共伊的皮包仔搶去。	強徒	I tú tuì gîn-hâng niá tsînn tshut--lâi, hiông-hiông tsi̍t ê kiông-tôo tshut-tshiú kā i ê phuê-pau-á tshiúnn--khì.	kiông-tôo	他剛從銀行領錢出來，突然一個搶匪動手搶走了他的皮包。
+96	咱做代誌著致心。	致心	Lán tsò tāi-tsì tio̍h tì-sim.	tì-sim	我們做事必須專心致志。
+97	你著較認真學咧，後擺才會較有路長。	路長	Lí tio̍h khah jīn-tsin o̍h--leh, āu-pái tsiah ē khah ū lōo-tn̂g.	lōo-tn̂g	你得認真一點學，將來才比較有出息。
+98	阿英對鹿港嫁去新竹，所以伊外家佇鹿港，內家佇新竹。	內家	A-ing tuì Lo̍k-káng kè-khì Sin-tik, sóo-í i guā-ke tī Lo̍k-káng, lāi-ke tī Sin-tik.	lāi-ke	阿英從鹿港嫁到新竹，所以他娘家在鹿港，婆家在新竹。
+99	數佻別人的差錯較緊，改變家己的欠點較僫。	數佻	Siàu-tiáu pa̍t-lâng ê tsha-tshò khah kín, kái-piàn ka-kī ê khiàm-tiám khah oh.	siàu-tiáu	數落他人的錯誤較快，改變自己的缺失較難。
+100	你就照這个課程聊聊仔綴老師學，準做無底，久來嘛會熟手。	無底	Lí tō tsiàu tsit ê khò-tîng liâu-liâu-á tuè lāu-su o̍h, tsún-tsò bô-té, kú--lâi mā ē si̍k-tshiú.	bô-té	你就按照這個課程慢慢的跟著老師學習，即使沒有基礎，久了也會熟練。
+101	爸母過身才幾冬爾爾，𪜶兜的爸公業就予伊開了了去矣。	爸公業	Pē-bú kuè-sin tsiah kuí tang niā-niā, in tau ê pē-kong-gia̍p tō hōo i khai-liáu-liáu--khì--ah.	pē-kong-gia̍p	父母過世才幾年光景而已，他家的祖產就被他敗光了。
+102	曷有一个叫囡仔莫去讀冊的。	曷有一个	A̍h-ū-tsi̍t-ê kiò gín-á mài khì tha̍k-tsheh--ê.	a̍h-ū-tsi̍t-ê	哪有叫小孩不要去讀書的。
+103	逐工加班，厝內攏無掛摒掃。	無掛	Ta̍k-kang ka-pan, tshù-lāi lóng bô-khuà piànn-sàu.	bô-khuà	每天都加班，家裡都沒空打掃。
+104	我看愛提寡定金較定當。	定當	Guá khuànn ài the̍h kuá tiānn-kim khah tīng-tòng.	tīng-tòng	我看要先付一點定金比較穩當。
+105	現交關的減趁寡較贏賒數的。	現交關	Hiān-kau-kuan--ê kiám thàn--kuá khah iânn sia-siàu--ê.	hiān-kau-kuan	現金交易的少賺點勝過賒帳的。
+106	阿媽共燃好的青草仔茶，用漏仔貯入去玻璃矸仔，冰佇冰箱予逐家啉。	漏仔	A-má kā hiânn-hó ê tshenn-tsháu-á-tê, iōng lāu-á té ji̍p-khì po-lê kan-á, ping tī ping-siunn hōo ta̍k-ke lim.	lāu-á	奶奶把煮好的青草茶，用漏斗裝進玻璃瓶中，冰在冰箱給大家喝。
+107	𪜶兜的生活真饒裕，自來就免煩惱食穿。	饒裕	In tau ê sing-ua̍h tsin jiâu-jū, tsū-lâi tō bián huân-ló tsia̍h-tshīng.	jiâu-jū	他家的生活很富裕，從來就不愁吃穿。
+108	這馬公司在庫的便貨已經無夠，愛緊聯絡工廠隨生產來補貨。	便貨	Tsit-má kong-si tsāi-khòo ê piān-huè í-king bô-kàu, ài kín liân-lo̍k kang-tshiúnn suî sing-sán lâi póo huè.	piān-huè	現在公司庫存的現貨已經不足，要趕快聯絡工廠馬上生產補貨。
+109	柑仔蜜的食路百百款，我上愛切做一周一周搵豆油糖。	食路	Kam-á-bi̍t ê tsia̍h-lōo pah-pah-khuán, guá siōng ài tshiat-tsò tsi̍t tsiu tsi̍t tsiu ùn tāu-iû-thn̂g.	tsia̍h-lōo	番茄的吃法百百種，我最喜歡番茄切塊沾糖混合醬油的醬料。
+110	若講著鼻趖的工夫，無人綴伊會著，莫怪這馬食甲油洗洗。	鼻趖	Nā kóng-tio̍h phīnn-sô ê kang-hu, bô lâng tuè i ē tio̍h, bo̍k-kuài tsit-má tsia̍h kah iû-sé-sé.	phīnn-sô	講到趁機撈油水的功夫，沒人比得過他，難怪現在口袋賺得飽飽的。
+111	你昨昏穿的彼領褲褲跤有一寡線屎，提來予我鉸鉸咧。	線屎	Lí tsa-hng tshīng ê hit niá khòo khòo-kha ū tsi̍t-kuá suànn-sái, the̍h-lâi hōo guá ka-ka--leh.	suànn-sái	你昨天穿的那條褲子的褲腳有一些線頭，拿來我幫你剪一剪。
+112	阿宏仔等咧欲上台，緊張甲一直拚汗。	拚汗	A-hông--á tán--leh beh tsiūnn-tâi, kín-tiunn kah it-ti̍t piànn-kuānn.	piànn-kuānn	阿宏等一下要上台，緊張得直冒冷汗。
+113	食燒酒雞我上愛啉彼厚味的湯頭。	厚味	Tsia̍h sio-tsiú-ke guá siōng ài lim he kāu-bī ê thng-thâu.	kāu-bī	吃燒酒雞我最喜歡喝那味道濃厚的湯汁。
+114	我毋知按怎去得失著伊，無伊哪會無因無端佇眾人面頭前共我罵甲遐歹聽。	無因無端	Guá m̄ tsai án-tsuánn khì tik-sit-tio̍h i, bô i ná ē bô-in-bô-tuann tī tsìng-lâng bīn-thâu-tsîng kā guá mē kah hiah pháinn-thiann.	bô-in-bô-tuann	我不知道怎麼得罪了他，要不然他怎會平白無故在眾人面前把我罵得那麼難聽。
+115	這間餐廳實在袂䆀，咱下日仔會用得𤆬阿母做伙來。	下日仔	Tsit king tshan-thiann si̍t-tsāi bē-bái, lán ē-ji̍t-á ē-īng-tit tshuā a-bú tsò-hué lâi.	ē-ji̍t-á	這間餐廳真不錯，我們改天可以帶媽媽一起來。
+116	這遍的比賽咱較有卜面。	卜面	Tsit piàn ê pí-sài lán khah ū poh-bīn.	poh-bīn	這次的競賽我們有勝算。
+117	都市的厝邊兜，就準講佇電梯間搪著，嘛無的確會相借喙。	相借喙	Too-tshī ê tshù-pinn-tau, tō tsún-kóng tī tiān-thui-king tn̄g--tio̍h, mā bô-tik-khak ē sio-tsioh-tshuì.	sio-tsioh-tshuì	都市的鄰居之間，即便在電梯裡面不期而遇，也未必會相互打招呼。
+118	拄著時機當好的流擺，伊整本想欲開餐廳。	整本	Tú-tio̍h sî-ki tng hó ê lâu-pái, i tsíng-pún siūnn-beh khui tshan-thiann.	tsíng-pún	碰到經濟景氣正旺的時候，他籌措資本想要開餐廳。
+119	伊見若開講就欲佮人辯話骨，莫怪無人欲佮伊交陪。	辯話骨	I kiàn-nā khai-káng tō beh kah lâng piān-uē-kut, bo̍k-kuài bô lâng beh kah i kau-puê.	piān-uē-kut	他但凡閒聊就要挑人語病，難怪沒人要跟他交往。
+120	這跤皮箱捾著輕兩想，應該無貯啥物物件才著。	輕兩想	Tsit kha phuê-siunn kuānn tio̍h khin-niú-siúnn, ing-kai bô té siánn-mih mi̍h-kiānn tsiah tio̍h.	khin-niú-siúnn	這只皮箱提起來輕得不得了，應該沒裝什麼東西才對。
+121	一百箍通買遐大堆，算誠會和。	會和	Tsi̍t-pah khoo thang bé hiah tuā tui, sǹg tsiânn ē-hô.	ē-hô	一百元能買那麼多，真划算。
+122	阿公抾風水的日仔若確定矣，就愛通知逐家轉來鬥相共。	抾風水	A-kong khioh-hong-suí ê ji̍t-á nā khak-tīng--ah, tō ài thong-ti ta̍k-ke tńg-lâi tàu-sann-kāng.	khioh-hong-suí	祖父撿骨的日子若確定了，就應通知大家回來幫忙。
+123	我先踏話頭，共逐家說明一下，要緊的代誌予你押尾手講。	押尾手	Guá sing ta̍h-uē-thâu, kā ta̍k-ke sueh-bîng--tsi̍t-ē, iàu-kín ê tāi-tsì hōo lí ah-bué-tshiú kóng.	ah-bué-tshiú	我先講前言，跟大家說明一下，重要的事情讓你最後說。
+124	伊咧做工課慢死趖，一屑仔工課愛做規晡久。	慢死趖	I teh tsò khang-khuè bān-sí-sô, tsi̍t-sut-á khang-khuè ài tsò kui-poo kú.	bān-sí-sô	他做工作慢吞吞的，一些些工作要做大半天。
+125	爸母攏無希望囡仔佇外口佮人結嚾結黨。	結嚾結黨	Pē-bú lóng bô hi-bāng gín-á tī guā-kháu kah lâng kiat-uang-kiat-tóng.	kiat-uang-kiat-tóng	父母都不希望小孩在外面跟別人成群結黨。
+126	伊是𫞼諍王，會當共死龜諍甲變活鱉。	𫞼諍王	I sī tshāi-tsènn-ông, ē-tàng kā sí ku tsènn kah piàn ua̍h pih.	tshāi-tsènn-ông	他是好辯的人，可以將死龜強辯成活鱉。
+127	食毒毋但拍歹身體閣會舞甲弄家散宅，毒品實在袂沐得。	弄家散宅	Tsia̍h-to̍k m̄-nā phah-pháinn sin-thé koh ē bú kah lōng-ke-suànn-the̍h, to̍k-phín si̍t-tsāi bē-bak--tit.	lōng-ke-suànn-the̍h	吸毒不但弄壞身體也會搞得家庭破碎，毒品實在碰不得。
+128	死訣的生理	死訣	sí-kuat ê sing-lí	sí-kuat	獲利低但也不致虧損的生意
+129	鱸鰻萬仔早起去予職業殺手結果擲捒矣。	結果擲捒	Lôo-muâ Bān--á tsá-khí khì hōo tsit-gia̍p sat-tshiú kiat-kó-tàn-sak--ah.	kiat-kó-tàn-sak	流氓阿萬早上被職業殺手給解決掉了。
+130	伊散學轉來，就激一个懊嘟面，看範勢是佮同學冤家的款。	懊嘟面	I suànn-o̍h tńg--lâi, tō kik tsi̍t ê àu-tū-bīn, khuànn pān-sè sī kah tông-ha̍k uan-ke ê khuán.	àu-tū-bīn	他放學回家，就擺著臭臉，看情形是和同學吵架了的樣子。
+131	𪜶兜今仔日鬧熱滾滾，規家伙仔閣穿甲媠噹噹，毋知有啥物喜事？	喜事	In tau kin-á-ji̍t lāu-jia̍t-kún-kún, kui-ke-hué-á koh tshīng kah suí-tang-tang, m̄ tsai ū siánn-mih hí-sū?	hí-sū	他們家今天熱鬧異常，又全家人都穿得漂漂亮亮的，不知道有什麼喜事？
+132	你共這堵壁畫甲花哩囉，敢會看口得！	花哩囉	Lí kā tsit tóo piah uē kah hue-li-lo, kám ē-khuànn-kháu--tit!	hue-li-lo	你把這面牆畫得花不棱登的，能看嗎！
+133	咱是欲去共恁阿妗送山，你穿甲規身軀花彔彔，敢有合？	花彔彔	Lán sī beh khì kā lín a-kīm sàng-suann, lí tshīng kah kui-sin-khu hue-lok-lok, kám ū ha̍h?	hue-lok-lok	我們要去送舅媽出殯，你全身穿得花花綠綠，合適嗎？
+134	伊不時來揣你寫宿題，是憶著恁兜定定有點心通食。	憶著	I put-sî lâi tshuē lí siá siok-tê, sī it-tio̍h lín tau tiānn-tiānn ū tiám-sim thang tsia̍h.	it-tio̍h	他常常來找你一起寫功課，是圖你們家時常有點心吃。
+135	伊䀐著警察對巷仔頭行來，面隨慄色，即時就起跤走甲無看見影去。	起跤	I siam-tio̍h kíng-tshat tuì hāng-á-thâu kiânn--lâi, bīn suî lik-sik, tsik-sî tō khí-kha tsáu kah bô khuànn-kìnn iánn--khì.	khí-kha	他瞥見警察從巷子口走來，嚇得立刻臉色大變，馬上就拔腿跑得不見蹤影。
+136	這領被輕蠓蠓，毋過蓋著閣誠燒。	輕蠓蠓	Tsit niá phuē khin-báng-báng, m̄-koh kah tio̍h koh tsiânn sio.	khin-báng-báng	這條被子非常輕，不過蓋起來很暖和。
+137	阿公往生六冬矣，今年著愛抾金囉。	抾金	A-kong óng-sing la̍k tang--ah, kin-nî tio̍h-ài khioh-kim--looh.	khioh-kim	爺爺過世六年了，今年需要撿骨了。
+138	你若敢閣共我恐喝，我就叫警察來。	恐喝	Lí nā kánn koh kā guá khióng-hat, guá tō kiò kíng-tshat lâi.	khióng-hat	你要是敢再恐嚇我，我就叫警察來。
+139	苦楝舅春天的新葉是笑青色，開花是黃色，漸漸轉紅，結子的時閣變咖啡色，所以嘛予人叫做四色樹。	苦楝舅	Khóo-līng-kū tshun-thinn ê sin hio̍h sī tshiò-tshenn-sik, khui-hue sī n̂g-sik, tsiām-tsiām tńg-âng, kiat-tsí ê sî koh piàn ka-pi-sik, sóo-í mā hōo lâng kiò-tsò sì-sik-tshiū.	khóo-līng-kū	臺灣欒樹春天的新葉是嫩綠色，開花是黃色，漸漸轉紅，結果時又變成褐色，所以也被人稱為四色樹。
+140	阮兄弟仔隨人攏有家己的苦衷，才會拆伙鼎輪鬮飼爸母。	苦衷	Guán hiann-tī-á suî-lâng lóng ū ka-kī ê khóo-thiong, tsiah ē thiah-hué-tiánn lûn-khau tshī pē-bú.	khóo-thiong	兄弟們都各有自己的隱衷，才會分家並輪流奉養父母。
+141	這種布料會過風閣會欶汗，做熱天衫真好穿。	過風	Tsit tsióng pòo-liāu ē kuè-hong koh ē suh-kuānn, tsò jua̍h-thinn sann tsin hó-tshīng.	kuè-hong	這種布料透氣又吸汗，做夏天的衣服很適合穿著。
+142	你今仔日誠無閒的款，規氣我別工才閣來揣你。	別工	Lí kin-á-ji̍t tsiânn bô-îng ê khuán, kui-khì guá pa̍t-kang tsiah-koh lâi tshuē--lí.	pa̍t-kang	你今天很忙的樣子，乾脆我改天再來找你。
+143	會議都欲起鼓矣，伊呔會猶未到位？	呔	Huē-gī to beh khí-kóo--ah, i thài ē iáu-buē kàu-uī?	thài	會議就要開始了，他怎麼還沒到場？
+144	塗水師無下心神咧捽繩，較加壁堵嘛疊甲走斜去。	走斜	Thôo-tsuí-sai bô hē sim-sîn teh sut-tsîn, khah-ke piah-tóo mā thia̍p kah tsáu-tshua̍h--khì.	tsáu-tshua̍h	泥水匠拉墨繩取直線沒有用心，這也難怪磚牆砌得歪斜不正。
+145	都叫你毋通遐痟貪，今錢予人騙了了，攏是你家己做得來的。	做得來	To kiò lí m̄-thang hiah siáu-tham, tann tsînn hōo lâng phiàn-liáu-liáu, lóng sī lí ka-kī tsò-tit-lâi--ê.	tsò-tit-lâi	早就勸你別那麼貪心，現在錢被騙光了，都是你自找的。
+146	若欲𬦰山愛有人做頭前𤆬路，嘛著有內行的押尾，較袂出代誌。	押尾	Nā beh peh-suann ài ū lâng tsò thâu-tsîng tshuā-lōo, mā tio̍h ū lāi-hâng--ê ah-bué, khah bē tshut-tāi-tsì.	ah-bué	若要去爬山需有人在前面領隊，也得有內行的人殿後，才比較不會出事。
+147	翁仔某著相體諒，毋通串想就是欲共對方壓落底。	壓落底	Ang-á-bóo tio̍h sio-thé-liōng, m̄-thang tshuàn siūnn tō sī beh kā tuì-hong ah-lo̍h-té.	ah-lo̍h-té	夫妻得相互體諒才是，不要老想使對方低頭屈服。
+148	你做工課跤手慢鈍，是欲按怎綴人會著咧！	慢鈍	Lí tsò khang-khuè kha-tshiú bān-tūn, sī beh án-tsuánn tuè lâng ē tio̍h--leh!	bān-tūn	你做事情慢吞吞的，怎麼跟得上人家呢！
+149	你若猶閣有缺欠啥，不管時攏通來共我講。	缺欠	Lí nā iáu-koh ū khueh-khiàm siannh, put-kuán-sî lóng thang lâi kā guá kóng.	khueh-khiàm	你要是還欠缺什麼，隨時都可以來告訴我。
+150	伊逐工都攏笑頭笑面，拄才哪會聽著伊佮厝邊咧大細聲，真怪奇呢！	怪奇	I ta̍k-kang to lóng tshiò-thâu-tshiò-bīn, tú-tsiah ná ē thiann-tio̍h i kah tshù-pinn teh tuā-sè-siann, tsin kuài-kî--neh!	kuài-kî	他每天都笑咪咪的，剛才怎麼會聽見他和鄰居爭吵不休，真是奇怪！
+151	咱做代誌仙都毋通趕狂，著緊事寬辦較妥當。	趕狂	Lán tsò tāi-tsì sian to m̄-thang kuánn-kông, tio̍h kín-sū-khuann-pān khah thò-tòng.	kuánn-kông	我們做事情再怎麼樣都不要慌裡慌張，愈是緊急愈是得謹慎為要。
+152	我寢頭仔穿懸踏真袂慣勢，險險仔就跋跋倒。	懸踏	Guá tshím-thâu-á tshīng kuân-ta̍h tsin bē kuàn-sì, hiám-hiám-á tō pua̍h-pua̍h--tó.	kuân-ta̍h	我起初穿高跟鞋很不習慣，差一點就跌倒了。
+153	雨傘囥佇門喙，莫提入來，厝內才袂澹糊糊。	門喙	Hōo-suànn khǹg tī mn̂g-tshuì, mài the̍h--ji̍p-lâi, tshù-lāi tsiah bē tâm-kôo-kôo.	mn̂g-tshuì	雨傘放在門口，不用拿進來，室內才不會溼答答的。
+154	食人頭路著存久長心，毋通在職怨職，磕袂著就換頭路，袂輸貓徙岫咧。	貓徙岫	Tsia̍h lâng thâu-lōo tio̍h tsûn kú-tn̂g-sim, m̄-thang tsāi-tsit-uàn-tsit, kha̍p-bē-tio̍h tō uānn thâu-lōo, bē-su niau-suá-siū--leh.	niau-suá-siū	受雇於人要安於工作，切勿幹一行怨一行，動不動就換工作，好像貓挪窩似的。
+155	伊正港是一个歹星，拄搬來，這个庄頭就做大水。	歹星	I tsiànn-káng sī tsi̍t ê pháinn-tshenn, tú puann--lâi, tsit ê tsng-thâu tō tsò-tuā-tsuí.	pháinn-tshenn	他真是個掃把星，剛搬來，這個村莊就發生水災。
+156	阮叔伯小弟佮我仝公族仔的，伊今欲選里長，免講嘛愛共伨。	公族仔	Guán tsik-peh-sió-tī kah guá kāng kong-tso̍k-á--ê, i tann beh suán lí-tiúnn, bián-kóng mā ài kā thīn.	kong-tso̍k-á	堂弟是跟我同宗族的，他現在要選里長，怎樣說都要支持他。
+157	這條山路有袂少懸低坎，若欲行，愛較斟酌咧。	懸低坎	Tsit tiâu suann-lōo ū bē tsió kuân-kē-khám, nā beh kiânn, ài khah tsim-tsiok--leh.	kuân-kē-khám	這條山路有不少高低落差，要走的時候，得謹慎小心點。
+158	夜市有人咧賣規攕的卵蛋，阮阿姊上愛食。	卵蛋	Iā-tshī ū lâng teh bē kui tshiám ê nn̄g-tuann, guán a-tsí siōng ài tsia̍h.	nn̄g-tuann	夜市有人賣成串母雞肚子裡的蛋黃，我姊姊最愛吃。
+159	倩人來做工，有當時仔算日的比算件的較省本。	省本	Tshiànn lâng lâi tsò-kang, ū-tang-sî-á sǹg ji̍t--ê pí sǹg kiānn--ê khah síng-pún.	síng-pún	聘請工人，有時候日薪比按件計酬還要省成本。
+160	咱佇車裡共頭殼探出去真危險。	探	Lán tī tshia--lí kā thâu-khak tham--tshut-khì tsin guî-hiám.	tham	我們坐在車子裡面把頭伸出去很危險。
+161	恁老母就因為生恁小弟的時陣坦橫生才無去的。	坦橫生	Lín lāu-bú tō in-uī senn lín sió-tī ê sî-tsūn thán-huâinn-senn tsiah bô--khì--ê.	thán-huâinn-senn	你媽媽就因為生你弟弟的時候橫向難產才過世的。
+162	𪜶兩个一下見面就表現甲親戽戽，毋知是咧搬佗一齣？	親戽戽	In nn̄g ê tsi̍t-ē kìnn-bīn tō piáu-hiān kah tshin-hòo-hòo, m̄ tsai sī teh puann tó tsi̍t tshut?	tshin-hòo-hòo	他們兩個一見面就表現得很熱絡，不知道是在演哪齣戲？
+163	阮老爸牽阿明做師仔，伊也確實出眾，學都無兩冬半就出師矣。	出眾	Guán lāu-pē khan A-bîng tsò sai-á, i iā khak-si̍t tshut-tsìng, o̍h to bô nn̄g tang puànn tō tshut-sai--ah.	tshut-tsìng	我父親收阿明做徒弟，他也確實很出色，不到兩年半就學藝完成。
+164	你莫看伊大箍把，不時嘛咧破病。	大箍把	Lí mài khuànn i tuā-khoo-pé, put-sî mā teh phuà-pēnn.	tuā-khoo-pé	你不要看他大塊頭，常常在生病。
+165	我看你咧起愛睏神矣，無先入去䖙一下。	愛睏神	Guá khuànn lí teh khí ài-khùn-sîn--ah, bô sing ji̍p-khì the--tsi̍t-ē.	ài-khùn-sîn	我看你露出想睡的神情了，不然先進去躺一下。
+166	明其都你毋著，今你煞拍人喝救人，是咧哭予啥人聽。	喝救人	Bîng-ki to lí m̄-tio̍h, tann lí suah phah lâng huah-kiù-lâng, sī teh khàu hōo siánn-lâng thiann.	huah-kiù-lâng	明明就你不對，你現在卻惡人先告狀，是想哭給誰聽。
+167	這間廟起甲遮爾大間，門跤口有𫞼石獅嘛有𫞼石鼓，真誠氣派。	石鼓	Tsit king biō khí kah tsiah-nī tuā king, mn̂g-kha-kháu ū tshāi tsio̍h-sai mā ū tshāi tsio̍h-kóo, tsin-tsiânn khì-phài.	tsio̍h-kóo	這間廟蓋得這麼大，門口既設置了石獅子也安置了石鼓，非常氣派。
+168	食甲這个歲矣，無氣力通佮人掰會遮的政治問題，寧可加讀寡冊較直。	掰會	Tsia̍h kah tsit ê huè--ah, bô khuì-la̍t thang kah lâng pué-huē tsia-ê tsìng-tī būn-tê, lîng-khó ke tha̍k kuá tsheh khah ti̍t.	pué-huē/pé-hē	活到這把年紀了，沒有體力能跟別人爭辯這些政治問題，寧願多讀點書還比較好。
+169	伊都感覺家己𢯾鼻𢯾鼻，較無遐嫣，按算歇熱欲去美容。	𢯾鼻	I to kám-kak ka-kī mooh-phīnn-mooh-phīnn, khah bô hiah ian, àn-sǹg hioh-jua̍h beh khì bí-iông.	mooh-phīnn	他覺得自己鼻子塌塌的，沒那麼好看，打算暑假去整形。
+170	定定欲共人偏，有時陣嘛會食鹼。	食鹼	Tiānn-tiānn beh kā lâng phinn, ū-sî-tsūn mā ē tsia̍h-kinn.	tsia̍h-kinn	常常佔別人的便宜，有時候也會吃到苦頭。
+171	伊是在地選出來的議員，不三時都有選民會來揣伊做服務選區的工課。	不三時	I sī tsāi-tē suán--tshut-lâi ê gī-uân, put-sam-sî to ū suán-bîn ē lâi tshuē i tsò ho̍k-bū suán-khu ê khang-khuè.	put-sam-sî	他是本地選出的議員，經常有選民來找他做服務選區的工作。
+172	歲頭食甲三十外，毋出去討趁，閣不時共序大人伸長手，真正卸衰。	卸衰	Huè-thâu tsia̍h kah sann-tsa̍p-guā, m̄ tshut-khì thó-thàn, koh put-sî kā sī-tuā-lâng tshun-tn̂g-tshiú, tsin-tsiànn sià-sue.	sià-sue	活到三十多歲了，不出去賺錢，還常伸手跟父母要錢，真是丟臉。
+173	看伊人都勇勇，煞雄雄入院，呔討會按呢？	呔討	Khuànn i lâng to ióng-ióng, suah hiông-hiông ji̍p-īnn, thài-thó ē án-ne?	thài-thó	看他人很硬朗，卻突然住院，怎麼會這樣呢？
+174	有人感覺運途袂順，會去請紅頭司公來制煞，其實認真做頭路才會有幫助。	制煞	Ū lâng kám-kak ūn-tôo bē sūn, ē khì tshiánn âng-thâu sai-kong lâi tsè-suah, kî-si̍t jīn-tsin tsò-thâu-lōo tsiah ē ū pang-tsōo.	tsè-suah	有人認為運勢不順，會去請紅頭道士來鎮煞，其實努力把工作做好才會有幫助。
+175	食奶嬰仔的身軀加減攏會有臭奶羶。	臭奶羶	Tsia̍h ling enn-á ê sin-khu ke-kiám lóng ē ū tshàu-ling-hiàn.	tshàu-ling-hiàn	吃奶嬰兒的身上多少都會有乳臭味。
+176	恁吵甲遐大聲，厝蓋強欲予恁夯起來矣啦。	厝蓋	Lín tshá kah hiah tuā-siann, tshù-kuà kiōng-beh hōo lín giâ--khí-lâi--ah--lah.	tshù-kuà	你們吵得這麼大聲，屋頂都快被你們掀起來了。
+177	頭家派予伊遐濟工課，伊一下手就做甲好勢溜溜。	一下手	Thâu-ke phài hōo i hiah tsē khang-khuè, i tsi̍t-ē-tshiú tō tsò kah hó-sè-liu-liu.	tsi̍t-ē-tshiú	老闆指派給他那麼多工作，他一會兒就完成了。
+178	糋的物件較厚油，食一半擺仔是無要緊，若傷捷食對健康會有影響喔！	一半擺仔	Tsìnn ê mi̍h-kiānn khah kāu iû, tsia̍h--tsi̍t-puànn-pái-á sī bô iàu-kín, nā siunn tsia̍p tsia̍h tuì kiān-khong ē ū íng-hióng--ooh!	tsi̍t-puànn-pái-á	油炸物吸附過多油脂，偶爾吃一兩次不礙事，如果太常吃會對健康造成影響喔！
+179	食頭路這號代誌定著愛想較斟酌咧，較免後日仔才來後悔。	後日仔	Tsia̍h-thâu-lōo tsit-lō tāi-tsì tiānn-tio̍h ài siūnn khah tsim-tsiok--leh, khah bián āu-ji̍t-á tsiah lâi hiō-hué.	āu-ji̍t-á	找工作這種事，一定要仔細斟酌，免得將來後悔。
+180	就是生理失敗起致，伊這陣毋才四界咧走路閃債。	起致	Tō sī sing-lí sit-pāi khí-tì, i tsit-tsūn m̄-tsiah sì-kè teh tsáu-lōo siám-tsè.	khí-tì	就是做生意失敗引起，他現在才到處跑路避債。
+181	欲起造一間電子工廠，資金掠外，猶需要真濟科技人員。	起造	Beh khí-tsō tsi̍t king tiān-tsú kang-tshiúnn, tsu-kim lia̍h-guā, iáu su-iàu tsin tsē kho-ki jîn-uân.	khí-tsō	要興建一間電子工廠，除了資金以外，還需要很多科技人員。
+182	伊欲食毋討趁，攏共𪜶序大人叨錢來開。	叨錢	I beh tsia̍h m̄ thó-thàn, lóng kā in sī-tuā-lâng lo tsînn lâi khai.	lo tsînn	他好逸惡勞不想工作賺錢，總是跟他的父母親要錢來花用。
+183	伊平素時有咧食臊，是初一十五才食菜。	平素時	I pîng-sòo-sî ū teh tsia̍h-tsho, sī tshe-it tsa̍p-gōo tsiah tsia̍h-tshài.	pîng-sòo-sî	他平時吃葷食，是初一十五才吃素。
+184	三層半精肥，上合我的氣口。	半精肥	Sam-tsân puànn-tsiann-puî, siōng ha̍h guá ê khuì-kháu.	puànn-tsiann-puî	五花肉半肥半瘦，最合我的口味。
+185	人散食免失志，拍拚才會出頭天。	散食	Lâng sàn-tsia̍h bián sit-tsì, phah-piànn tsiah ē tshut-thâu-thinn.	sàn-tsia̍h	人貧窮不用灰心喪志，努力才能出人頭地。
+186	𪜶兩姊妹仔坐相向，恬恬佇遐咧讀冊。	相向	In nn̄g tsí-muē-á tsē sio-hiòng, tiām-tiām tī hia teh tha̍k-tsheh.	sio-hiòng	他們兩姊妹面對面坐著，靜靜的在那邊讀書。
+187	伊傷過抾拾，明其都無路用的物件，嘛毋甘擲捒。	擲捒	I siunn kuè khioh-si̍p, bîng-ki to bô-lōo-īng ê mi̍h-kiānn, mā m̄-kam tàn-sak.	tàn-sak	他很節儉，明明沒有用的東西，也捨不得丟棄。
+188	天跤下敢誠實有天會落紅雨、馬會發角彼號譀古代？	天跤下	Thinn-kha-ē kám tsiânn-si̍t ū thinn ē lo̍h âng hōo, bé ē huat-kak hit-lō hàm-kóo tāi?	thinn-kha-ē	天底下真的有天會降紅雨、馬會長角那樣誇張荒誕的事嗎？
+189	伊這幅圖捌佇國際比賽著等過，提著第六名。	著等	I tsit pak tôo bat tī kok-tsè pí-sài tio̍h-tíng--kuè, the̍h-tio̍h tē-la̍k miâ.	tio̍h-tíng	他這幅畫曾於國際比賽得過名次，獲得第六名。
+190	當當伊欲過車路，雄雄一台車挵紅燈傱出來，險仔就去予挵著。	當當	Tng-tong i beh kuè tshia-lōo, hiông-hiông tsi̍t tâi tshia lòng-âng-ting tsông--tshut-lâi, hiám-á tō khì hōo lòng--tio̍h.	tng-tong	當他要過馬路的時候，突然一輛車闖紅燈衝出來，差一點就被它撞到。
+191	人客一下入門，厝內人攏愛緊出來佮伊相借問。	厝內人	Lâng-kheh tsi̍t-ē ji̍p-mn̂g, tshù-lāi-lâng lóng ài kín tshut-lâi kah i sio-tsioh-mn̄g.	tshù-lāi-lâng	客人一進門，家人們都要趕緊出來向他問安。
+192	伊做的歹代一下出破，就隨走路矣。	出破	I tsò ê pháinn-tāi tsi̍t-ē tshut-phuà, tō suî tsáu-lōo--ah.	tshut-phuà	他做的壞事一敗露，就馬上逃亡了。
+193	感謝恁今仔日的招待，後回來阮遐就予我請。	後回	Kám-siā lín kin-á-ji̍t ê tsiau-thāi, āu-huê lâi guán hia tō hōo guá tshiánn.	āu-huê	感謝你們今日的招待，下次到我們那裡就讓我請客。
+194	這改考題攏看毋捌，後改我一定欲好好仔讀冊矣！	後改	Tsit kái khó-tê lóng khuànn m̄ bat, āu-kái guá it-tīng beh hó-hó-á tha̍k-tsheh--ah!	āu-kái	這次考題都看不懂，下次我一定要好好讀書了！
+195	頂回去買物件無紮錢，佳哉頭家肯予我賒。	頂回	Tíng-huê khì bé mi̍h-kiānn bô tsah tsînn, ka-tsài thâu-ke khíng hōo guá sia.	tíng-huê	上回去買東西沒帶錢，幸好老闆肯讓我賒帳。
+196	𪜶兩翁仔姐感情誠好，逐暗食飯飽，就手牽咧做伙去公園散步。	翁仔姐	In nn̄g ang-á-tsiá kám-tsîng tsiânn hó, ta̍k-àm tsia̍h-pn̄g pá, tō tshiú khan--leh tsò-hué khì kong-hn̂g sàn-pōo.	ang-á-tsiá	他們夫妻倆感情真好，每晚吃過飯後，就牽著手一起去公園散步。
+197	遮的古董你就好禮仔提，無若落落去，仙賠你都賠袂起。	好禮仔	Tsia-ê kóo-tóng lí tō hó-lé-á the̍h, bô nā lak--lo̍h-khì, sian puê lí to puê bē khí.	hó-lé-á	這些古董你要小心翼翼的拿，不然一掉下去，怎樣你都賠不起。
+198	逐家毋通激恬恬，欲抑毋，恁嘛喝聲一下。	喝聲	Ta̍k-ke m̄-thang kik-tiām-tiām, beh ia̍h m̄, lín mā huah-siann--tsi̍t-ē.	huah-siann	大家不要沉默不語，要或不要，你們要做聲表態一下。
+199	我逐月日都愛納一萬箍的會仔錢。	會仔錢	Guá ta̍k gue̍h-ji̍t to ài la̍p tsi̍t-bān khoo ê huē-á-tsînn.	huē-á-tsînn	我每個月都得繳一萬塊錢的會錢。
+200	伊的外套洗甲勼水去，內裾煞看現現。	內裾	I ê guā-thò sé kah kiu-tsuí--khì, lāi-ki suah khuànn-hiān-hiān.	lāi-ki/lāi-ku	他的外套洗到縮水，內裡都露出來了。
+201	這馬天氣較涼冷矣，出門著加疊一領衫。	涼冷	Tsit-má thinn-khì khah liâng-líng--ah, tshut-mn̂g tio̍h ke tha̍h tsi̍t niá sann.	liâng-líng	現在天氣比較冷了，出門得多加件衣服。
+202	伊出車禍著傷，跤煞袂行，予人用軟床扛起去救護車送去病院。	軟床	I tshut tshia-hō tio̍h-siong, kha suah bē kiânn, hōo lâng iōng nńg-tshn̂g kng khí-khì kiù-hōo-tshia sàng-khì pēnn-īnn.	nńg-tshn̂g	他車禍受傷，腳無法行走，被人用擔架抬上救護車送往醫院。
+203	古早人無電，暗時愛點燈膋。	燈膋	Kóo-tsá-lâng bô tiān, àm-sî ài tiám ting-lâ.	ting-lâ	古時候的人沒電，晚上要點燈油。
+204	阮學校彼欉茄苳樹，規百冬矣，樹箍是粗閣勇。	樹箍	Guán ha̍k-hāu hit tsâng ka-tang-tshiū, kui pah tang--ah, tshiū-khoo sī tshoo koh ióng.	tshiū-khoo	我們學校的那棵茄苳樹，上百年了，樹幹又粗又大。
+205	你共私奇攏囥踮厝裡，萬不二若著賊偷欲按怎？	萬不二	Lí kā sai-khia lóng khǹg tiàm tshù--lí, bān-put-jī nā tio̍h-tsha̍t-thau beh án-tsuánn?	bān-put-jī	你把私房錢都放在家裡，萬一遭小偷怎麼辦？
+206	老大人身體虛荏，有時若穢著感冒就真嚴重。	虛荏	Lāu-tuā-lâng sin-thé hi-lám, ū-sî nā uè-tio̍h kám-mōo tō tsin giâm-tiōng.	hi-lám	老年人身體虛弱，有時候要是染上感冒就很嚴重。
+207	阿母留一張字條仔予我，吩咐講愛會記得去納電火錢。	字條仔	A-bú lâu tsi̍t tiunn jī-tiâu-á hōo--guá, huan-hù kóng ài ē-kì-tit khì la̍p tiān-hué-tsînn.	jī-tiâu-á	媽媽留了一張字條給我，交代我要記得去繳電費。
+208	這台oo-tóo-bái的ia̋n-jín愛拆，你去共我遐的家私頭仔提來。	家私頭仔	Tsit tâi oo-tóo-bái ê ia̋n-jín ài thiah, lí khì kā guá hia-ê ke-si-thâu-á the̍h--lâi.	ke-si-thâu-á	這台摩托車的引擎需要拆解，你去把我那些工具拿來。
+209	這擺是欲𬦰淺山仔，咱空身來去就好。	空身	Tsit pái sī beh peh tshián-suann-á, lán khang-sin lâi-khì tō hó.	khang-sin	這次是要爬淺山，我們空手去就好了。
+210	過年的時陣，𪜶家族仔攏會去公廳拜祖先。	公廳	Kuè-nî ê sî-tsūn, in ka-tso̍k-á lóng ē khì kong-thiann pài tsóo-sian.	kong-thiann	過年的時候，他們家族都會去祠堂拜祖先。
+211	凡若麵粉做的我攏真有路，特別是麵粉粿仔我上愛食。	麵粉粿仔	Huān-nā mī-hún tsò--ê guá lóng tsin ū-lōo, ti̍k-pia̍t sī mī-hún-kué-á guá siōng ài tsia̍h.	mī-hún-kué-á	凡是麵粉做的食物都是我喜愛的類型，尤其麵疙瘩是我最愛吃的。
+212	這塊桌仔無欲用矣，先共搬去邊仔角囥。	邊仔角	Tsit tè toh-á bô beh īng--ah, sing kā puann-khì pinn-á-kak khǹg.	pinn-á-kak	這張桌子不用了，先把它搬去角落放。
+213	這个囡仔真孽呢，坐徛袂牢無時得定。	得定	Tsit ê gín-á tsin gia̍t--neh, tsē khiā bē tiâu bô-sî tik-tiānn.	tik-tiānn	這個小孩很皮耶，坐也不是站也不是一刻都不得安靜。
+214	恁囡仔的尿苴仔愛換矣喔，有鼻著臭尿破味。	臭尿破味	Lín gín-á ê jiō-tsū-á ài uānn--ah--ooh, ū phīnn-tio̍h tshàu-jiō-phuà-bī.	tshàu-jiō-phuà-bī	你家小孩的尿布要換了喔，聞得到尿騷味。
+215	拄仔有人敲電話來，講欲揣你。	拄仔	Tú-á ū lâng khà tiān-uē lâi, kóng beh tshuē--lí.	tú-á	剛剛有人打電話來，說要找你。
+216	伊的店按算欲開佇大通遐，講遐會較食市。	大通	I ê tiàm àn-sǹg beh khui tī tuā-thong hia, kóng hia ē khah tsia̍h-tshī.	tuā-thong	他的店打算開在大馬路附近，因為那邊的人潮多，較好做生意。
+217	𪜶兄妹仔真會曉想，毋捌因為厝裡散食就來失志。	兄妹仔	In hiann-muē-á tsin ē-hiáu siūnn, m̄ bat in-uī tshù--lí sàn-tsia̍h tō lâi sit-tsì.	hiann-muē-á	他們兄妹十分懂事，不曾因為家裡貧窮就灰心喪志。
+218	佮「外家」意思相仝，字目無仝的有「後頭厝」、「後頭」佮「外家厝」。	字目	Kah “guā-ke” ì-sù sio-kāng, jī-ba̍k bô kāng--ê ū “āu-thâu-tshù”, “āu-thâu” kah “guā-ke-tshù”.	jī-ba̍k	和「外家」意思相同，文字不同的有「後頭厝」、「後頭」與「外家厝」。
+219	根據犯案的時間，我人都無佇現場，這嘛是我無可能犯罪的干證。	干證	Kin-kì huān-àn ê sî-kan, guá lâng to bô tī hiān-tiûnn, tse mā sī guá bô khó-lîng huān-tsuē ê kan-tsìng.	kan-tsìng	根據犯案時間，我人又不在現場，這也是我不可能犯罪的證據。
+220	阿媽去園裡薅番薯，我綴佇邊仔鬥共根頭的塗敲挕捒。	根頭	A-má khì hn̂g--lí khau han-tsî, guá tuè tī pinn--á tàu kā kin-thâu ê thôo khà hìnn-sak.	kin-thâu	奶奶去園裡採收番薯，我跟在旁邊幫忙將根上的土敲除。
+221	臺灣的平埔族屬於南島語族，嘛予人稱呼做平埔族群。	平埔族	Tâi-uân ê Pênn-poo-tso̍k sio̍k-î Lâm-tó Gí-tso̍k, mā hōo lâng tshing-hoo tsò Pênn-poo tso̍k-kûn.	Pênn-poo-tso̍k	臺灣的平埔族屬於南島語族，也被人稱呼做平埔族群。
+222	我話若欲講透機，你目屎會掰袂離。	透機	Guá uē nā beh kóng thàu-ki, lí ba̍k-sái ē pué bē lī.	thàu-ki	我要是把話都挑明說透，你會淚流不止。
+223	工課等一下主任會來拍派，你毋通先偷走。	偷走	Khang-khuè tán--tsi̍t-ē tsú-jīm ē lâi phah-phài, lí m̄-thang sing thau-tsáu.	thau-tsáu	工作等一下主任會來分派，你別先溜了。
+224	好心的倒咧餓，歹心的戴王帽，這到底是啥物款的天年？	天年	Hó-sim--ê tó leh gō, pháinn-sim--ê tì ông-bō, tse tàu-té sī siánn-mih khuán ê thinn-nî?	thinn-nî	好人遭殃，壞人得志，這究竟是怎樣的世道？
+225	做人心肝愛平棒，袂使攏推軟仔，串欲欺負古意人。	推軟仔	Tsò-lâng sim-kuann ài pênn-pāng, bē-sái lóng thui-nńg-á, tshuàn beh khi-hū kóo-ì-lâng.	thui-nńg-á	做人要公平，不可都柿子挑軟的吃，總想著欺負老實人。
+226	這間倉庫的貨疊甲實實，欲過連甲一个跤路都無。	實實	Tsit king tshng-khòo ê huè thia̍p kah tsa̍t-tsa̍t, beh kuè liân kah tsi̍t ê kha-lōo to bô.	tsa̍t-tsa̍t	這間倉庫的貨物塞得滿滿的，要過去連個可走的路都沒有。
+227	較早佇阮庄裡都歹討趁，姑不將才著走徙去海口拋魚罔趁食。	走徙	Khah-tsá tī guán tsng--lí to pháinn thó-thàn, koo-put-tsiong tsiah tio̍h tsáu-suá khì hái-kháu pha-hî bóng thàn-tsia̍h.	tsáu-suá	以前在我們村裡因為不容易討生活，不得已才遷徙到海口捕魚過活。
+228	彼對姐弟仔是雙生仔，感情真誠峇，連開店做生理都開踮相隔壁。	姐弟仔	Hit tuì tsiá-tē-á sī siang-senn-á, kám-tsîng tsin-tsiânn bā, liân khui-tiàm tsò-sing-lí to khui tiàm sio-keh-piah.	tsiá-tē-á	他們姊弟倆是雙胞胎，感情非常好，連開店做生意都比鄰開業。
+229	泅水掛水鏡，毋但保護目睭，水底的物件閣會當看甲足清楚的。	水鏡	Siû-tsuí kuà tsuí-kiànn, m̄-nā pó-hōo ba̍k-tsiu, tsuí-té ê mi̍h-kiānn koh ē-tàng khuànn kah tsiok tshing-tshó--ê.	tsuí-kiànn	游泳戴蛙鏡，不只保護眼睛，水中的東西又可以看得很清楚。
+230	這擺地動遐爾大，彼間規百年的舊厝講連顫悶著都無。	顫悶	Tsit pái tē-tāng hiah-nī tuā, hit king kui pah nî ê kū-tshù kóng liân tsùn-būn--tio̍h to bô.	tsùn-būn	這次地震那麼大，那間上百年的老屋卻絲毫沒有受損。
+231	注心去做你的穡，別人的閒仔代莫插較無魍。	注心	Tsù-sim khì tsò lí ê sit, pa̍t-lâng ê îng-á-tāi mài tshap khah bô báng.	tsù-sim	專心去做你的事，別人的閒事別管省點心。
+232	熱天時仔麥仔酒、汽水是𥴊仔店的大色貨。	大色貨	Jua̍h-thinn-sî-á be̍h-á-tsiú, khì-tsuí sī kám-á-tiàm ê tuā-sik-huè.	tuā-sik-huè	夏天的時候啤酒、汽水是雜貨店的主要商品。
+233	逐年媽祖生的時，阿媽攏會佇案桌頂排誠濟祭品拜拜求平安。	案桌	Ta̍k-nî Má-tsóo-senn ê sî, a-má lóng ē tī àn-toh-tíng pâi tsiânn tsē tsè-phín pài-pài kiû-pîng-an.	àn-toh	每年媽祖誕辰時，奶奶都會在供桌上排滿祭品拜拜求平安。
+234	遐爾花血的布提來做洋裝你敢敢穿？	花血	Hiah-nī hue-hiat ê pòo the̍h-lâi tsò iûnn-tsong lí kám kánn tshīng?	hue-hiat	這麼鮮豔的布拿來做洋裝你敢穿嗎？
+235	你食甲七十外矣，才做這號代誌，實在袂見眾得。	袂見眾	Lí tsia̍h kah tshit-tsa̍p-guā--ah, tsiah tsò tsit-lō tāi-tsì, si̍t-tsāi bē-kìnn-tsìng--tit.	bē-kìnn-tsìng	你活到七十多歲了，才做這種事，實在見不得人。
+236	阿媽八十外歲矣，猶誠精光，一屑仔都袂老頹。	老頹	A-má peh-tsa̍p-guā huè--ah, iáu tsiânn tsing-kong, tsi̍t-sut-á to bē lāu-thuē.	lāu-thē	祖母八十多歲了，還很精明，一點兒都不顯衰老。
+237	這陣腹肚真枵，緊叫一碗麵來掠枵。	掠枵	Tsit-tsūn pak-tóo tsin iau, kín kiò tsi̍t uánn mī lâi lia̍h-iau.	lia̍h-iau	現在肚子很餓，趕緊叫碗麵來填飽肚子。
+238	做人愛平正，袂當有私心。	平正	Tsò-lâng ài pênn-tsiànn, bē-tàng ū su-sim.	pênn-tsiànn	做人要公正，不能有私心。
+239	我看結婚的禮數簡單就好，省事事省，才袂費氣。	省事事省	Guá khuànn kiat-hun ê lé-sòo kán-tan tō hó, síng-sū-sū-síng, tsiah bē huì-khì.	síng-sū-sū-síng	我看結婚的禮節簡單就好，省掉繁文縟節，才不會麻煩。
+240	你今仔日穿甲遮新嫣，敢是欲去相親？	新嫣	Lí kin-á-ji̍t tshīng kah tsiah sin-ian, kám-sī beh khì siòng-tshin?	sin-ian	你今天穿得這麼光鮮亮麗，是要去相親嗎？
+241	這馬的囡仔傷好命，物件攏毋知好惜略。	惜略	Tsit-má ê gín-á siunn hó-miā, mi̍h-kiānn lóng m̄ tsai hó sioh-lio̍h.	sioh-lio̍h	現在的小孩命太好了，東西都不知道要愛惜。
+242	伊生做誠四壯。	四壯	I senn-tsò tsiânn sì-tsàng.	sì-tsàng	他長得很強壯。
+243	油蔥粿濫蒜茸豆油上著味。	著味	Iû-tshang-kué lām suàn-jiông tāu-iû siōng tio̍h-bī.	tio̍h-bī	油蔥粿淋蒜泥醬油最對味。
+244	阿仁佇工地縛鐵仔，較加手肚仁嘛結結結。	手肚仁	A-jîn tī kang-tē pa̍k thih-á, khah-ke tshiú-tóo-jîn mā kiat-kiat-kiat.	tshiú-tóo-jîn	阿仁在工地綁鋼筋，難怪上臂內側肌肉很結實。
+245	今年咱種的果子都攏採收矣，準若風颱來嘛無要緊。	準若	Kin-nî lán tsìng ê kué-tsí to lóng tshái-siu--ah, tsún-nā hong-thai lâi mā bô iàu-kín.	tsún-nā	今年我們種的水果已經都採收了，倘若颱風來了也不要緊。
+246	伊這个人誠狡怪，逐項代誌都欲佮人對扴。	對扴	I tsit ê lâng tsiânn káu-kuài, ta̍k hāng tāi-tsì to beh kah lâng tuì-ke̍h.	tuì-ke̍h	他這個人很彆扭，每樣事情都要跟人家唱反調。
+247	酸雨會造成農作物的損害，年久月深了後連咱的健康嘛會受著影響。	酸雨	Sng-hōo ē tsō-sîng lông-tsok-bu̍t ê sún-hāi, nî-kú-gue̍h-tshim liáu-āu liân lán ê kiān-khong mā ē siū-tio̍h íng-hióng.	sng-hōo	酸雨會造成農作物的損害，久而久之連我們的健康也會受到影響。
+248	伊為著欲做生理，全世界逐跡都去，傱甲無底止。	無底止	I uī-tio̍h beh tsò-sing-lí, tsuân sè-kài ta̍k jiah to khì, tsông kah bô-tí-tsí.	bô-tí-tsí	他為了要做生意，全世界到處去，無止境的跑。
+249	欲去予人請，你穿甲彼領破一空的褲，敢會見眾得？	會見眾	Beh khì hōo lâng tshiánn, lí tshīng kah hit niá phuà tsi̍t khang ê khòo, kám ē-kìnn-tsìng--tit?	ē-kìnn-tsìng	要讓人請客，你穿那件破一個洞的褲子，像樣嗎？
+250	伊是我的囡仔伴，我捌伊捌甲有賰矣。	囡仔伴	I sī guá ê gín-á-phuānn, guá bat i bat kah ū-tshun--ah.	gín-á-phuānn	他是我的童年玩伴，我跟他熟得很。
+251	人阿姑有紮等路來，咱合該然嘛著攢寡伴手予伊紮轉去。	合該然	Lâng a-koo ū tsah tán-lōo lâi, lán ha̍p-kai-jiân mā tio̍h tshuân kuá phuānn-tshiú hōo i tsah--tńg-khì.	ha̍p-kai-jiân	人家姑姑帶了禮物來，我們理當也準備些伴手禮讓他帶回去。
+252	阿明誠好頭喙，人閣真好生張，較加人緣嘛好。	好頭喙	A-bîng tsiânn hó-thâu-tshuì, lâng koh tsin hó senn-tiunn, khah-ke lâng-iân mā hó.	hó-thâu-tshuì	小明很善於招呼人，外型、體格又好，難怪人緣會好。
+253	這兩件代誌無牽磕，你毋通濫濫做一伙。	牽磕	Tsit nn̄g kiānn tāi-tsì bô khan-kha̍p, lí m̄-thang lām-lām tsò-tsi̍t-hué.	khan-kha̍p	這兩件事情並無牽連，你不要混為一談。
+254	伊不時都揣空揣縫欲參人輸贏，你閃較遠咧較袂予伊牽闔著。	牽闔	I put-sî to tshuē-khang-tshuē-phāng beh tsham lâng su-iânn, lí siám khah hn̄g--leh khah bē hōo i khan-kha̍h--tio̍h.	khan-kha̍h	他時常想盡辦法與人爭勝，你離他遠些才不會受他牽連。
+255	伊定定咧運動，所以筋肉加真結實，人誠粗勇。	筋肉	I tiānn-tiānn teh ūn-tōng, sóo-í kin-bah ke tsin kiat-si̍t, lâng tsiânn tshoo-ióng.	kin-bah	他常運動，所以肌肉非常結實，人很健壯。
+256	伊用斧頭銎共柴箱的鎖頭摃歹，才通共內底的物件提出來。	斧頭銎	I iōng póo-thâu-khing kā tshâ-siunn ê só-thâu kòng pháinn, tsiah thang kā lāi-té ê mi̍h-kiānn the̍h--tshut-lâi.	póo-thâu-khing	他用斧頭背把木箱子的鎖頭敲壞，才能把裡面的東西拿出來。
+257	咱逐家隨人出寡本錢，相倚傍來做生理。	相倚傍	Lán ta̍k-ke suî-lâng tshut kuá pún-tsînn, sio-uá-pn̄g lâi tsò-sing-lí.	sio-uá-pn̄g	我們大家每人出點資本，互相倚傍來做生意。
+258	法律著愛替守法的人主持公道，好人哪會使白白予歹人草踏去？	草踏	Huat-lu̍t tio̍h-ài thè siú-huat ê lâng tsú-tshî kong-tō, hó-lâng ná ē-sái pe̍h-pe̍h hōo pháinn-lâng tsháu-ta̍h--khì?	tsháu-ta̍h	法律應為守法的人主持公道，好人怎能平白地受壞人蹧蹋？
+259	人較有歲了後，皮膚會變較薄，跤腿的青筋攏看現現。	青筋	Lâng khah ū-huè liáu-āu, phuê-hu ē piàn khah po̍h, kha-thuí ê tshenn-kin lóng khuànn-hiān-hiān.	tshenn-kin	人上了年紀後，皮膚會變得較薄，腿上的青筋清楚可見。
+260	我最近較捷咧運動，營養嘛加減有咧顧，人加真精英。	精英	Guá tsuè-kīn khah tsia̍p teh ūn-tōng, îng-ióng mā ke-kiám ū teh kòo, lâng ke tsin tsing-ing.	tsing-ing	我最近比較常運動，也多少注重營養，人變得較有元氣。
+261	破柴著對千對中央破，若無檢采柴箍會彈出去。	對千	Phuà-tshâ tio̍h tuì-tshian uì tiong-ng phuà, nā-bô kiám-tshái tshâ-khoo ē tuānn--tshut-khì.	tuì-tshian	劈柴要瞄準從中央剖開，不然木頭可能會彈出去。
+262	伊真𠢕看面色聽話意，若看著對方面捋落來，就隨知影愛轉話關，袂去得失人。	話關	I tsin gâu khuànn bīn-sik thiann uē-ì, nā khuànn-tio̍h tuì-hong bīn lua̍h--lo̍h-lâi, tō suî tsai-iánn ài tńg uē-kuan, bē khì tik-sit--lâng.	uē-kuan	他很懂得察言觀色，若是看到對方拉下臉，就馬上知道要改變話題，不會得罪別人。
+263	逐工天色都猶暗殕暗殕，伊就愛坐頭幫車去學校讀冊。	暗殕	Ta̍k-kang thinn-sik to iáu àm-phú-àm-phú, i tō ài tsē thâu-pang-tshia khì ha̍k-hāu tha̍k-tsheh.	àm-phú	每天天色都還灰濛濛，他就要搭首班車去學校上學。
+264	阮阿媽見若滷滷卵，攏會佮肉燥做伙炕。	肉燥	Guán a-má kiàn-nā lóo lóo-nn̄g, lóng ē kah bah-sò tsò-hué khòng.	bah-sò	我奶奶每次滷滷蛋，都會和肉燥一起用慢火燉煮。
+265	熱人的時食一粒仔芳甜的梨仔瓜，毋但止喙焦閣助消化。	梨仔瓜	Jua̍h--lâng ê sî tsia̍h tsi̍t-lia̍p-á phang-tinn ê lâi-á-kue, m̄-nā tsí tshuì-ta koh tsōo siau-huà.	lâi-á-kue	夏天時吃一顆香甜的香瓜，不但止渴還促進消化。
+266	久無落雨，門口埕彼欉桂花煞家己焦蔫去。	焦蔫	Kú bô lo̍h-hōo, mn̂g-kháu-tiânn hit tsâng kuì-hue suah ka-kī ta-lian--khì.	ta-lian	太久沒下雨，前庭那棵桂花竟然自己枯萎了。
+267	若欲共窗仔子刻甲有花有草，著愛倩會曉幼工的木匠來創才會媠。	幼工	Nā beh kā thang-á-tsí khik kah ū hue ū tsháu, tio̍h-ài tshiànn ē-hiáu iù-kang ê ba̍k-tshiūnn lâi tshòng tsiah ē suí.	iù-kang	想把窗櫺雕成有花有草的圖案，必須聘請會細工的木匠來做才會漂亮。
+268	常在運動的人跤肚仁會較結實。	跤肚仁	Tshiâng-tsāi ūn-tōng ê lâng kha-tóo-jîn ē khah kiat-si̍t.	kha-tóo-jîn	時常運動的人小腿肌會比較結實。
+269	伊病甲賰一屑仔氣絲仔爾爾。	氣絲仔	I pēnn kah tshun tsi̍t-sut-á khuì-si-á niā-niā.	khuì-si-á	他病得只剩下一些些微弱的氣息而已。
+270	阮老爸咧做義警，倚年的前後一月日常在愛佇阮這里遮鬥顧更。	顧更	Guán lāu-pē teh tsò gī-kíng, uá-nî ê tsîng-āu tsi̍t gue̍h-ji̍t tshiâng-tsāi ài tī guán tsit lí tsia tàu kòo-kenn.	kòo-kenn/kòo-kinn	我父親做義警，年節前後一個月常常要在我們這一里幫忙夜間巡守。
+271	幾若個月無落雨，山邊的花草攏枯焦去。	枯焦	Kuí-nā kò gue̍h bô lo̍h-hōo, suann-pinn ê hue-tsháu lóng koo-ta--khì.	koo-ta	好幾個月沒下雨，山邊的花花草草都枯槁了。
+272	若欲買較有古早味的物件抑是四秀仔，去舊街仔揣上對路。	古早味	Nā beh bé khah ū kóo-tsá-bī ê mi̍h-kiānn ia̍h-sī sì-siù-á, khì kū-ke-á tshuē siōng tuì-lōo.	kóo-tsá-bī	如果要買一些較有懷舊氣息的東西或零食，去老街找最適合。
+273	阿媽逐冬攏會佇媽祖生的時綴人去進香。	媽祖生	A-má ta̍k-tang lóng ē tī Má-tsóo-senn ê sî tuè lâng khì tsìn-hiunn.	Má-tsóo-senn	奶奶每年都會在媽祖誕辰的時候跟團去進香。
+274	前幾工為著考試睏無飽，今仔日著愛補眠。	補眠	Tsîng kuí kang uī-tio̍h khó-tshì khùn bô pá, kin-á-ji̍t tio̍h-ài póo-bîn.	póo-bîn	前幾天為了考試而睡眠不足，今天需要補充睡眠。
+275	母舅坐大位，所以著愛坐新娘桌。	新娘桌	Bú-kū tsē tuā-uī, sóo-í tio̍h-ài tsē sin-niû-toh.	sin-niû-toh	舅舅坐主位，所以要坐在婚宴的主桌。
+276	較早阮阿媽激的梅仔酒啉著酸微、芳閣好落喉，予我到今猶足數念。	酸微	Khah-tsá guán a-má kik ê muê-á-tsiú lim tio̍h sng-bui, phang koh hó lo̍h-âu, hōo guá kàu-tann iáu tsiok siàu-liām.	sng-bui	以前我奶奶釀的梅子酒喝起來略有酸味、芳香又好入口，令我到現在還很懷念。
+277	阮阿公誠愛抾古早錢，阮厝裡猶揣會著真濟銅仙。	銅仙	Guán a-kong tsiânn ài khioh kóo-tsá tsînn, guán tshù--lí iáu tshuē ē tio̍h tsin tsē tâng-sián.	tâng-sián	我爺爺很喜歡收集古代的貨幣，我家現在還找得到很多以前的銅板。
+278	膨紗衫過洗了後，加減會倒勼寡。	倒勼	Phòng-se-sann kuè sé liáu-āu, ke-kiám ē tò-kiu--kuá.	tò-kiu	毛線衣洗過以後，多少會縮水一些。
+279	這項工課你敢有法度佇一點鐘內共做予好勢咧？	有法度	Tsit hāng khang-khuè lí kám ū-huat-tōo tī tsi̍t tiám-tsing lāi kā tsò hōo hó-sè--leh?	ū-huat-tōo	這件事情你有辦法在一小時內做好嗎？
+280	人客到位，咱愛好好仔共案內，才袂失禮。	案內	Lâng-kheh kàu-uī, lán ài hó-hó-á kā àn-nāi, tsiah bē sit-lé.	àn-nāi	客人到了，我們要好好招待，才不會失禮。
+281	廟口的榕樹跤不時都有一寡人佇遐泡茶、開講。	廟口	Biō-kháu ê tshîng-tshiū-kha put-sî to ū tsi̍t-kuá lâng tī hia phàu tê, khai-káng.	biō-kháu	廟口的榕樹下經常都有一些人在那裡泡茶、聊天。
+282	這站仔山頭攏烏陰烏陰，無定明仔早起會變天。	無定	Tsit-tsām-á suann-thâu lóng oo-im-oo-im, bô-tiānn bîn-á-tsá-khí ē piàn-thinn.	bô-tiānn	這陣子山頭都烏雲密佈，說不定明天清晨就變天了。
+283	現時時機䆀䆀，你若欲佮人學做生理著愛較綿精咧。	現時	Hiān-sî sî-ki bái-bái, lí nā beh kah lâng o̍h tsò-sing-lí tio̍h-ài khah mî-tsinn--leh.	hiān-sî	現在時機不太好，你如果要跟人學如何經商，得要努力一點。
+284	看阿義拍拳頭的屈勢，就知影伊的工夫底蒂有偌深。	屈勢	Khuànn A-gī phah kûn-thâu ê khut-sè, tō tsai-iánn i ê kang-hu té-tì ū guā tshim.	khut-sè	看阿義打拳的姿勢，就知道他的功夫底子有多深。
+285	西瓜傷大粒就破爿賣，銷路顛倒好。	破爿	Si-kue siunn tuā lia̍p tō phuà-pîng bē, siau-lōo tian-tò hó.	phuà-pîng	西瓜太大顆就切成兩半來賣，銷路反而更好。
+286	你月底欲去美國𨑨迌，愛會記得去銀行共臺票換做美金喔！	臺票	Lí gue̍h-té beh khì Bí-kok tshit-thô, ài ē-kì-tit khì gîn-hâng kā Tâi-phiò uānn-tsò Bí-kim--ooh!	Tâi-phiò	你月底要去美國旅遊，要記得去銀行將新臺幣換成美金喔！
+287	搬遮的箱仔愛注意方向，毋通囥顛倒頭去。	顛倒頭	Puann tsia-ê siunn-á ài tsù-ì hong-hiòng, m̄-thang khǹg tian-tò-thâu--khì.	tian-tò-thâu	搬這些箱子要注意方向，別放顛倒了。
+288	阿公見若熱人，攏穿吊䘥仔四界去行踏，講按呢較涼、較爽快。	吊䘥仔	A-kong kiàn-nā jua̍h--lâng, lóng tshīng tiàu-kah-á sì-kè khì kiânn-ta̍h, kóng án-ne khah liâng, khah sóng-khuài.	tiàu-kah-á	爺爺每當夏天，就穿汗衫到處去走動，說這樣比較涼爽。
+289	搬重的物件誠著力，有歲的人毋通搬。	著力	Puann tāng ê mi̍h-kiānn tsiânn tio̍h-la̍t, ū-huè ê lâng m̄-thang puann.	tio̍h-la̍t	搬重的東西很費力，年長的人不要搬。
+290	伊自頂月日失戀到今，袂輸有體無魂按呢欲死盪幌，予人看著真毋甘。	欲死盪幌	I tsū tíng gue̍h-ji̍t sit-luân kàu-tann, bē-su ū-thé-bô-hûn án-ne beh-sí-tōng-hàinn, hōo lâng khuànn tio̍h tsin m̄-kam.	beh-sí-tōng-hàinn	他從上個月失戀以後，整天像遊魂一樣要死不活，讓人看了很心疼。
+291	架佇圳溝頂彼塊長株形的棺柴枋，暫時做橋枋。	棺柴枋	Khuè tī tsùn-kau-tíng hit tè tn̂g-tu-hîng ê kuann-tshâ-pang, tsiām-sî tsò kiô-pang.	kuann-tshâ-pang	那塊橫跨水圳長條形的棺材板，暫時當橋板。
+292	這篇文章無落名，毋知影作者是啥人？	落名	Tsit phinn bûn-tsiong bô lo̍h-miâ, m̄ tsai-iánn tsok-tsiá sī siánn-lâng?	lo̍h-miâ	這篇文章沒署名，不曉得作者是誰？
+293	番薯麻穎湯氣味讚閣滋養，毋過欲做甲會好食是足厚工的。	麻穎	Han-tsî muâ-ínn-thng khì-bī tsán koh tsu-ióng, m̄-koh beh tsò kah ē hó-tsia̍h sī tsiok kāu-kang--ê.	muâ-ínn	地瓜麻薏湯味美又營養，不過要煮到很好吃是很費工夫的。
+294	濟囝濟擘腹。	擘腹	Tsē kiánn tsē peh-pak.	peh-pak	小孩多煩惱也多。
+295	山跤規大片攏是平波波的田洋。	平波波	Suann-kha kui tuā phiàn lóng sī pênn-pho-pho ê tshân-iûnn.	pênn-pho-pho	山腳下一大片都是種稻米的平原。
+296	壁角較會卡垃儳，摒掃的時陣著愛斟酌。	壁角	Piah-kak khah ē kha̍h lâ-sâm, piànn-sàu ê sî-tsūn tio̍h-ài tsim-tsiok.	piah-kak	牆角比較容易藏汙納垢，打掃的時候要留意。
+297	逐家攏莫插伊，伊就變無撚。	變無撚	Ta̍k-ke lóng mài tshap--i, i tō piàn-bô-lián.	piàn-bô-lián	大家都不理他，他就沒戲唱了。
+298	伊見擺奕牌仔若咧欲輸矣就跋臭佮人花，莫怪無人愛佮伊奕。	跋臭	I kiàn-pái ī pâi-á nā teh-beh su--ah tō pua̍h-tshàu kah lâng hue, bo̍k-kuài bô lâng ài kah i ī.	pua̍h-tshàu	他每次玩牌要是快輸了就耍賴跟人搗亂，難怪沒人要跟他玩。
+299	你若嫁予這號半病仔，定著一世人勞碌。	半病仔	Lí nā kè hōo tsit-lō puàn-pēnn-á, tiānn-tio̍h tsi̍t-sì-lâng lô-lo̍k.	puàn-pēnn-á	你如果嫁給這種不中用的傢伙，肯定一輩子辛苦勞累。
+300	我食肉燥飯上愛配白菜滷佮貢丸湯。	肉燥飯	Guá tsia̍h bah-sò-pn̄g siōng ài phuè pe̍h-tshài-lóo kah kòng-uân-thng.	bah-sò-pn̄g	我吃肉燥飯最愛搭配滷白菜跟貢丸湯。
+
+【資料庫6：教育部新增俗諺 202604】
+序號	俗諺	音讀	華語釋義
+1	目睭看佇雙糕潤。	Ba̍k-tsiu khuànn tī siang-ko-jūn.	雙眼盯著雙糕潤看。雙糕潤是祭神的供品，在祭拜神明時，雙眼卻直直盯著供品，表示心不虔誠，另有所圖。引申人在做某件事時另有企圖。
+2	目睭生佇頭殼頂。	Ba̍k-tsiu senn tī thâu-khak-tíng.	眼睛長在頭頂上。形容人驕傲自大，瞧不起比自己地位低下的人。
+3	目睭大細蕊。	Ba̍k-tsiu tuā-sè luí.	眼睛一大一小。形容人勢利眼，處事不公。
+4	無米兼閏月。	Bô bí kiam jūn-gue̍h.	家裡米糧已吃完，又逢閏月，要撐十二個月已經很拮据了，現在得撐十三個月，那更是辛苦了。形容不如意的事情接連發生。
+5	未想贏，著先想輸。	Buē siūnn iânn, tio̍h sing siūnn su.	想到贏的種種美好之前，要先考慮輸的後果及應該如何處理。指凡事要做最壞的打算，並有所準備。
+6	夯石頭硩心肝。	Giâ tsio̍h-thâu teh sim-kuann.	搬石頭壓在心上。比喻對某種想望或執念死心。
+7	囡仔會走，大人逐甲嘛嘛吼。	Gín-á ē tsáu, tuā-lâng jiok kah mà-mà-háu.	小孩會跑，大人追得哇哇叫。初為父母者，皆期待孩子早日學會走路；當小孩學會走路後，大人反而更辛苦，得天天緊隨在後，常追得氣喘噓噓，就因深恐其發生危險。形容父母育兒的艱辛。
+8	囡仔三歲牢皮，五歲牢骨。	Gín-á sann huè tiâu phuê, gōo huè tiâu kut.	孩子三歲時的習性尚未根深柢固，仍有改變的可能，但若放任不管，到五歲時所習得的行為習慣便已定型，難以改變。指少成若天性，習慣成自然。
+9	囡仔人跳過溝，食三甌。	Gín-á-lâng thiàu-kuè kau, tsia̍h sann au.	小孩跳過水溝，就能吃下三碗飯。指小孩子活力十足，新陳代謝好，餓得也快。
+10	囡仔人，大人心肝。	Gín-á-lâng, tuā-lâng sim-kuann.	小孩子，大人的心胸。指年紀雖小，但志氣高遠。
+11	牛毋通𠢕行，人毋通出名。	Gû m̄-thang gâu kiânn, lâng m̄-thang tshut-miâ.	牛的腳力好，善於行走，便須常常出去工作；人一旦出名，便會引來諸多困擾。比喻樹大招風，勸人不要出風頭。
+12	牛鼻毋拎，拎牛尾。	Gû phīnn m̄ lîng, lîng gû bué.	牽牛時不去拉牛鼻上控制牛的圈環，反而去拉牛尾。形容做事不得要領。
+13	牛屎龜牚石枋。	Gû-sái-ku thènn tsio̍h-pang.	小小的糞金龜，也妄想撐起大石板。形容人不自量力。
+14	喝水會堅凍。	Huah tsuí ē kian-tàng.	吆喝一聲，水就凝結成冰。比喻一個人的權勢極具影響力，得以掌控大局。
+15	火過矣，才咧炰芋。	Hué kuè--ah, tsiah teh pû ōo.	火快熄滅了，才要烤芋頭。指人錯失良機，為時已晚。
+16	火燒跤，隨人掰。	Hué sio kha, suî-lâng pué.	火燒到腳，各自撥掉火。意即大難臨頭時，人人自顧不暇。
+17	火燒跤後蹬。	Hué sio kha-āu-tenn.	火燒到腳後跟。比喻事態急迫，火燒屁股。
+18	火車過了，才歕觱仔。	Hué-tshia kuè-liáu, tsiah pûn pi-á.	火車過了，才吹哨示警。比喻事情過了，才做些於事無補的措施。
+19	教囝學泅，毋通教囝樹。	Kà kiánn o̍h siû, m̄-thang kà kiánn peh tshiū.	教孩子學游泳，不要教孩子爬樹。小孩學會游泳，懂得水性，以後遇到有水的環境或水災才不會害怕，還能救人救己；倒是爬樹其實是危險的，有些樹的質地很容易斷，一失神從樹上掉下來，容易受傷，摔殘、摔死的很多。比喻大人教導小孩時，要教實用的技能，同時要避免危險的行為。
+20	江湖一點訣，講破毋值三仙錢。	Kang-ôo tsi̍t tiám kuat, kóng-phuà m̄-ta̍t sann sián tsînn.	江湖祕訣全憑那一點技巧，說白了便不值錢。引申某些事在不懂的人眼裡覺得很困難，一旦將其要領說穿，其實也就只是一點點小訣竅而已。
+21	巧的食戇，戇的食天公。	Khiáu--ê tsia̍h gōng, gōng--ê tsia̍h Thinn-kong.	慧黠者常會占憨直者的便宜，而憨厚的人往往仰賴上天的眷顧。比喻傻人有傻福。
+22	乞食望普渡，做兵望落雨。	Khit-tsia̍h bāng phóo-tōo, tsò-ping bāng lo̍h-hōo.	乞丐渴望在中元普渡時，能夠大快朵頤飽餐一頓；當兵的人希望下雨能在室內休息，免得在烈日下辛苦操練。各行各業各有所求。
+23	囥酒會芳，囥柑仔爛規籠。	Khǹg tsiú ē phang, khǹg kam-á nuā kui láng.	酒越陳越香，橘子放久則會全部爛光。比喻有些人是可以終身交往的，有些卻是可一而不可再的。或指擇物須熟知物性，用人須知性善任。
+24	看田面，毋通看人面。	Khuànn tshân-bīn, m̄-thang khuànn lâng-bīn.	自己努力耕種較為可靠，不可一直冀望他人。比喻人應自食其力、自力更生，不倚靠他人。
+25	筊精，生理虎。	Kiáu tsinn, sing-lí-hóo.	通常會賭博的人都非常精明；而會做生意的人，為了賺取利潤，貪得無厭，好似凶狠的老虎一般。
+26	功德做佇草仔埔。	Kong-tik tsò tī tsháu-á-poo.	在荒煙漫草中為先人做法事祈求功德，對已逝的先人毫無實際助益。比喻徒勞無功，白費力氣。
+27	內行看布底，外行綴人買。	Lāi-hâng khuànn pòo-té, guā-hâng tuè lâng bé.	內行人買布會看布的質料好不好，外行的人只能盲目地跟著人家買。內行人做事情看重點，外行的人只能跟著仿效。
+28	六月賣火熥。	La̍k--gue̍h bē hué-thang.	六月賣暖爐。火熥是冬天時用來取暖的火爐，中間內裝陶罐，可放碳火。六月天氣非常熱，賣暖爐根本沒人會買。比喻做事不合時宜。
+29	六月棉被，揀人蓋。	La̍k-gue̍h mî-phuē, kíng lâng kah.	六月天的棉被挑人蓋。六月天氣熱，一般人不會蓋棉被，但是也有人要蓋棉被，表示有些事做不做因人而異。
+30	人比人，氣死人。	Lâng pí lâng, khì-sí lâng.	人生在世各有境遇，各有得失，不需要凡事都跟別人比較。畢竟一一相比，最終也只是徒增煩惱而心生怨懟。
+31	五虎下西山。	Ngóo hóo hā se-san.	五虎下山嶺。形容聲勢浩大，來勢兇猛。
+32	五色人，講十色話。	Ngóo sik lâng, kóng tsa̍p sik uē.	指不同成長背景的人有不同的見解，人一多意見就多。
+33	年頭食鹹菜，年尾才轉嗽。	Nî-thâu tsia̍h kiâm-tshài, nî-bué tsiah tńg-sàu.	年初吃了鹹菜，到了年底才咳嗽。指事情過了很久，才出現狀況，形容人對事情反應遲鈍。
+34	先顧腹肚，才顧佛祖。	Sing kòo pak-tóo, tsiah kòo Pu̍t-tsóo.	先求肚子溫飽，再求能祭奉佛祖。意指人的生存以食為要，先致力民生所需後，再有餘力才顧及精神需求。
+35	算命仔喙糊瘰瘰。	Sǹg-miā-á tshuì hôo-luì-luì.	命相為業的人常常為了取信於人，說話會投人所好，所以他說的話不可盡信。
+36	天地無餓死人。	Thinn-tē bô gō-sí lâng.	天地之間沒有餓死人的事。意指大自然就如同生養我們的父母，養育著我們，只要願意努力，就有辦法生存下去。比喻天無絕人之路。
+37	出去若拍毋見，轉來若抾著。	Tshut--khì ná phah-m̄-kìnn, tńg--lâi ná khioh--tio̍h.	出外就斷了音訊，宛如走失一般；回來就好像撿到的一樣。比喻人對家庭欠缺責任感，我行我素。通常用於父母對兒女的叨唸。
+38	出門看天色，入門看目色。	Tshut-mn̂g khuànn thinn-sik, ji̍p-mn̂g khuànn ba̍k-sik.	出門要看天氣，進門要看主人的臉色表情。喻處世當察言觀色，方不致於吃眼前虧。
+39	食偌濟，做偌濟，註好好。	Tsia̍h guā-tsē, tsò guā-tsē, tsù-hó-hó.	吃多少，做多少，是註定好的。人的歲數，人的成就，都是老天註定好的。亦即生死有命，富貴在天。
+40	水鬼騙城隍。	Tsuí-kuí phiàn Sîng-hông.	水鬼欺騙城隍爺。城隍就是城隍爺，傳說中是由水鬼升格，成為守護地方的神明，城隍的手下，有許多水鬼供差使。意指下司意欲欺瞞上司，當然成功機會不大。通常用以責備人小鬼大，想欺騙長者的人。
 
 𓆜𓆝𓆞𓆟𓆞𓆜𓆝𓆞𓆟𓆝𓆞𓆜𓆝𓆟𓆜𓆝𓆞𓆟
 
