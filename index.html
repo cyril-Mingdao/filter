@@ -4627,8 +4627,9 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
     // 自動搜尋可用模型時的優先順序
     const MODEL_PRIORITY = ['gemini-3-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
 
-    // 查詢帳號目前可用的模型，依優先順序挑出第一個支援 generateContent 的模型
-    async function findBestAvailableModel(cleanBaseUrl, apiKey) {
+    // 查詢帳號目前可用的模型。優先使用「使用者手動選擇」的模型（若該帳號支援）；
+    // 若使用者選的模型不可用，才依 MODEL_PRIORITY 順序挑一個可用的頂替。
+    async function findBestAvailableModel(cleanBaseUrl, apiKey, preferredModel) {
         const response = await fetch(`${cleanBaseUrl}/models?key=${apiKey}`);
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -4638,6 +4639,8 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
         const availableNames = (data.models || [])
             .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
             .map(m => (m.name || '').replace(/^models\//, ''));
+
+        if (preferredModel && availableNames.includes(preferredModel)) return preferredModel;
 
         for (const preferred of MODEL_PRIORITY) {
             if (availableNames.includes(preferred)) return preferred;
@@ -4795,7 +4798,7 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
         // 自動搜尋帳號目前可用的模型，找不到就退回設定選單裡的模型
         let model = fallbackModel;
         try {
-            model = await findBestAvailableModel(cleanBaseUrl, apiKey);
+            model = await findBestAvailableModel(cleanBaseUrl, apiKey, fallbackModel);
         } catch (e) {
             model = fallbackModel;
         }
