@@ -279,7 +279,8 @@
         <div class="form-group">
             <label for="modelSelect">選擇 AI 模型：</label>
             <select id="modelSelect">
-                <option value="gemini-2.5-flash">gemini-2.5-flash (推薦，最新版)</option>
+                <option value="gemini-3-flash">gemini-3-flash (推薦，最新版)</option>
+                <option value="gemini-2.5-flash">gemini-2.5-flash</option>
                 <option value="gemini-2.0-flash">gemini-2.0-flash</option>
                 <option value="gemini-1.5-flash">gemini-1.5-flash</option>
                 <option value="gemini-1.5-pro">gemini-1.5-pro</option>
@@ -4622,7 +4623,28 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
 
     // 預設設定值
     const DEFAULT_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
-    const DEFAULT_MODEL = 'gemini-2.5-flash';
+    const DEFAULT_MODEL = 'gemini-3-flash';
+    // 自動搜尋可用模型時的優先順序
+    const MODEL_PRIORITY = ['gemini-3-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+
+    // 查詢帳號目前可用的模型，依優先順序挑出第一個支援 generateContent 的模型
+    async function findBestAvailableModel(cleanBaseUrl, apiKey) {
+        const response = await fetch(`${cleanBaseUrl}/models?key=${apiKey}`);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error?.message || '無法取得可用模型清單。');
+        }
+        const data = await response.json();
+        const availableNames = (data.models || [])
+            .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+            .map(m => (m.name || '').replace(/^models\//, ''));
+
+        for (const preferred of MODEL_PRIORITY) {
+            if (availableNames.includes(preferred)) return preferred;
+        }
+        if (availableNames.length > 0) return availableNames[0];
+        throw new Error('此 API Key 目前沒有任何可用的模型。');
+    }
 
     // 頁面載入時初始化設定
     window.onload = function() {
@@ -4731,7 +4753,7 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
         // 先嘗試從 localStorage 抓取，如果沒有再看目前輸入框是否有值
         let apiKey = localStorage.getItem('taigi_apiKey') || document.getElementById('apiKey').value.trim();
         const baseUrl = localStorage.getItem('taigi_baseUrl') || document.getElementById('baseUrl').value.trim() || DEFAULT_BASE_URL;
-        const model = localStorage.getItem('taigi_model') || document.getElementById('modelSelect').value || DEFAULT_MODEL;
+        const fallbackModel = localStorage.getItem('taigi_model') || document.getElementById('modelSelect').value || DEFAULT_MODEL;
         const keyword = document.getElementById('keyword').value.trim();
         
         const resultWrapper = document.getElementById('resultWrapper');
@@ -4764,7 +4786,21 @@ tiānn-tio̍h ē tuā-pha-bué. (他對人客氣又經常幫助窮困的人，�
 
         // 正式開始載入
         loadingDiv.style.display = 'block';
+        loadingDiv.textContent = '🔍 正在搜尋可用模型...';
         submitBtn.disabled = true;
+
+        // 組合 API 網址前綴
+        const cleanBaseUrl = baseUrl.replace(/\/$/, "");
+
+        // 自動搜尋帳號目前可用的模型，找不到就退回設定選單裡的模型
+        let model = fallbackModel;
+        try {
+            model = await findBestAvailableModel(cleanBaseUrl, apiKey);
+        } catch (e) {
+            model = fallbackModel;
+        }
+
+        loadingDiv.textContent = '⏳ AI 正在研讀台語資料庫並進行分析，請稍候...';
 
         // 系統提示詞設計 (Prompt) 包含強制補充說明格式
         const promptText = `
@@ -4796,7 +4832,6 @@ ${documentText}
         `;
 
         // 組合 API 網址
-        const cleanBaseUrl = baseUrl.replace(/\/$/, "");
         const apiUrl = `${cleanBaseUrl}/models/${model}:generateContent?key=${apiKey}`;
 
         try {
