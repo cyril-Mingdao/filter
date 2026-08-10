@@ -3,6 +3,16 @@
 ====================================================================
 版本管理紀錄 (Version History)
 ====================================================================
+V25 (2026-08-10)
+  - 新增「禁止右鍵」限制：全頁停用滑鼠右鍵選單（輸入框／文字框／篩選結果區
+    除外，以維持使用者輸入與複製結果的正常操作）
+  - 本檔案為新版本，原始檔案（伊的台語號做啥？1150730-7-V24.html）保留不動
+V24 (2026-08-10)
+  - 新增「語音輸入」按鈕：可語音輸入「請輸入情境關鍵詞：」文字框
+  - 按鈕觸發錄音時會變為「紅色」特效（含脈動動畫）提示錄音中
+  - 語音輸入完畢後，由使用者再次觸發「語音輸入」按鈕結束錄音，
+    結束時會同步自動執行「開始篩選台語詞彙」功能
+  - 本檔案為新版本，原始檔案（伊的台語號做啥？1150730-6-V23.html）保留不動
 V23 (2026-08-10)
   - 更新資料庫7題庫總表：匯入「01-20.docx」新增 200 題
   - 資料庫7 內容依最新 Excel 排序（依「單元／輯」編號 1→N 順序）重新輸出
@@ -17,7 +27,7 @@ V(初版) 1150730-5
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>伊的台語號做啥？ (V23)</title>
+    <title>伊的台語號做啥？ (V25)</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
     <style>
         :root {
@@ -212,6 +222,39 @@ V(初版) 1150730-5
         }
         .btn-submit:hover { background-color: #219653; }
         .btn-submit:disabled { background-color: #95a5a6; cursor: not-allowed; }
+
+        .keyword-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+        .keyword-input-row input {
+            flex: 1;
+            min-width: 0;
+        }
+        .mic-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.3s, transform 0.15s;
+        }
+        .mic-btn:hover { background-color: #2980b9; }
+        .mic-btn:active { transform: scale(0.96); }
+        .mic-btn.recording {
+            background-color: var(--danger-color);
+            animation: mic-pulse 1.1s infinite;
+        }
+        @keyframes mic-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.6); }
+            70% { box-shadow: 0 0 0 14px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
         
         .loading {
             text-align: center;
@@ -271,7 +314,7 @@ V(初版) 1150730-5
         <button class="btn-toggle" onclick="toggleSettings()">⚙️ API 系統設定</button>
     </div>
 
-    <h1>伊的台語號做啥？ (V23)</h1>
+    <h1>伊的台語號做啥？ (V25)</h1>
     <p class="author-subtitle">台中明道中學 詹宗龍 製作</p>
     <p class="subtitle">輸入情境，將由 AI 從資料庫挑選 10 個精準詞彙並提供詳細補充解析</p>
 
@@ -315,7 +358,10 @@ V(初版) 1150730-5
     <div class="search-area">
         <div class="form-group" style="margin-bottom:0;">
             <label for="keyword">🔍 請輸入情境關鍵詞：</label>
-            <input type="text" id="keyword" placeholder="例如：虛有其表、生氣、吝嗇、胡說八道...">
+            <div class="keyword-input-row">
+                <input type="text" id="keyword" placeholder="例如：虛有其表、生氣、吝嗇、胡說八道...">
+                <button type="button" id="micBtn" class="mic-btn" onclick="toggleVoiceInput()" title="語音輸入">🎤 語音輸入</button>
+            </div>
         </div>
     </div>
 
@@ -329,6 +375,17 @@ V(初版) 1150730-5
 </div>
 
 <script>
+    // --- 禁止右鍵選單（輸入框、文字框、篩選結果區除外）---
+    document.addEventListener('contextmenu', function(e) {
+        const target = e.target;
+        const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT';
+        const isOutput = target.closest('#result') || target.closest('#resultWrapper');
+
+        if (!isInput && !isOutput) {
+            e.preventDefault();
+        }
+    });
+
     // =========================================================================
     // ↓↓↓ 請在此處貼上您的台語詞彙資料庫 ↓↓↓
     // =========================================================================
@@ -7634,6 +7691,93 @@ phāng）(動詞) 故意挑剔，苛求責備，吹毛求疵。強調時可重�
         }
         if (availableNames.length > 0) return availableNames[0];
         throw new Error('此 API Key 目前沒有任何可用的模型。');
+    }
+
+    // --- 語音輸入（語音轉文字）邏輯 ---
+    let voiceRecognition = null;
+    let isVoiceRecording = false;
+
+    function createSpeechRecognition() {
+        const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognitionClass) return null;
+        const r = new SpeechRecognitionClass();
+        r.lang = 'zh-TW';
+        r.continuous = true;
+        r.interimResults = true;
+        return r;
+    }
+
+    function setMicUIRecording(recording) {
+        const micBtn = document.getElementById('micBtn');
+        if (!micBtn) return;
+        if (recording) {
+            micBtn.classList.add('recording');
+            micBtn.textContent = '🔴 錄音中（點擊結束）';
+        } else {
+            micBtn.classList.remove('recording');
+            micBtn.textContent = '🎤 語音輸入';
+        }
+    }
+
+    function toggleVoiceInput() {
+        const keywordInput = document.getElementById('keyword');
+
+        if (!isVoiceRecording) {
+            // --- 開始語音輸入 ---
+            voiceRecognition = createSpeechRecognition();
+            if (!voiceRecognition) {
+                alert('抱歉，您的瀏覽器不支援語音輸入功能，建議改用電腦版 Google Chrome 瀏覽器。');
+                return;
+            }
+
+            isVoiceRecording = true;
+            setMicUIRecording(true);
+            keywordInput.value = '';
+            keywordInput.focus();
+
+            voiceRecognition.onresult = function(event) {
+                let transcript = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                keywordInput.value = transcript;
+            };
+
+            voiceRecognition.onerror = function(event) {
+                console.error('語音辨識發生錯誤：', event.error);
+            };
+
+            voiceRecognition.onend = function() {
+                // 若瀏覽器自動中斷錄音（非使用者點擊結束），仍需還原按鈕外觀
+                if (isVoiceRecording) {
+                    isVoiceRecording = false;
+                    setMicUIRecording(false);
+                }
+            };
+
+            try {
+                voiceRecognition.start();
+            } catch (err) {
+                console.error('無法啟動語音辨識：', err);
+                isVoiceRecording = false;
+                setMicUIRecording(false);
+            }
+
+        } else {
+            // --- 使用者再次觸發，結束語音輸入 ---
+            isVoiceRecording = false;
+            setMicUIRecording(false);
+
+            if (voiceRecognition) {
+                voiceRecognition.stop();
+            }
+
+            // 稍微延遲，確保最後一段語音辨識結果已寫入文字框，
+            // 再同步執行「開始篩選台語詞彙」功能
+            setTimeout(function() {
+                generateContent();
+            }, 300);
+        }
     }
 
     // 頁面載入時初始化設定
