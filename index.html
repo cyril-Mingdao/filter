@@ -3,6 +3,12 @@
 ====================================================================
 版本管理紀錄 (Version History)
 ====================================================================
+V26 (2026-08-10)
+  - 修正「直式螢幕」（直向持拿，如手機直拿）顯示問題：文字輸入框過小
+  - 直式螢幕下，「語音輸入」按鈕改移至「文字輸入框」與「開始篩選台語詞彙」
+    按鈕之間（改為上下排列），讓文字輸入框可獨佔一整列寬度
+  - 橫式螢幕／桌機畫面顯示不受影響，維持原本輸入框與語音按鈕並排的版面
+  - 本檔案為新版本，原始檔案（伊的台語號做啥？1150730-8-V25.html）保留不動
 V25 (2026-08-10)
   - 新增「禁止右鍵」限制：全頁停用滑鼠右鍵選單（輸入框／文字框／篩選結果區
     除外，以維持使用者輸入與複製結果的正常操作）
@@ -27,7 +33,7 @@ V(初版) 1150730-5
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>伊的台語號做啥？ (V25)</title>
+    <title>伊的台語號做啥？ (V26)</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
     <style>
         :root {
@@ -255,6 +261,24 @@ V(初版) 1150730-5
             70% { box-shadow: 0 0 0 14px rgba(231, 76, 60, 0); }
             100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
+
+        /* 直式螢幕（手機直拿等 portrait 顯示環境）版面修正：
+           將語音輸入鈕移到文字輸入框與「開始篩選台語詞彙」鈕之間，
+           讓文字輸入框可獨佔一整列寬度，避免輸入框過小。
+           僅影響直式螢幕，橫式／桌機畫面不受影響。 */
+        @media (orientation: portrait) {
+            .keyword-input-row {
+                flex-direction: column;
+            }
+            .keyword-input-row input {
+                width: 100%;
+            }
+            .mic-btn {
+                width: 100%;
+                padding: 12px 18px;
+                margin-top: 10px;
+            }
+        }
         
         .loading {
             text-align: center;
@@ -314,7 +338,7 @@ V(初版) 1150730-5
         <button class="btn-toggle" onclick="toggleSettings()">⚙️ API 系統設定</button>
     </div>
 
-    <h1>伊的台語號做啥？ (V25)</h1>
+    <h1>伊的台語號做啥？ (V26)</h1>
     <p class="author-subtitle">台中明道中學 詹宗龍 製作</p>
     <p class="subtitle">輸入情境，將由 AI 從資料庫挑選 10 個精準詞彙並提供詳細補充解析</p>
 
