@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- V28 -->
+<!-- V29 -->
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>伊的台語號做啥？ (V28)</title>
+    <title>伊的台語號做啥？ (V29)</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💡</text></svg>">
     <style>
         :root {
@@ -220,6 +220,10 @@
             cursor: pointer;
             white-space: nowrap;
             transition: background-color 0.3s, transform 0.15s;
+            /* 長按錄音：避免手機長按觸發捲動、選字與放大鏡 */
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .mic-btn:hover { background-color: #2980b9; }
         .mic-btn:active { transform: scale(0.96); }
@@ -309,7 +313,7 @@
         <button class="btn-toggle" onclick="toggleSettings()">⚙️ API 系統設定</button>
     </div>
 
-    <h1>伊的台語號做啥？ (V28)</h1>
+    <h1>伊的台語號做啥？ (V29)</h1>
     <p class="author-subtitle">台中明道中學 詹宗龍 製作</p>
     <p class="subtitle">輸入情境，由 AI 為你挑選 10 個精準詞彙並提供詳細補充解析</p>
 
@@ -355,7 +359,7 @@
             <label for="keyword">🔍 請輸入情境關鍵詞：</label>
             <div class="keyword-input-row">
                 <input type="text" id="keyword" placeholder="例如：虛有其表、生氣、吝嗇、胡說八道...">
-                <button type="button" id="micBtn" class="mic-btn" onclick="toggleVoiceInput()" title="語音輸入">🎤 語音輸入</button>
+                <button type="button" id="micBtn" class="mic-btn" title="按住說話，放開自動開始篩選">🎤 按住說話</button>
             </div>
         </div>
     </div>
@@ -424,8 +428,10 @@
     }
 
     // --- 語音輸入（語音轉文字）邏輯 ---
+    // V29 規則：按住「按住說話」鈕＝開始語音輸入；放開＝結束並自動開始篩選
     let voiceRecognition = null;
     let isVoiceRecording = false;
+    let voiceHasStopped = false;   // 避免 pointerup / pointercancel 重複觸發
 
     function createSpeechRecognition() {
         const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -442,78 +448,121 @@
         if (!micBtn) return;
         if (recording) {
             micBtn.classList.add('recording');
-            micBtn.textContent = '🔴 錄音中（點擊結束）';
+            micBtn.textContent = '🔴 錄音中（放開送出）';
         } else {
             micBtn.classList.remove('recording');
-            micBtn.textContent = '🎤 語音輸入';
+            micBtn.textContent = '🎤 按住說話';
         }
     }
 
-    function toggleVoiceInput() {
+    // 按下按鈕：開始語音輸入
+    function startVoiceInput() {
+        if (isVoiceRecording) return;
+
         const keywordInput = document.getElementById('keyword');
 
-        if (!isVoiceRecording) {
-            // --- 開始語音輸入 ---
-            voiceRecognition = createSpeechRecognition();
-            if (!voiceRecognition) {
-                alert('抱歉，您的瀏覽器不支援語音輸入功能，建議改用電腦版 Google Chrome 瀏覽器。');
-                return;
+        voiceRecognition = createSpeechRecognition();
+        if (!voiceRecognition) {
+            alert('抱歉，您的瀏覽器不支援語音輸入功能，建議改用電腦版 Google Chrome 瀏覽器。');
+            return;
+        }
+
+        isVoiceRecording = true;
+        voiceHasStopped = false;
+        setMicUIRecording(true);
+        keywordInput.value = '';
+
+        voiceRecognition.onresult = function(event) {
+            let transcript = '';
+            for (let i = 0; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
             }
+            keywordInput.value = transcript;
+        };
 
-            isVoiceRecording = true;
-            setMicUIRecording(true);
-            keywordInput.value = '';
-            keywordInput.focus();
+        voiceRecognition.onerror = function(event) {
+            console.error('語音辨識發生錯誤：', event.error);
+        };
 
-            voiceRecognition.onresult = function(event) {
-                let transcript = '';
-                for (let i = 0; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
-                }
-                keywordInput.value = transcript;
-            };
-
-            voiceRecognition.onerror = function(event) {
-                console.error('語音辨識發生錯誤：', event.error);
-            };
-
-            voiceRecognition.onend = function() {
-                // 若瀏覽器自動中斷錄音（非使用者點擊結束），仍需還原按鈕外觀
-                if (isVoiceRecording) {
-                    isVoiceRecording = false;
-                    setMicUIRecording(false);
-                }
-            };
-
-            try {
-                voiceRecognition.start();
-            } catch (err) {
-                console.error('無法啟動語音辨識：', err);
+        voiceRecognition.onend = function() {
+            // 若瀏覽器自行中斷錄音（非使用者放開按鈕），仍需還原按鈕外觀
+            if (isVoiceRecording) {
                 isVoiceRecording = false;
                 setMicUIRecording(false);
             }
+        };
 
-        } else {
-            // --- 使用者再次觸發，結束語音輸入 ---
+        try {
+            voiceRecognition.start();
+        } catch (err) {
+            console.error('無法啟動語音辨識：', err);
             isVoiceRecording = false;
             setMicUIRecording(false);
-
-            if (voiceRecognition) {
-                voiceRecognition.stop();
-            }
-
-            // 稍微延遲，確保最後一段語音辨識結果已寫入文字框，
-            // 再同步執行「開始篩選台語詞彙」功能
-            setTimeout(function() {
-                generateContent();
-            }, 300);
         }
+    }
+
+    // 放開按鈕：結束語音輸入，並自動開始篩選
+    // cancelled = true 代表是中途取消（例如手指滑出按鈕外），只停止錄音、不送出查詢
+    function stopVoiceInput(cancelled) {
+        if (!isVoiceRecording || voiceHasStopped) return;
+
+        voiceHasStopped = true;
+        isVoiceRecording = false;
+        setMicUIRecording(false);
+
+        if (voiceRecognition) {
+            try { voiceRecognition.stop(); } catch (err) { /* 忽略重複停止 */ }
+        }
+
+        if (cancelled) return;
+
+        // 稍微延遲，確保最後一段語音辨識結果已寫入文字框，
+        // 再自動執行「開始篩選台語詞彙」功能
+        setTimeout(function() {
+            const keyword = document.getElementById('keyword').value.trim();
+            if (keyword) generateContent();
+        }, 400);
+    }
+
+    function bindVoiceButton() {
+        const micBtn = document.getElementById('micBtn');
+        if (!micBtn) return;
+
+        micBtn.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            // 讓後續的 pointerup 一定回到這顆按鈕上（手指稍微滑動也不會中斷）
+            if (micBtn.setPointerCapture && e.pointerId !== undefined) {
+                try { micBtn.setPointerCapture(e.pointerId); } catch (err) {}
+            }
+            startVoiceInput();
+        });
+
+        micBtn.addEventListener('pointerup', function(e) {
+            e.preventDefault();
+            stopVoiceInput(false);
+        });
+
+        // 系統中斷（來電、切換視窗等）＝取消，不自動送出
+        micBtn.addEventListener('pointercancel', function() {
+            stopVoiceInput(true);
+        });
+
+        // 保險：滑鼠在按鈕外放開時，也結束錄音並送出
+        window.addEventListener('pointerup', function() {
+            stopVoiceInput(false);
+        });
+
+        // 避免手機長按跳出選單
+        micBtn.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
     }
 
     // 頁面載入時初始化設定
     window.onload = function() {
         loadSettingsToUI();
-        
+        bindVoiceButton();
+
         // 綁定 Enter 鍵觸發搜尋
         const keywordInput = document.getElementById('keyword');
         keywordInput.addEventListener('keypress', function(event) {
